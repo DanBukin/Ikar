@@ -792,6 +792,7 @@ class Window_5(ctk.CTk):
         self.scrollbar_frame_2 = ctk.CTkScrollableFrame(self, width=200, height=200, fg_color='black')  # 171717
         self.scrollbar_frame_2.place(x=350, y=40)
     def print_costs(self):
+        """Функция 1"""
         self.k=0
         self.l=0
         for i in range(len(self.coord_gor)):
