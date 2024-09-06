@@ -811,7 +811,7 @@ class Window_5(ctk.CTk):
             self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_2, text=f'{self.z:.2f}', font=self.font1, justify='left')
             self.label3.grid(row=self.l, column=2, sticky='w', padx=0, pady=0)
             self.l+=1
-if __name__ == "__main__":
+if __name__ == "__jopa__":
     app = Window_1()
     app.mainloop()
 # Комментарий
