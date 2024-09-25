@@ -1209,7 +1209,7 @@ def rotated_square(x, y, H, angle):
     return rotated_vertices
 def is_point_in_circle(x0, y0, x, y, H):
     '''=====Функция для проверки, находится ли точка в окружности====='''
-    radius = 3 * H
+    radius = 3.0001 * H
     distance = math.sqrt((x0 - x) ** 2 + (y0 - y) ** 2)
     return distance <= radius
 def print_dot(coord,D_k,frame, H,n):
@@ -1329,7 +1329,6 @@ def phi(t):
     # Вычисляем результат
     return (2 / math.sqrt(math.pi)) * integral_value
 def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
-    print(f'===================={float(x_0):.3f}, {float(y_0):.3f}, угол={np.rad2deg(angle):.2f}°====================')
     points_gor=[]
     points_ok = []
     dx_1_g=[]
@@ -1387,7 +1386,7 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_1_g=(phi(z_x_1_g))
         Phi_x_2_g=(phi(z_x_2_g))
         Phi_y_1_g=(phi(z_y_1_g))
-        print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1')
+        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
         m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(1-Phi_y_1_g))
     for x_1,x_2,y_1,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,m_ok_0):
         z_x_1_ok=(x_1/(math.sqrt(2)*H))
@@ -1400,3 +1399,67 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
 
 
     return 0.25*m_gor_1,0.25*m_ok_1,n_gor,n_ok
+def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
+    x_10 = x_0 + H / 2
+    x_20 = x_0 - H / 2
+    y_10 = y_0 + H / 2
+    y_20 = y_0 - H / 2
+    points_gor=[]
+    points_ok = []
+    n_gor=0
+    n_ok=0
+    m_gor_0=[]
+    m_ok_0=[]
+    dx_1_g = []
+    dx_2_g = []
+    dy_1_g = []
+    dy_2_g = []
+    dx_1_ok = []
+    dx_2_ok = []
+    dy_1_ok = []
+    dy_2_ok = []
+    m_gor_1 = 0
+    m_ok_1 = 0
+    for x, y, z in coord_gor:
+        if is_point_in_circle(x, y, x_0, y_0, H):
+            points_gor.append([x, y])
+            m_gor_0.append(z)
+            n_gor += 1
+    for x,y,z in coord_ok:
+        if is_point_in_circle(x, y, x_0, y_0, H):
+            points_ok.append([x, y])
+            m_ok_0.append(z)
+            n_ok+=1
+    for (x_1, y_1) in points_gor:
+        dx_1_g.append(x_1 - x_10)
+        dx_2_g.append(x_1 - x_20)
+        dy_1_g.append(y_1 - y_10)
+        dy_2_g.append(y_1 - y_20)
+    for (x_1, y_1) in points_ok:
+        dx_1_ok.append(x_1 - x_10)
+        dx_2_ok.append(x_1 - x_20)
+        dy_1_ok.append(y_1 - y_10)
+        dy_2_ok.append(y_1 - y_20)
+
+    for x_1,x_2,y_1,y_2,m in zip(dx_1_g,dx_2_g,dy_1_g,dy_2_g,m_gor_0):
+        z_x_1_g=(x_1/(math.sqrt(2)*H))
+        z_x_2_g=(x_2 / (math.sqrt(2) * H))
+        z_y_1_g=(y_1 / (math.sqrt(2) * H))
+        z_y_2_g = (y_2 / (math.sqrt(2) * H))
+        Phi_x_1_g=(phi(z_x_1_g))
+        Phi_x_2_g=(phi(z_x_2_g))
+        Phi_y_1_g=(phi(z_y_1_g))
+        Phi_y_2_g = (phi(z_y_2_g))
+        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mFuel={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
+        m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(Phi_y_2_g-Phi_y_1_g))
+    for x_1,x_2,y_1,y_2,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,dy_2_ok,m_ok_0):
+        z_x_1_ok=(x_1/(math.sqrt(2)*H))
+        z_x_2_ok=(x_2 / (math.sqrt(2) * H))
+        z_y_1_ok=(y_1 / (math.sqrt(2) * H))
+        z_y_2_ok = (y_2 / (math.sqrt(2) * H))
+        Phi_x_1_ok=(phi(z_x_1_ok))
+        Phi_x_2_ok=(phi(z_x_2_ok))
+        Phi_y_1_ok=(phi(z_y_1_ok))
+        Phi_y_2_ok = (phi(z_y_2_ok))
+        m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(Phi_y_2_ok-Phi_y_1_ok))
+    return 0.25 * m_gor_1, 0.25 * m_ok_1, n_gor, n_ok

@@ -898,18 +898,26 @@ class Window_6(ctk.CTk):
         self.frame0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_images(self):
         self.k=0
+        self.km_graph=[]
         for i, (x, y) in enumerate(self.centers_square):
             draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
             self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40)
             if self.angles_square[i]!=361:
                 self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 65)
                 self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
-                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.2f} кг/с , n={self.n_gor}",440, 411 * self.k + 90)
-                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.2f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
+                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.4f} кг/с , n={self.n_gor}",440, 411 * self.k + 90)
+                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
                 self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 140)
+                self.km_graph.append([float(x), float(y),self.m_ok_pl/self.m_gor_pl])
             else:
                 self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65)
+                self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
+                self.label = create_label(self.frame0, f"m_гор= {self.m_gor_y:.4f} кг/с , n={self.n_gor}", 440, 411 * self.k + 90)
+                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_y:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
+                self.label = create_label(self.frame0, f"k_m= {self.m_ok_y / self.m_gor_y:.4f}", 440, 411 * self.k + 140)
+                self.km_graph.append([float(x), float(y), self.m_ok_y / self.m_gor_y])
             self.k+=1
+        print(self.km_graph)
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()
