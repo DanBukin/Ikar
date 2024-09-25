@@ -3,14 +3,10 @@ from Ikar_Kompas_3D import *
 from Searching_for_component_costs import *
 import customtkinter as ctk
 import os
-from ctypes import windll, byref, create_string_buffer
-import sys
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import numpy as np
-import matplotlib.pyplot as plt
-import json
+from ctypes import windll
+import warnings
 
+warnings.filterwarnings("ignore", category=UserWarning)
 FR_PRIVATE = 0x10
 FR_NOT_ENUM = 0x20
 if os.name == 'nt':
@@ -166,7 +162,6 @@ class Window_2(ctk.CTk):
         self.print_entry()
         self.print_button()
         self.print_slider()
-        print(self.choice)
         if self.choice<10:
             self.print_radio_button()
     def place_scrollbar(self):
@@ -737,7 +732,7 @@ class Window_4(ctk.CTk):
         self.label2.grid(row=0, column=0, sticky='w', padx=0, pady=0)
     def place_scrollbar(self):
         self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=190, height=50,fg_color='#2b2b2b')  # 171717
-        self.scrollbar_frame_1.place(x=375, y=220)
+        self.scrollbar_frame_1.place(x=390, y=220)
         self.scrollbar_frame_2 = ctk.CTkScrollableFrame(self, width=190, height=50, fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_2.place(x=625, y=220)
     def back_window(self):
@@ -753,13 +748,14 @@ class Window_5(ctk.CTk):
         super().__init__()
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
-        self.title("Вывод результатов расчёта массового расхода")  # Название программы
+        self.title("Вывод результатов расчёта массового расхода. Подготовка к методу Иевлева")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
 
+        self.n=3
         self.n_g_pr=n_g_pr
         self.n_o_pr=n_o_pr
         self.n_g_y=n_g_y
@@ -780,21 +776,33 @@ class Window_5(ctk.CTk):
         self.coord_y_ok_x=coord_y_ok_x
         self.coord_y_ok_y=coord_y_ok_y
         self.place_scrollbar()
-
+        self.find_coord_sum()
         self.m_f_g_pr,self.m_f_o_pr,self.m_f_g_y,self.m_f_o_y,self.coord_gor,self.coord_ok=find_costs_2(self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8,self.choice,
                                                                                                         self.n_g_pr,self.n_o_pr,self.n_g_y,self.n_o_y,self.coord_pr_g_x,self.coord_pr_g_y,
                                                                                                         self.coord_y_g_x,self.coord_y_g_y,self.coord_y_ok_x,self.coord_y_ok_y)
         self.print_costs()
+        self.input_n()
+        self.print_button()
     def place_scrollbar(self):
-        """Функция 2"""
-        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=200, height=200,fg_color='black')  # 171717
-        self.scrollbar_frame_1.place(x=50, y=40)
-        self.scrollbar_frame_2 = ctk.CTkScrollableFrame(self, width=200, height=200, fg_color='black')  # 171717
-        self.scrollbar_frame_2.place(x=350, y=40)
+        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=180, height=200,fg_color='black')  # 171717
+        self.scrollbar_frame_1.place(x=430, y=10)
+        self.scrollbar_frame_2 = ctk.CTkScrollableFrame(self, width=180, height=200, fg_color='black')  # 171717
+        self.scrollbar_frame_2.place(x=650, y=10)
     def print_costs(self):
-        """Функция 1"""
-        self.k=0
-        self.l=0
+        self.k=1
+        self.l=1
+        self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'X гор.', font=self.font1, justify='left')
+        self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+        self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'Y гор.', font=self.font1, justify='left')
+        self.label2.grid(row=0, column=1, sticky='w', padx=0, pady=0)
+        self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'm гор.', font=self.font1, justify='left')
+        self.label3.grid(row=0, column=2, sticky='w', padx=0, pady=0)
+        self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_2, text=f'X ок.', font=self.font1, justify='left')
+        self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+        self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_2, text=f'Y ок.', font=self.font1, justify='left')
+        self.label2.grid(row=0, column=1, sticky='w', padx=0, pady=0)
+        self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_2, text=f'm ок.', font=self.font1, justify='left')
+        self.label3.grid(row=0, column=2, sticky='w', padx=0, pady=0)
         for i in range(len(self.coord_gor)):
             self.x, self.y, self.z = self.coord_gor[i]
             self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1,text=f'{self.x:.2f}',font=self.font1, justify='left')
@@ -813,7 +821,86 @@ class Window_5(ctk.CTk):
             self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_2, text=f'{self.z:.2f}', font=self.font1, justify='left')
             self.label3.grid(row=self.l, column=2, sticky='w', padx=0, pady=0)
             self.l+=1
+    def find_coord_sum(self):
+        self.coord_graph=[]
+        if self.choice==1 or self.choice==2 or self.choice==3:
+            for (x, y) in zip(self.coord_pr_g_x,self.coord_pr_g_y):
+                self.coord_graph.append([x, y])
+            for (x, y) in zip(self.coord_y_g_x,self.coord_y_g_y):
+                self.coord_graph.append([x, y])
+            for (x, y) in zip(self.coord_y_ok_x,self.coord_y_ok_y):
+                self.coord_graph.append([x, y])
+        elif self.choice==4 or self.choice==5 or self.choice==6 or self.choice==7 or self.choice==8 or self.choice==9:
+            for (x, y) in zip(self.coord_pr_g_x,self.coord_pr_g_y):
+                self.coord_graph.append([x, y])
+            for (x, y) in zip(self.coord_y_g_x,self.coord_y_g_y):
+                self.coord_graph.append([x, y])
+        elif self.choice==10 or self.choice==11 or self.choice==12:
+            for (x, y) in zip(self.coord_y_g_x,self.coord_y_g_y):
+                self.coord_graph.append([x, y])
+            for (x, y) in zip(self.coord_y_ok_x,self.coord_y_ok_y):
+                self.coord_graph.append([x, y])
+        else:
+            for (x, y) in zip(self.coord_y_g_x,self.coord_y_g_y):
+                self.coord_graph.append([x, y])
+        self.n_pl,self.centers_square,self.angles_square=print_dot(self.coord_graph,user.D_k,self,user.H,self.n)
+    def input_n(self):
+        self.label_1 = create_label(self, "Выберите, какая часть форсунок будет рассчитываться?", 430, 260)
+        self.label_2 = create_label(self, "n =", 430, 285)
+        self.label_3 = create_label(self, "(каждая 2-ая, каждая 3-ья и т.д.)", 540, 285)
+        self.entry1_value = ctk.StringVar()
+        self.Entry1 = create_entry(self, 45, self.entry1_value, 455, 285)
+        self.button_n = create_button(self, "✓", lambda: self.entry_n(), self.font1, 20, 505, 285)
+    def entry_n(self):
+        self.n = int(self.entry1_value.get())
+        self.n_pl,self.centers_square,self.angles_square=print_dot(self.coord_graph, user.D_k, self, user.H, self.n)
+    def print_button(self):
+        self.button_1 = create_button(self, "txt", lambda: save_txt(self.coord_gor), self.font1, 60, 430, 235)
+        self.button_2 = create_button(self, "excel", lambda: save_excel(self.coord_gor), self.font1, 60, 510, 235)
+        self.button_3 = create_button(self, "txt", lambda: save_txt(self.coord_ok), self.font1, 60, 650, 235)
+        self.button_4 = create_button(self, "excel", lambda: save_excel(self.coord_ok), self.font1, 60, 730, 235)
+        self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 650, 450)
+        self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
+    def back_window(self):
+        self.destroy()
+        window_4 = Window_4()
+        window_4.mainloop()
+
+    def close_window(self):
+        self.destroy()
+        window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square)
+        window_6.mainloop()
+
+class Window_6(ctk.CTk):
+    def __init__(self,n_pl,centers_square,coord_graph,angles_square):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Метод Иевлева")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
+        self.n_pl=n_pl
+        self.centers_square=centers_square
+        self.coord_graph=coord_graph
+        self.angles_square=angles_square
+        self.scrollbar()
+        self.print_images()
+    def scrollbar(self):
+        """=====Создание пролистывающегося фрейма====="""
+        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=830, height=465,fg_color='#171717') #171717
+        self.scrollbar_frame.place(x=10, y=10)
+        self.frame0 = ctk.CTkFrame(master=self.scrollbar_frame, width=830, height=411*self.n_pl+20, fg_color="#171717",bg_color="transparent")
+        self.frame0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    def print_images(self):
+        self.k=0
+        for i, (x, y) in enumerate(self.centers_square):
+            draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
+            self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40)
+            self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]}°", 440, 411 * self.k + 65)
+            self.k+=1
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()
-# Комментарий

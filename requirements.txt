@@ -2,3 +2,5 @@ customtkinter
 matplotlib
 numpy
 sympy
+pandas
+openpyxl

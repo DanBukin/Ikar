@@ -1,8 +1,11 @@
 import customtkinter as ctk
 import os
 from PIL import Image, ImageTk
-from ctypes import windll, byref, create_string_buffer
+from ctypes import windll
+import math
 from matplotlib.figure import Figure
+import matplotlib.patches as patches
+from matplotlib.lines import Line2D
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,6 +13,8 @@ from matplotlib.ticker import AutoMinorLocator
 from matplotlib.ticker import FuncFormatter
 import tkinter as tk
 from tkinter import filedialog
+import pandas as pd
+
 formatter = FuncFormatter(lambda x, _: f"{x:.0f}")
 
 FR_PRIVATE = 0x10
@@ -181,16 +186,31 @@ def print_image(number,frame):
         cellular_scheme(345,25,3,6,frame,number)
     elif number==12 or number==15:
         concentric_scheme(350,22,3,6,frame,number)
+def save_txt(array):
+    root = tk.Tk()
+    root.withdraw()  # Скрываем основное окно tkinter
+    file_path = filedialog.asksaveasfilename(defaultextension='.txt',
+                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    if file_path:  # Если путь был выбран
+        with open(file_path, 'w') as f:
+            for x,y,z in array:
+                f.write(f'{x}\t{y}\t{z}\n')
+def save_excel(array):
+    """=====Сохранение результатов в формате excel (2 параметра)====="""
+    X=[]
+    Y=[]
+    Z=[]
+    for x,y,z in array:
+       X.append(x)
+       Y.append(y)
+       Z.append(z)
+    df = pd.DataFrame({"X": X,"Y": Y,"m": Z})
+    root = tk.Tk()
+    root.withdraw()  # Скрываем основное окно tkinter
+    file_path = filedialog.asksaveasfilename(defaultextension='.xlsx',filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")])
+    if file_path:  # Если путь был выбран
+        df.to_excel(file_path, index=False)
 def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
-    n_pr_g=0
-    n_pr_ok=0
-    n_y_g=0
-    n_y_ok=0
-
-    coord_pr_g=[]
-    coord_pr_ok=[]
-    coord_y_g=[]
-    coord_y_ok=[]
 
     number_0=number
     color_g='#D44B46'
@@ -233,14 +253,11 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
     centers = []  # Сюда будут записываться координаты форсунок
     centers_ok=[]
     centers_gor=[]
-    centers_pr=[]
-    centers_y_2=[]
 
     alpha = 360 / edge_count
     i = 0
     d_wall = (2 * (D_k / 2 - delta_wall) * np.sin(np.radians(180 / edge_count))) / (
                 1 + np.sin(np.radians(180 / edge_count)))
-    d_itog = 2 * (D_k / 2 - delta_wall - d_wall - delta_y_pr)
 
     while i < 360:
         x = (D_k / 2 - delta_wall - d_wall / 2) * np.cos(np.radians(i))
@@ -1166,3 +1183,136 @@ def find_costs_2(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, choice,n_g_pr,n_o_pr,n_
             if m_f_o_pr_2 != 0:
                 coord_ok.append((x, y, m_f_o_pr_2))
     return m_f_g_pr,m_f_o_pr,m_f_g_y,m_f_o_y,coord_gor,coord_ok
+def rotated_square(x, y, H, angle):
+    '''=====Функция, которая разворачивает площадки, находящиеся у пристенка====='''
+    # Центр квадрата (x, y), угол наклона angle (в радианах)
+    half_side = H / 2
+    # Вершины квадрата без поворота
+    vertices = np.array([
+        [-half_side, -half_side],
+        [half_side, -half_side],
+        [half_side, half_side],
+        [-half_side, half_side]
+    ])
+
+    # Поворот вершин на угол
+    rotation_matrix = np.array([
+        [np.cos(angle), -np.sin(angle)],
+        [np.sin(angle), np.cos(angle)]
+    ])
+
+    rotated_vertices = vertices @ rotation_matrix.T
+    # Смещаем вершины квадрата к точке (x, y)
+    rotated_vertices += np.array([x, y])
+
+    return rotated_vertices
+def is_point_in_circle(x0, y0, x, y, H):
+    '''=====Функция для проверки, находится ли точка в окружности====='''
+    radius = 3 * H
+    distance = math.sqrt((x0 - x) ** 2 + (y0 - y) ** 2)
+    return distance <= radius
+def print_dot(coord,D_k,frame, H,n):
+    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('#1A1A1A')  # 171717
+
+    arc = patches.Arc((0, 0), D_k, D_k, theta1=0, theta2=90, edgecolor='#D44B46', facecolor='#1A1A1A')
+    ax.add_patch(arc)
+    line = Line2D([0, 0, D_k / 2], [D_k / 2, 0, 0], color="#D44B46")
+    ax.add_line(line)
+    k=0
+    centers_square=[]
+    angles_square=[]
+    for i, (x, y) in enumerate(coord):
+        circle_1 = plt.Circle((x, y), 1, edgecolor='#D44B46', facecolor='#D44B46')
+        ax.add_patch(circle_1)
+        if i % n == 0:
+            if x >= 0 and y >= 0:
+                if math.sqrt((abs(x) + H / (2 ** 0.5)) ** 2 + (abs(y) + H / (2 ** 0.5)) ** 2) <= D_k / 2:
+                    square = patches.Polygon([[x + H / 2, y + H / 2], [x + H / 2, y - H / 2],[x - H / 2, y - H / 2], [x - H / 2, y + H / 2]],edgecolor='#D44B46', facecolor='none', hatch='x')
+                    ax.add_patch(square)
+                    centers_square.append([x, y])
+                    k += 1
+                    angles_square.append(90)
+                else:
+                    angle = np.arctan2(y, x)
+                    square_vertices = rotated_square(x, y, H, angle)
+                    square = patches.Polygon(square_vertices, edgecolor='#D44B46', facecolor='none', hatch='x')
+                    ax.add_patch(square)
+                    centers_square.append([x, y])
+                    k += 1
+                    angles_square.append(np.rad2deg(angle))
+
+    ax.tick_params(axis='x', colors='white', labelsize=14)
+    ax.tick_params(axis='y', colors='white', labelsize=14)
+    ax.grid(True, color='white', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('white')
+    fig.patch.set_facecolor('#1A1A1A')  # 171717
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.set_xlim(- H, D_k / 2 + H)
+    ax.set_ylim(- H, D_k / 2 + H)
+
+    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.place(x=10, y=50)
+    print(f'Количетво площадок для расчёта равно: {k}')
+    return k,centers_square,angles_square
+
+def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
+    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('#171717')
+
+    circle = plt.Circle((0, 0), D / 2, color='#D44B46', fill=False)
+    ax.add_patch(circle)
+    circle = plt.Circle((center_x, center_y), 3 * H, color='white', fill=False)
+    ax.add_patch(circle)
+
+    if math.sqrt((abs(center_x) + H / (2 ** 0.5)) ** 2 + (abs(center_y) + H / (2 ** 0.5)) ** 2) <= D / 2:
+        square = patches.Polygon([[center_x + H / 2, center_y + H / 2], [center_x + H / 2, center_y - H / 2],[center_x - H / 2, center_y - H / 2], [center_x - H / 2, center_y + H / 2]],edgecolor='#D44B46', facecolor='none', hatch='x')
+        ax.add_patch(square)
+    else:
+        angle = np.arctan2(center_y, center_x)
+        square_vertices = rotated_square(center_x, center_y, H, angle)
+        square = patches.Polygon(square_vertices, edgecolor='#D44B46', facecolor='none', hatch='x')
+        ax.add_patch(square)
+    for (x, y) in points_itog:
+        if is_point_in_circle(x, y, center_x, center_y, H):
+            circle = plt.Circle((x, y), 1, color='#D44B46', fill=True)
+            ax.add_patch(circle)
+
+    # Настройки графика
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim((center_x - (3 * H)) - 10, (center_x + (3 * H)) + 10)
+    ax.set_ylim((center_y - (3 * H)) - 10, (center_y + (3 * H)) + 10)
+    ax.tick_params(axis='x', colors='white', labelsize=10)
+    ax.tick_params(axis='y', colors='white', labelsize=10)
+    ax.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('white')
+    fig.patch.set_facecolor('#171717')
+    ax.set_facecolor('#171717')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.tick_params(axis='x', colors='white', labelsize=11)
+    ax.tick_params(axis='y', colors='white', labelsize=11)
+
+    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.place(x=10, y=770*k+10)
