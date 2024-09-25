@@ -14,6 +14,7 @@ from matplotlib.ticker import FuncFormatter
 import tkinter as tk
 from tkinter import filedialog
 import pandas as pd
+from scipy.integrate import quad
 
 formatter = FuncFormatter(lambda x, _: f"{x:.0f}")
 
@@ -1234,7 +1235,7 @@ def print_dot(coord,D_k,frame, H,n):
                     ax.add_patch(square)
                     centers_square.append([x, y])
                     k += 1
-                    angles_square.append(90)
+                    angles_square.append(361)
                 else:
                     angle = np.arctan2(y, x)
                     square_vertices = rotated_square(x, y, H, angle)
@@ -1316,3 +1317,86 @@ def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=770*k+10)
+
+
+def phi(t):
+    # Определяем функцию под интегралом
+    integrand = lambda z: np.exp(-z ** 2)
+
+    # Численное интегрирование от 0 до t
+    integral_value, _ = quad(integrand, 0, t)
+
+    # Вычисляем результат
+    return (2 / math.sqrt(math.pi)) * integral_value
+def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
+    print(f'===================={float(x_0):.3f}, {float(y_0):.3f}, угол={np.rad2deg(angle):.2f}°====================')
+    points_gor=[]
+    points_ok = []
+    dx_1_g=[]
+    dx_2_g=[]
+    dy_1_g=[]
+    dx_1_ok = []
+    dx_2_ok = []
+    dy_1_ok = []
+    m_gor_0=[]
+    m_gor_1=0
+    m_ok_0 = []
+    m_ok_1 = 0
+    n_gor=0
+    n_ok=0
+    for x,y,z in coord_gor:
+        if is_point_in_circle(x, y, x_0, y_0, H):
+            points_gor.append([x, y])
+            m_gor_0.append(z)
+            n_gor+=1
+    for x,y,z in coord_ok:
+        if is_point_in_circle(x, y, x_0, y_0, H):
+            points_ok.append([x, y])
+            m_ok_0.append(z)
+            n_ok+=1
+    for (x_1, y_1) in points_gor:
+        H_0 = (x_1 - x_0) * math.cos(angle) + (y_1 - y_0) * math.sin(angle)
+        L_0 = (x_1 - x_0) * math.sin(angle) - (y_1 - y_0) * math.cos(angle)
+        h_1 = -(L_0 + H / 2)
+        h_2 = -(L_0 - H / 2)
+        l_1 = H_0 + H / 2
+        if h_1>h_2:
+            dx_1_g.append(h_2)
+            dx_2_g.append(h_1)
+        else:
+            dx_1_g.append(h_1)
+            dx_2_g.append(h_2)
+        dy_1_g.append(-l_1)
+    for (x_1, y_1) in points_ok:
+        H_0 = (x_1 - x_0) * math.cos(angle) + (y_1 - y_0) * math.sin(angle)
+        L_0 = (x_1 - x_0) * math.sin(angle) - (y_1 - y_0) * math.cos(angle)
+        h_1 = -(L_0 + H / 2)
+        h_2 = -(L_0 - H / 2)
+        l_1 = H_0 + H / 2
+        if h_1>h_2:
+            dx_1_ok.append(h_2)
+            dx_2_ok.append(h_1)
+        else:
+            dx_1_ok.append(h_1)
+            dx_2_ok.append(h_2)
+        dy_1_ok.append(-l_1)
+    for x_1,x_2,y_1,m in zip(dx_1_g,dx_2_g,dy_1_g,m_gor_0):
+        z_x_1_g=(x_1/(math.sqrt(2)*H))
+        z_x_2_g=(x_2 / (math.sqrt(2) * H))
+        z_y_1_g=(y_1 / (math.sqrt(2) * H))
+        Phi_x_1_g=(phi(z_x_1_g))
+        Phi_x_2_g=(phi(z_x_2_g))
+        Phi_y_1_g=(phi(z_y_1_g))
+        print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1')
+        m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(1-Phi_y_1_g))
+    for x_1,x_2,y_1,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,m_ok_0):
+        z_x_1_ok=(x_1/(math.sqrt(2)*H))
+        z_x_2_ok=(x_2 / (math.sqrt(2) * H))
+        z_y_1_ok=(y_1 / (math.sqrt(2) * H))
+        Phi_x_1_ok=(phi(z_x_1_ok))
+        Phi_x_2_ok=(phi(z_x_2_ok))
+        Phi_y_1_ok=(phi(z_y_1_ok))
+        m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(1-Phi_y_1_ok))
+
+
+    return 0.25*m_gor_1,0.25*m_ok_1,n_gor,n_ok

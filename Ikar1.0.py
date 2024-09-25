@@ -868,11 +868,11 @@ class Window_5(ctk.CTk):
 
     def close_window(self):
         self.destroy()
-        window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square)
+        window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square,self.coord_gor,self.coord_ok)
         window_6.mainloop()
 
 class Window_6(ctk.CTk):
-    def __init__(self,n_pl,centers_square,coord_graph,angles_square):
+    def __init__(self,n_pl,centers_square,coord_graph,angles_square,coord_gor,coord_ok):
         super().__init__()
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
@@ -886,6 +886,8 @@ class Window_6(ctk.CTk):
         self.centers_square=centers_square
         self.coord_graph=coord_graph
         self.angles_square=angles_square
+        self.coord_gor=coord_gor
+        self.coord_ok=coord_ok
         self.scrollbar()
         self.print_images()
     def scrollbar(self):
@@ -899,7 +901,14 @@ class Window_6(ctk.CTk):
         for i, (x, y) in enumerate(self.centers_square):
             draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
             self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40)
-            self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]}°", 440, 411 * self.k + 65)
+            if self.angles_square[i]!=361:
+                self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 65)
+                self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
+                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.2f} кг/с , n={self.n_gor}",440, 411 * self.k + 90)
+                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.2f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
+                self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 140)
+            else:
+                self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65)
             self.k+=1
 if __name__ == "__main__":
     app = Window_1()
