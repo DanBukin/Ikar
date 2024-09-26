@@ -850,7 +850,8 @@ class Window_5(ctk.CTk):
         self.label_2 = create_label(self, "n =", 430, 285)
         self.label_3 = create_label(self, "(каждая 2-ая, каждая 3-ья и т.д.)", 540, 285)
         self.entry1_value = ctk.StringVar()
-        self.Entry1 = create_entry(self, 45, self.entry1_value, 455, 285)
+        self.Entry1 = ctk.CTkEntry(master=self, width=45, textvariable=self.entry1_value,placeholder_text="CTkEntry")
+        self.Entry1.place(x=455, y=285)
         self.button_n = create_button(self, "✓", lambda: self.entry_n(), self.font1, 20, 505, 285)
     def entry_n(self):
         self.n = int(self.entry1_value.get())
@@ -889,37 +890,76 @@ class Window_6(ctk.CTk):
         self.angles_square=angles_square
         self.coord_gor=coord_gor
         self.coord_ok=coord_ok
+
         self.scrollbar()
         self.print_images()
+        self.print_button()
     def scrollbar(self):
         """=====Создание пролистывающегося фрейма====="""
         self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=830, height=465,fg_color='#171717') #171717
         self.scrollbar_frame.place(x=10, y=10)
-        self.frame0 = ctk.CTkFrame(master=self.scrollbar_frame, width=830, height=411*self.n_pl+20, fg_color="#171717",bg_color="transparent")
+        self.frame0 = ctk.CTkFrame(master=self.scrollbar_frame, width=830, height=411*self.n_pl+30, fg_color="#171717",bg_color="transparent")
         self.frame0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_images(self):
         self.k=0
         self.km_graph=[]
         for i, (x, y) in enumerate(self.centers_square):
             draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
-            self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40)
+            self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40-25)
             if self.angles_square[i]!=361:
-                self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 65)
+                self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 40)
                 self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok,self.text_programm_pl=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
-                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.4f} кг/с , n={self.n_gor}",440, 411 * self.k + 90)
-                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
-                self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 140)
+                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.4f} кг/с , n={self.n_gor}",440, 411 * self.k + 65)
+                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 90)
+                self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 115)
                 self.km_graph.append([float(x), float(y),self.m_ok_pl/self.m_gor_pl])
-                self.button=create_button(self.frame0,"Программа 'Forsunki'",lambda: save_txt_fors(self.text_programm_pl),self.font1,200,440, 411 * self.k + 165)
+                self.scrollbar_frame = ctk.CTkScrollableFrame(self.frame0, width=350, height=80, fg_color='black')  # 171717
+                self.scrollbar_frame.place(x=440, y=411 * self.k + 142)
+                self.slmtn = ctk.CTkLabel(master=self.scrollbar_frame, text=self.text_programm_pl, font=self.font1,justify='left')
+                self.slmtn.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+                self.txt_button = create_button(self.frame0, "txt", lambda text_programm_pl=self.text_programm_pl: save_txt_fors(text_programm_pl), self.font1,60, 440, 411 * self.k+370)
+                self.excel_button = create_button(self.frame0, "ч/б изображение", lambda k=self.k: print(k),self.font1, 100, 510, 411 * self.k + 370)
             else:
-                self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65)
+                self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65-25)
                 self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok,self.text_programm_y=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
-                self.label = create_label(self.frame0, f"m_гор= {self.m_gor_y:.4f} кг/с , n={self.n_gor}", 440, 411 * self.k + 90)
-                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_y:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
-                self.label = create_label(self.frame0, f"k_m= {self.m_ok_y / self.m_gor_y:.4f}", 440, 411 * self.k + 140)
-                self.km_graph.append([float(x), float(y), self.m_ok_y / self.m_gor_y])
+                self.label = create_label(self.frame0, f"m_гор= {self.m_gor_y:.4f} кг/с , n={self.n_gor}", 440, 411 * self.k + 90-25)
+                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_y:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115-25)
+                self.label = create_label(self.frame0, f"k_m= {self.m_ok_y / self.m_gor_y:.4f}", 440, 411 * self.k + 140-25)
+                self.scrollbar_frame = ctk.CTkScrollableFrame(self.frame0, width=350, height=80,fg_color='black')  # 171717
+                self.scrollbar_frame.place(x=440, y=411 * self.k + 142)
+                self.slvn = ctk.CTkLabel(master=self.scrollbar_frame, text=self.text_programm_y, font=self.font2,justify='left')
+                self.slvn.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+                self.txt_button = create_button(self.frame0, "txt", lambda text_programm_y=self.text_programm_y: save_txt_fors(text_programm_y), self.font1, 60, 440,411 * self.k + 370)
+                self.excel_button = create_button(self.frame0, "ч/б изображение", lambda k=self.k: print(k), self.font1,100, 510, 411 * self.k + 370)
             self.k+=1
-        print(self.km_graph)
+    def print_button(self):
+        self.back_button = create_button(self.frame0, "Назад", lambda: self.back_window(), self.font1, 100, 615, 411 * self.k)
+        self.close_button = create_button(self.frame0, "Далее", lambda: self.close_window(), self.font1, 100, 725, 411 * self.k)
+        self.png_button=create_button(self.frame0, "Сохранить изображения в ч/б", lambda: print(self.k), self.font1, 100, 10, 411 * self.k)
+        self.programm_button=create_button(self.frame0, "Сохранить всё в txt", lambda: print(self.k), self.font1, 100, 240, 411 * self.k)
+
+    def back_window(self):
+        self.destroy()
+        window_5 = Window_5()
+        window_5.mainloop()
+
+    def close_window(self):
+        self.destroy()
+        window_7 = Window_6(self.n_pl, self.centers_square, self.coord_graph, self.angles_square, self.coord_gor,
+                            self.coord_ok)
+        window_7.mainloop()
+class Window_7(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Метод Иевлева")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        self.iconbitmap('data/sunset.ico')
+
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()

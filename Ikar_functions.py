@@ -25,7 +25,12 @@ font1 = ("Futura PT Book", 16)  # Настройка пользовательс�
 font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 3
 canvas_widget = None
 k_1=0
-
+FR_PRIVATE = 0x10
+FR_NOT_ENUM = 0x20
+if os.name == 'nt':
+    windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", FR_PRIVATE, 0) # Загрузка пользовательского шрифта
+else:
+    pass
 def create_frame(parent,wight, height, x, y, fg_color, bg_color):
     frame = ctk.CTkFrame(master=parent,width=wight, height=height, fg_color=fg_color, bg_color=bg_color)
     frame.place(x=x, y=y)

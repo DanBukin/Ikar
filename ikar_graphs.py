@@ -8,8 +8,19 @@ from matplotlib.ticker import AutoMinorLocator
 from matplotlib.ticker import FuncFormatter
 import numpy as np
 import math
+import os
+import ipywidgets as widgets
+from IPython.display import display
+from ctypes import windll
+
 
 formatter = FuncFormatter(lambda x, _: f"{x:.0f}")
+FR_PRIVATE = 0x10
+FR_NOT_ENUM = 0x20
+if os.name == 'nt':
+    windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", FR_PRIVATE, 0) # Загрузка пользовательского шрифта
+else:
+    pass
 def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
 
     number_0=number
@@ -141,6 +152,7 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
+
     # Обновите параметры тиков после изменения меток, если нужно
     ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
     ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
@@ -724,7 +736,7 @@ def print_dot(coord,D_k,frame, H,n):
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=50)
-    print(f'Количетво площадок для расчёта равно: {k}')
+    print(f'Количество площадок для расчёта равно: {k}')
     return k,centers_square,angles_square
 
 def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
@@ -803,3 +815,49 @@ def is_point_in_circle(x0, y0, x, y, H):
     radius = 3.0001 * H
     distance = math.sqrt((x0 - x) ** 2 + (y0 - y) ** 2)
     return distance <= radius
+def save_png_fors(center_x, center_y, points_itog, H,D):
+    print(center_x, center_y)
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+
+    circle = plt.Circle((0, 0), D / 2, color='black', fill=False)
+    ax.add_patch(circle)
+    circle = plt.Circle((center_x, center_y), 3 * H, color='black', fill=False)
+    ax.add_patch(circle)
+
+    if math.sqrt((abs(center_x) + H / (2 ** 0.5)) ** 2 + (abs(center_y) + H / (2 ** 0.5)) ** 2) <= D / 2:
+        square = patches.Polygon([[center_x + H / 2, center_y + H / 2], [center_x + H / 2, center_y - H / 2],
+                                  [center_x - H / 2, center_y - H / 2], [center_x - H / 2, center_y + H / 2]],
+                                 edgecolor='black', facecolor='none', hatch='x')
+        ax.add_patch(square)
+    else:
+        angle = np.arctan2(center_y, center_x)
+        square_vertices = rotated_square(center_x, center_y, H, angle)
+        square = patches.Polygon(square_vertices, edgecolor='black', facecolor='none', hatch='x')
+        ax.add_patch(square)
+    for (x, y) in points_itog:
+        if is_point_in_circle(x, y, center_x, center_y, H):
+            circle = plt.Circle((x, y), 1, color='black', fill=True)
+            ax.add_patch(circle)
+
+    # Настройки графика
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim((center_x - (3 * H)) - 10, (center_x + (3 * H)) + 10)
+    ax.set_ylim((center_y - (3 * H)) - 10, (center_y + (3 * H)) + 10)
+    ax.tick_params(axis='x', colors='black', labelsize=10)
+    ax.tick_params(axis='y', colors='black', labelsize=10)
+    ax.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')
+    ax.set_facecolor('white')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.tick_params(axis='x', colors='black', labelsize=11)
+    ax.tick_params(axis='y', colors='black', labelsize=11)
+
+    plt.show()

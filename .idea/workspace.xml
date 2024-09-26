@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add ikar_graphs, the final completion of the Ievlev method">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="fixed bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ikar1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar1.0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ikar_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +198,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727338942223</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1727339943060</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1727339943060</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -211,6 +220,7 @@
     <MESSAGE value="add requirements.txt" />
     <MESSAGE value="add Method by Ievlev." />
     <MESSAGE value="add ikar_graphs, the final completion of the Ievlev method" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ikar_graphs, the final completion of the Ievlev method" />
+    <MESSAGE value="fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
   </component>
 </project>
