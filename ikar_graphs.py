@@ -774,3 +774,32 @@ def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=770*k+10)
+def rotated_square(x, y, H, angle):
+    '''=====Функция, которая разворачивает площадки, находящиеся у пристенка====='''
+    # Центр квадрата (x, y), угол наклона angle (в радианах)
+    half_side = H / 2
+    # Вершины квадрата без поворота
+    vertices = np.array([
+        [-half_side, -half_side],
+        [half_side, -half_side],
+        [half_side, half_side],
+        [-half_side, half_side]
+    ])
+
+    # Поворот вершин на угол
+    rotation_matrix = np.array([
+        [np.cos(angle), -np.sin(angle)],
+        [np.sin(angle), np.cos(angle)]
+    ])
+
+    rotated_vertices = vertices @ rotation_matrix.T
+    # Смещаем вершины квадрата к точке (x, y)
+    rotated_vertices += np.array([x, y])
+
+    return rotated_vertices
+
+def is_point_in_circle(x0, y0, x, y, H):
+    '''=====Функция для проверки, находится ли точка в окружности====='''
+    radius = 3.0001 * H
+    distance = math.sqrt((x0 - x) ** 2 + (y0 - y) ** 2)
+    return distance <= radius

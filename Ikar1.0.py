@@ -905,14 +905,15 @@ class Window_6(ctk.CTk):
             self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40)
             if self.angles_square[i]!=361:
                 self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 65)
-                self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
+                self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok,self.text_programm_pl=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
                 self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.4f} кг/с , n={self.n_gor}",440, 411 * self.k + 90)
                 self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
                 self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 140)
                 self.km_graph.append([float(x), float(y),self.m_ok_pl/self.m_gor_pl])
+                self.button=create_button(self.frame0,"Программа 'Forsunki'",lambda: save_txt_fors(self.text_programm_pl),self.font1,200,440, 411 * self.k + 165)
             else:
                 self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65)
-                self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
+                self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok,self.text_programm_y=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
                 self.label = create_label(self.frame0, f"m_гор= {self.m_gor_y:.4f} кг/с , n={self.n_gor}", 440, 411 * self.k + 90)
                 self.label = create_label(self.frame0, f"m_ок= {self.m_ok_y:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115)
                 self.label = create_label(self.frame0, f"k_m= {self.m_ok_y / self.m_gor_y:.4f}", 440, 411 * self.k + 140)

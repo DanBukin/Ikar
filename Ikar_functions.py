@@ -287,6 +287,14 @@ def save_txt_1(X, Y):
         with open(file_path, 'w') as f:
             for x,y in zip(X, Y):
                 f.write(f'{x}\t{y}\n')
+def save_txt_fors(text):
+    root = tk.Tk()
+    root.withdraw()  # Скрываем основное окно tkinter
+    file_path = filedialog.asksaveasfilename(defaultextension='.txt',
+                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    if file_path:  # Если путь был выбран
+        with open(file_path, 'w') as f:
+            f.write(f'{text}')
 def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_layer):
     """Поиск координат центров окружностей в ядре смесительной головки"""
     if choice == 1 or choice == 4 or choice == 5 or choice == 10 or choice == 13: # 1,4,5,10,13 - шахматная
@@ -522,29 +530,6 @@ def find_costs_2(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, choice,n_g_pr,n_o_pr,n_
             if m_f_o_pr_2 != 0:
                 coord_ok.append((x, y, m_f_o_pr_2))
     return m_f_g_pr,m_f_o_pr,m_f_g_y,m_f_o_y,coord_gor,coord_ok
-def rotated_square(x, y, H, angle):
-    '''=====Функция, которая разворачивает площадки, находящиеся у пристенка====='''
-    # Центр квадрата (x, y), угол наклона angle (в радианах)
-    half_side = H / 2
-    # Вершины квадрата без поворота
-    vertices = np.array([
-        [-half_side, -half_side],
-        [half_side, -half_side],
-        [half_side, half_side],
-        [-half_side, half_side]
-    ])
-
-    # Поворот вершин на угол
-    rotation_matrix = np.array([
-        [np.cos(angle), -np.sin(angle)],
-        [np.sin(angle), np.cos(angle)]
-    ])
-
-    rotated_vertices = vertices @ rotation_matrix.T
-    # Смещаем вершины квадрата к точке (x, y)
-    rotated_vertices += np.array([x, y])
-
-    return rotated_vertices
 def is_point_in_circle(x0, y0, x, y, H):
     '''=====Функция для проверки, находится ли точка в окружности====='''
     radius = 3.0001 * H
@@ -561,6 +546,7 @@ def phi(t):
     # Вычисляем результат
     return (2 / math.sqrt(math.pi)) * integral_value
 def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
+    text_programm=''
     points_gor=[]
     points_ok = []
     dx_1_g=[]
@@ -618,7 +604,7 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_1_g=(phi(z_x_1_g))
         Phi_x_2_g=(phi(z_x_2_g))
         Phi_y_1_g=(phi(z_y_1_g))
-        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1\n')
         m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(1-Phi_y_1_g))
     for x_1,x_2,y_1,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,m_ok_0):
         z_x_1_ok=(x_1/(math.sqrt(2)*H))
@@ -628,10 +614,11 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_2_ok=(phi(z_x_2_ok))
         Phi_y_1_ok=(phi(z_y_1_ok))
         m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(1-Phi_y_1_ok))
-        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mOx={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mOx={m:.3f} n=1\n')
 
-    return 0.25*m_gor_1,0.25*m_ok_1,n_gor,n_ok
+    return 0.25*m_gor_1,0.25*m_ok_1,n_gor,n_ok,text_programm
 def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
+    text_programm=''
     x_10 = x_0 + H / 2
     x_20 = x_0 - H / 2
     y_10 = y_0 + H / 2
@@ -682,7 +669,7 @@ def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_2_g=(phi(z_x_2_g))
         Phi_y_1_g=(phi(z_y_1_g))
         Phi_y_2_g = (phi(z_y_2_g))
-        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mFuel={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mFuel={m:.3f} n=1\n')
         m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(Phi_y_2_g-Phi_y_1_g))
     for x_1,x_2,y_1,y_2,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,dy_2_ok,m_ok_0):
         z_x_1_ok=(x_1/(math.sqrt(2)*H))
@@ -694,5 +681,5 @@ def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
         Phi_y_1_ok=(phi(z_y_1_ok))
         Phi_y_2_ok = (phi(z_y_2_ok))
         m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(Phi_y_2_ok-Phi_y_1_ok))
-        # print(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mOx={m:.3f} n=1') #==============Программа fors-1.0-SNAPSHOT==============
-    return 0.25 * m_gor_1, 0.25 * m_ok_1, n_gor, n_ok
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mOx={m:.3f} n=1\n')
+    return 0.25 * m_gor_1, 0.25 * m_ok_1, n_gor, n_ok,text_programm
