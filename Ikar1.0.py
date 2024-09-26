@@ -1,5 +1,6 @@
 from Ikar_functions import *
 from Ikar_Kompas_3D import *
+from ikar_graphs import *
 from Searching_for_component_costs import *
 import customtkinter as ctk
 import os
