@@ -517,7 +517,7 @@ def find_costs_2(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, choice,n_g_pr,n_o_pr,n_
                 coord_gor.append((x, y, m_f_g_pr_1))
             if m_f_ok_pr_1 != 0:
                 coord_ok.append((x, y, m_f_ok_pr_1))
-    if choice == 5 or choice == 7 or choice == 9:
+    elif choice == 5 or choice == 7 or choice == 9:
         m_f_g_pr = (x_1 + x_2) / n_g_y
         m_f_o_pr = (x_3 + x_4) / n_o_y
 
@@ -534,6 +534,9 @@ def find_costs_2(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, choice,n_g_pr,n_o_pr,n_
                 coord_ok.append((x, y, m_f_o_pr_1))
             if m_f_o_pr_2 != 0:
                 coord_ok.append((x, y, m_f_o_pr_2))
+    else:
+        m_f_g_pr=0
+        m_f_o_pr=0
     return m_f_g_pr,m_f_o_pr,m_f_g_y,m_f_o_y,coord_gor,coord_ok
 def is_point_in_circle(x0, y0, x, y, H):
     '''=====Функция для проверки, находится ли точка в окружности====='''

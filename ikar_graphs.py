@@ -9,8 +9,7 @@ from matplotlib.ticker import FuncFormatter
 import numpy as np
 import math
 import os
-import ipywidgets as widgets
-from IPython.display import display
+from scipy.interpolate import griddata
 from ctypes import windll
 
 
@@ -859,5 +858,33 @@ def save_png_fors(center_x, center_y, points_itog, H,D):
     ax.yaxis.set_major_formatter(formatter)
     ax.tick_params(axis='x', colors='black', labelsize=11)
     ax.tick_params(axis='y', colors='black', labelsize=11)
+
+    plt.show()
+def three_d_graph(data):
+    array = np.array(data)
+    x = array[:, 0]  # Координаты X
+    y = array[:, 1]  # Координаты Y
+    z = array[:, 2]  # Температура в точках
+
+    # Создаем сетку для интерполяции
+    grid_x, grid_y = np.mgrid[min(x):max(x):100j, min(y):max(y):100j]
+
+    # Интерполяция температуры по сетке
+    grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
+
+    # Построение графика
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Построение поверхности
+    ax.plot_surface(grid_x, grid_y, grid_z, cmap='viridis', edgecolor='none')
+
+    # Добавление точек с исходными данными для наглядности
+    ax.scatter(x, y, z, color='red')
+
+    # Подписи
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('k_m')
 
     plt.show()
