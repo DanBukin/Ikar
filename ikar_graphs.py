@@ -860,8 +860,8 @@ def save_png_fors(center_x, center_y, points_itog, H,D):
     ax.tick_params(axis='y', colors='black', labelsize=11)
 
     plt.show()
-def three_d_graph(data):
-    array = np.array(data)
+def three_d_graph(data_1):
+    array=multiply_graph(data_1)
     x = array[:, 0]  # Координаты X
     y = array[:, 1]  # Координаты Y
     z = array[:, 2]  # Температура в точках
@@ -877,14 +877,38 @@ def three_d_graph(data):
     ax = fig.add_subplot(111, projection='3d')
 
     # Построение поверхности
-    ax.plot_surface(grid_x, grid_y, grid_z, cmap='viridis', edgecolor='none')
+    surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='hot', linewidth=0.5, edgecolors='k') #autumn_r
 
     # Добавление точек с исходными данными для наглядности
     ax.scatter(x, y, z, color='red')
 
-    # Подписи
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('k_m')
+    ax.title.set_color('white')
+    fig.patch.set_facecolor('#242424')
+    ax.set_facecolor('#242424')
 
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.set_xlim(min(x)*1.1, max(x)*1.1)
+    ax.set_ylim(min(y) * 1.1, max(y) * 1.1)
+    ax.set_zlim(0, max(z) * 1.1)
+    ax.tick_params(axis='x', colors='white', labelsize=11)
+    ax.tick_params(axis='y', colors='white', labelsize=11)
+    ax.tick_params(axis='z', colors='white', labelsize=11)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('k_m')
+    fig.colorbar(surf, shrink=0.5, aspect=5)
     plt.show()
+def multiply_graph(data_1):
+    result = []
+    data = np.array(data_1)
+    for point in data:
+        x, y, z = point
+        result.append((x, y, z))
+        result.append((-x, y, z))
+        result.append((x, -y, z))
+        result.append((-x, -y, z))
+    result = list(set(result))
+    result = np.array(result)
+    return result
