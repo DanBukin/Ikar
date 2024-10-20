@@ -8,12 +8,14 @@ from ctypes import windll
 import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
+ctk.deactivate_automatic_dpi_awareness()
 FR_PRIVATE = 0x10
 FR_NOT_ENUM = 0x20
 if os.name == 'nt':
     windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", FR_PRIVATE, 0) # Загрузка пользовательского шрифта
 else:
     pass
+
 class user:
     def __init__(self):
         self.nozzle_diagram=None # Схема форсуночной головки
@@ -38,13 +40,13 @@ class user:
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
-
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Ikar")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
         self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
@@ -64,7 +66,7 @@ class Window_1(ctk.CTk):
     def print_label(self):
         """Визуализация текста в окне"""
         self.label1 = create_label(self, "Добро пожаловавть в программу 'Икар' !", 50, 2)
-        self.label2 = create_label(self, "Пожалуйста, выберите схему смесительной головки:", 35, 25)
+        self.label2 = create_label(self, "Пожалуйста, выберите схему смесительной головки:", 25, 25)
         self.label3=create_label_red(self, "Есть ли пристеночный слой?", 5, 55)
         self.label4 = create_label_red(self, "Какие форсунки в ядре?", 5, 150)
         self.label5 = create_label_red(self, "Схема расположения форсунок в ядре?", 5, 245)
@@ -222,6 +224,7 @@ class Window_2(ctk.CTk):
         self.D_k=float(self.entry1_value.get())
         self.H_id=round((self.D_k**0.5))
         self.label3.configure(text=f"Рекомендуемый шаг: {self.H_id} мм")
+        self.on_slider_change_0()
     def print_slider(self):
         self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change, number_of_steps=18,
                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
@@ -244,7 +247,7 @@ class Window_2(ctk.CTk):
                                         progress_color=("#D44B46"))
             self.slider4.place(x=50, y=285)
             self.slider4.set(3)
-            self.slider5 = ctk.CTkSlider(self.frame2, from_=40, to=200, command=self.on_slider_change_4, number_of_steps=160,
+            self.slider5 = ctk.CTkSlider(self.frame2, from_=40, to=200, command=self.on_slider_change_4, number_of_steps=80,
                                         border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                         progress_color=("#D44B46"))
             self.slider5.place(x=50, y=370)
@@ -265,6 +268,25 @@ class Window_2(ctk.CTk):
         """Обновление текста метки в соответствии со значением ползунка"""
         self.H = int(value)
         self.label4.configure(text=f"Выбранный шаг равен: {self.H} мм")
+        if self.choice == 1 or self.choice == 4 or self.choice == 5:
+            self.D_y,self.D_prist=chess_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self, self.choice,self.checkbox.get())
+        elif self.choice == 2 or self.choice == 6 or self.choice == 7:
+            self.D_y,self.D_prist=cellular_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self, self.choice,self.checkbox.get())
+        elif self.choice == 3 or self.choice == 8 or self.choice == 9:
+            self.D_y,self.D_prist=concentric_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta,self.delta_y_pr, self, self.choice,self.checkbox.get())
+        elif self.choice == 10 or self.choice == 13 :
+            self.D_y=chess_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice)
+        elif self.choice == 11 or self.choice == 14 :
+            self.D_y=cellular_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice)
+        else:
+            self.D_y=concentric_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice)
+        if self.choice<10:
+            self.label13.configure(text=f"Диаметр форсунок в ядре равен: {self.D_y:.2f} мм")
+            self.label14.configure(text=f"Диаметр форсунок в пристенке равен: {self.D_prist:.2f} мм")
+        else:
+            self.label15.configure(text=f"Диаметр форсунок равен: {self.D_y:.2f} мм")
+
+    def on_slider_change_0(self):
         if self.choice == 1 or self.choice == 4 or self.choice == 5:
             self.D_y,self.D_prist=chess_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self, self.choice,self.checkbox.get())
         elif self.choice == 2 or self.choice == 6 or self.choice == 7:
@@ -872,7 +894,6 @@ class Window_5(ctk.CTk):
         self.destroy()
         window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square,self.coord_gor,self.coord_ok)
         window_6.mainloop()
-
 class Window_6(ctk.CTk):
     def __init__(self,n_pl,centers_square,coord_graph,angles_square,coord_gor,coord_ok):
         super().__init__()
@@ -891,58 +912,42 @@ class Window_6(ctk.CTk):
         self.coord_gor=coord_gor
         self.coord_ok=coord_ok
 
-        self.scrollbar()
+        # self.scrollbar()
         self.print_images()
         self.print_button()
-    def scrollbar(self):
-        """=====Создание пролистывающегося фрейма====="""
-        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=830, height=465,fg_color='#171717') #171717
-        self.scrollbar_frame.place(x=10, y=10)
-        self.frame0 = ctk.CTkFrame(master=self.scrollbar_frame, width=830, height=411*self.n_pl+30, fg_color="#171717",bg_color="transparent")
-        self.frame0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    # def scrollbar(self):
+    #     """=====Создание пролистывающегося фрейма====="""
+    #     self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=650, height=350,fg_color='#131212') #171717
+    #     self.scrollbar_frame.place(x=7, y=7)
+    #     self.frame0 = ctk.CTkFrame(master=self.scrollbar_frame, width=650, height=411*self.n_pl+30, fg_color="#131212",bg_color="transparent")
+    #     self.frame0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_images(self):
         self.k=0
         self.km_graph=[]
         self.txt_programm=''
         for i, (x, y) in enumerate(self.centers_square):
-            draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
-            self.label = create_label(self.frame0, f"Площадка №{self.k+1}", 440, 411*self.k+40-25)
-            if self.angles_square[i]!=361:
-                self.label = create_label(self.frame0, f"Угол наклона площадки: {self.angles_square[i]:.2f}°, площадка у стенки", 440,411 * self.k + 40)
+            # draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
+            if self.angles_square[i] != 361:
                 self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok,self.text_programm_pl=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
-                self.label = create_label(self.frame0,f"m_гор= {self.m_gor_pl:.4f} кг/с , n={self.n_gor}",440, 411 * self.k + 65)
-                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_pl:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 90)
-                self.label = create_label(self.frame0, f"k_m= {self.m_ok_pl/self.m_gor_pl:.4f}", 440, 411 * self.k + 115)
                 self.km_graph.append([float(x), float(y),self.m_ok_pl/self.m_gor_pl])
-                self.scrollbar_frame = ctk.CTkScrollableFrame(self.frame0, width=350, height=80, fg_color='black')  # 171717
-                self.scrollbar_frame.place(x=440, y=411 * self.k + 142)
-                self.slmtn = ctk.CTkLabel(master=self.scrollbar_frame, text=self.text_programm_pl, font=self.font1,justify='left')
-                self.slmtn.grid(row=0, column=0, sticky='w', padx=0, pady=0)
                 self.txt_programm+=(f"====================Площадка №{self.k+1}====================\n")
                 self.txt_programm+=(self.text_programm_pl+"\n")
-                self.txt_button = create_button(self.frame0, "txt", lambda text_programm_pl=self.text_programm_pl: save_txt_fors(text_programm_pl), self.font1,60, 440, 411 * self.k+370)
-                self.excel_button = create_button(self.frame0, "ч/б изображение", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k),self.font1, 100, 510, 411 * self.k + 370)
+                # self.txt_button = create_button(self.frame0, "txt", lambda text_programm_pl=self.text_programm_pl: save_txt_fors(text_programm_pl), self.font1,60, 540, 411 * self.k + 45)
+                # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k),self.font1, 60, 540, 411 * self.k + 80)
             else:
-                self.label = create_label(self.frame0, f"Угол наклона площадки: {0}°, площадка не у стенки", 440,411 * self.k + 65-25)
                 self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok,self.text_programm_y=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
-                self.label = create_label(self.frame0, f"m_гор= {self.m_gor_y:.4f} кг/с , n={self.n_gor}", 440, 411 * self.k + 90-25)
-                self.label = create_label(self.frame0, f"m_ок= {self.m_ok_y:.4f} кг/с , n={self.n_ok}", 440, 411 * self.k + 115-25)
-                self.label = create_label(self.frame0, f"k_m= {self.m_ok_y / self.m_gor_y:.4f}", 440, 411 * self.k + 140-25)
-                self.scrollbar_frame = ctk.CTkScrollableFrame(self.frame0, width=350, height=80,fg_color='black')  # 171717
-                self.scrollbar_frame.place(x=440, y=411 * self.k + 142)
-                self.slvn = ctk.CTkLabel(master=self.scrollbar_frame, text=self.text_programm_y, font=self.font2,justify='left')
-                self.slvn.grid(row=0, column=0, sticky='w', padx=0, pady=0)
                 self.km_graph.append([float(x), float(y), self.m_ok_y / self.m_gor_y])
                 self.txt_programm += (f"====================Площадка №{self.k + 1}====================\n")
                 self.txt_programm += (self.text_programm_y + "\n")
-                self.txt_button = create_button(self.frame0, "txt", lambda text_programm_y=self.text_programm_y: save_txt_fors(text_programm_y), self.font1, 60, 440,411 * self.k + 370)
-                self.excel_button = create_button(self.frame0, "ч/б изображение", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k), self.font1,100, 510, 411 * self.k + 370)
+                # self.txt_button = create_button(self.frame0, "txt", lambda text_programm_y=self.text_programm_y: save_txt_fors(text_programm_y), self.font1, 60, 540,411 * self.k + 45)
+                # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k), self.font1,60, 540, 411 * self.k + 80)
             self.k+=1
+        three_d_graph(self.km_graph, self)
     def print_button(self):
-        self.back_button = create_button(self.frame0, "Назад", lambda: self.back_window(), self.font1, 100, 615, 411 * self.k)
-        self.close_button = create_button(self.frame0, "Далее", lambda: self.close_window(), self.font1, 100, 725, 411 * self.k)
-        self.png_button=create_button(self.frame0, "Сохранить изображения в ч/б", lambda: three_d_graph(self.km_graph), self.font1, 100, 10, 411 * self.k)
-        self.programm_button=create_button(self.frame0, "Сохранить всё в txt", lambda: save_txt_fors(self.txt_programm), self.font1, 100, 240, 411 * self.k)
+        self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 615, 450)
+        self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
+        self.png_button=create_button(self, "Сохранить изображения в ч/б", lambda: print(1), self.font1, 100, 10, 450)
+        self.programm_button=create_button(self, "Сохранить всё в txt", lambda: save_txt_fors(self.txt_programm), self.font1, 100, 240, 450)
 
     def back_window(self):
         self.destroy()

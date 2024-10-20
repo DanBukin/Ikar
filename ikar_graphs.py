@@ -52,7 +52,7 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
         color_y_1_1 = color_g
         color_y_2 = color_o
         color_y_2_1 = color_f
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -147,20 +147,20 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
 
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return r_0*2,d_wall-delta
 def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
@@ -192,7 +192,7 @@ def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,f
         color_y_1 = color_g
         color_y_2 = color_o
 
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -280,19 +280,19 @@ def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,f
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return (H-delta),d_wall-delta
 def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
@@ -324,7 +324,7 @@ def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr
         color_y_1 = color_g
         color_y_2 = color_o
         color_y_1_0 = color_g
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -415,19 +415,19 @@ def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return r_0*2, d_wall-delta
 def chess_scheme(D_k, H,delta_wall,delta,frame,number):
@@ -446,7 +446,7 @@ def chess_scheme(D_k, H,delta_wall,delta,frame,number):
         color_y_1_1 = color_g
         color_y_2 = color_o
         color_y_2_1 = color_f
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -495,19 +495,19 @@ def chess_scheme(D_k, H,delta_wall,delta,frame,number):
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return r_0*2
 def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
@@ -523,7 +523,7 @@ def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
         color_y_1 = color_g
         color_y_2 = color_o
         color_y_1_0 = color_g
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -579,19 +579,19 @@ def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return r_0*2
 def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
@@ -611,7 +611,7 @@ def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
         color_y_1 = color_g
         color_y_2 = color_o
         color_y_1_0 = color_g
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#242424')  # 171717
@@ -664,24 +664,24 @@ def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
     fig.patch.set_facecolor('#242424')  # 171717
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.98, top=0.98)
     # Установите форматирование для осей X и Y
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(-R_k - H, R_k + H)
     ax.set_ylim(-R_k - H, R_k + H)
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=760, y=70)
+    canvas_widget.place(x=650, y=70)
 
     return r_0*2
 
 def print_dot(coord,D_k,frame, H,n):
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
     ax.set_facecolor('#1A1A1A')  # 171717
@@ -727,8 +727,8 @@ def print_dot(coord,D_k,frame, H,n):
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     # Обновите параметры тиков после изменения меток, если нужно
-    ax.tick_params(axis='x', colors='white', labelsize=15)  # Используйте свой размер шрифта
-    ax.tick_params(axis='y', colors='white', labelsize=15)  # Используйте свой размер шрифта
+    ax.tick_params(axis='x', colors='white', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=12)  # Используйте свой размер шрифта
     ax.set_xlim(- H, D_k / 2 + H)
     ax.set_ylim(- H, D_k / 2 + H)
 
@@ -739,10 +739,10 @@ def print_dot(coord,D_k,frame, H,n):
     return k,centers_square,angles_square
 
 def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
-    fig = Figure(figsize=(7.7, 7.7), dpi=100)
+    fig = Figure(figsize=(5, 5), dpi=100)
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', adjustable='box')
-    ax.set_facecolor('#171717')
+    ax.set_facecolor('#131212')
 
     circle = plt.Circle((0, 0), D / 2, color='#D44B46', fill=False)
     ax.add_patch(circle)
@@ -774,8 +774,8 @@ def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
     ax.xaxis.set_minor_locator(AutoMinorLocator())
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.title.set_color('white')
-    fig.patch.set_facecolor('#171717')
-    ax.set_facecolor('#171717')
+    fig.patch.set_facecolor('#131212')
+    ax.set_facecolor('#131212')
     fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
@@ -784,7 +784,7 @@ def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
 
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=10, y=770*k+10)
+    canvas_widget.place(x=10, y=560*k+10)
 def rotated_square(x, y, H, angle):
     '''=====Функция, которая разворачивает площадки, находящиеся у пристенка====='''
     # Центр квадрата (x, y), угол наклона angle (в радианах)
@@ -860,46 +860,48 @@ def save_png_fors(center_x, center_y, points_itog, H,D):
     ax.tick_params(axis='y', colors='black', labelsize=11)
 
     plt.show()
-def three_d_graph(data_1):
+def three_d_graph(data_1,frame):
     array=multiply_graph(data_1)
     x = array[:, 0]  # Координаты X
     y = array[:, 1]  # Координаты Y
-    z = array[:, 2]  # Температура в точках
+    z = array[:, 2]  # km в точках
 
     # Создаем сетку для интерполяции
     grid_x, grid_y = np.mgrid[min(x):max(x):100j, min(y):max(y):100j]
 
-    # Интерполяция температуры по сетке
+    # Интерполяция km по сетке
     grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
 
     # Построение графика
-    fig = plt.figure(figsize=(10, 8))
+    fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111, projection='3d')
 
     # Построение поверхности
     surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='hot', linewidth=0.5, edgecolors='k') #autumn_r
 
-    # Добавление точек с исходными данными для наглядности
-    ax.scatter(x, y, z, color='red')
-
     ax.title.set_color('white')
-    fig.patch.set_facecolor('#242424')
-    ax.set_facecolor('#242424')
+    fig.patch.set_facecolor('#1A1A1A')
+    ax.set_facecolor('#1A1A1A')
 
-    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.04, bottom=0.02, right=0.98, top=0.98)
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     ax.set_xlim(min(x)*1.1, max(x)*1.1)
     ax.set_ylim(min(y) * 1.1, max(y) * 1.1)
     ax.set_zlim(0, max(z) * 1.1)
-    ax.tick_params(axis='x', colors='white', labelsize=11)
-    ax.tick_params(axis='y', colors='white', labelsize=11)
-    ax.tick_params(axis='z', colors='white', labelsize=11)
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('k_m')
-    fig.colorbar(surf, shrink=0.5, aspect=5)
-    plt.show()
+    ax.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
+    ax.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
+    ax.tick_params(axis='z', colors='white', labelsize=11, labelcolor='white')
+    ax.set_xlabel('x', color='white')  # Устанавливаем цвет текста меток осей
+    ax.set_ylabel('y', color='white')
+    ax.set_zlabel('k_m', color='white')
+    colorbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+    colorbar.outline.set_edgecolor('white')  # Устанавливаем цвет рамки
+    colorbar.ax.tick_params(color='white', labelcolor='white')  # Устанавливаем цвет меток и текста
+    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.place(x=10, y=10)
+
 def multiply_graph(data_1):
     result = []
     data = np.array(data_1)

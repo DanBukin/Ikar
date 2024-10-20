@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import filedialog
 import pandas as pd
 from scipy.integrate import quad
+import json
 
 formatter = FuncFormatter(lambda x, _: f"{x:.0f}")
 
@@ -54,7 +55,7 @@ def show_frame_1(app):
     # Если изображение еще не было загружено, загружаем его
     if app.global_image is None:
         original_image = Image.open("data/frame_1.png")  # Путь к изображению
-        resized_image = original_image.resize((round(905 * 1), round(766 * 1)), Image.Resampling.LANCZOS)
+        resized_image = original_image.resize((round(905 * 1*0.8), round(766 * 1*0.8)), Image.Resampling.LANCZOS)
         app.global_image = ImageTk.PhotoImage(resized_image)
 
     # Если метка изображения еще не была создана, создаем ее
@@ -76,7 +77,7 @@ def show_frame_2(app):
     if app.global_image_1 is None:
         # Сначала изменяем размер изображения с помощью Pillow
         original_image_1 = Image.open("data/frame_2.png")  # Замените на путь к вашему изображению
-        resized_image_1 = original_image_1.resize((round(905 * 1), round(766 * 1)),Image.Resampling.LANCZOS)  # Изменяем размер
+        resized_image_1 = original_image_1.resize((round(905 * 1*0.8), round(766 * 1*0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
         app.global_image_1 = ImageTk.PhotoImage(resized_image_1)
 
     # Если метка изображения еще не была создана, создаем ее
@@ -99,7 +100,7 @@ def show_frame_3(app):
     if app.global_image_2 is None:
         # Сначала изменяем размер изображения с помощью Pillow
         original_image_2 = Image.open("data/frame_3.png")  # Замените на путь к вашему изображению
-        resized_image_2 = original_image_2.resize((round(905 * 1), round(766 * 1)),Image.Resampling.LANCZOS)  # Изменяем размер
+        resized_image_2 = original_image_2.resize((round(905 * 1*0.8), round(766 * 1*0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
         app.global_image_2 = ImageTk.PhotoImage(resized_image_2)
 
     # Если метка изображения еще не была создана, создаем ее
@@ -120,7 +121,7 @@ def show_frame_3(app):
         app.image_label_1.place_forget()  # Скрываем метку изображения
 def show_frame_4(app):
     original_image_4 = Image.open("data/frame_4.png")  # Замените на путь к вашему изображению
-    resized_image_4 = original_image_4.resize((round(2213 * 0.45), round(840 * 0.45)),Image.Resampling.LANCZOS)  # Изменяем размер
+    resized_image_4 = original_image_4.resize((round(2213 * 0.45*0.8), round(840 * 0.45*0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
     app.global_image_4 = ImageTk.PhotoImage(resized_image_4)
 
     app.image_label_4 = ctk.CTkLabel(app, image=app.global_image_4)
@@ -130,7 +131,7 @@ def show_frame_5(app):
     if app.global_image_5 is None:
         # Сначала изменяем размер изображения с помощью Pillow
         original_image_5 = Image.open("data/frame_5.png")  # Замените на путь к вашему изображению
-        resized_image_5 = original_image_5.resize((round(2191 * 0.46), round(825 * 0.46)),Image.Resampling.LANCZOS)  # Изменяем размер
+        resized_image_5 = original_image_5.resize((round(2191 * 0.46*0.8), round(825 * 0.46*0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
         app.global_image_5 = ImageTk.PhotoImage(resized_image_5)
 
     # Если метка изображения еще не была создана, создаем ее
@@ -554,7 +555,7 @@ def phi(t):
     # Вычисляем результат
     return (2 / math.sqrt(math.pi)) * integral_value
 def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
-    text_programm=''
+    text_programm='[x_1] [x_2] [y_1] [y_2] [Комп.]=[Расход]\n'
     points_gor=[]
     points_ok = []
     dx_1_g=[]
@@ -612,7 +613,7 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_1_g=(phi(z_x_1_g))
         Phi_x_2_g=(phi(z_x_2_g))
         Phi_y_1_g=(phi(z_y_1_g))
-        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mFuel={m:.3f} n=1\n')
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},∞ mFuel={m:.3f}\n')
         m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(1-Phi_y_1_g))
     for x_1,x_2,y_1,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,m_ok_0):
         z_x_1_ok=(x_1/(math.sqrt(2)*H))
@@ -622,11 +623,11 @@ def method_by_ievlev_pr(angle,x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_2_ok=(phi(z_x_2_ok))
         Phi_y_1_ok=(phi(z_y_1_ok))
         m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(1-Phi_y_1_ok))
-        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},10000 mOx={m:.3f} n=1\n')
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},∞ mOx={m:.3f}\n')
 
     return 0.25*m_gor_1,0.25*m_ok_1,n_gor,n_ok,text_programm
 def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
-    text_programm=''
+    text_programm='[x_1] [x_2] [y_1] [y_2] [Комп.]=[Расход]\n'
     x_10 = x_0 + H / 2
     x_20 = x_0 - H / 2
     y_10 = y_0 + H / 2
@@ -677,7 +678,7 @@ def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
         Phi_x_2_g=(phi(z_x_2_g))
         Phi_y_1_g=(phi(z_y_1_g))
         Phi_y_2_g = (phi(z_y_2_g))
-        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mFuel={m:.3f} n=1\n')
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mFuel={m:.3f}\n')
         m_gor_1+=m*((Phi_x_2_g-Phi_x_1_g)*(Phi_y_2_g-Phi_y_1_g))
     for x_1,x_2,y_1,y_2,m in zip(dx_1_ok,dx_2_ok,dy_1_ok,dy_2_ok,m_ok_0):
         z_x_1_ok=(x_1/(math.sqrt(2)*H))
@@ -689,5 +690,5 @@ def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
         Phi_y_1_ok=(phi(z_y_1_ok))
         Phi_y_2_ok = (phi(z_y_2_ok))
         m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(Phi_y_2_ok-Phi_y_1_ok))
-        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mOx={m:.3f} n=1\n')
+        text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mOx={m:.3f}\n')
     return 0.25 * m_gor_1, 0.25 * m_ok_1, n_gor, n_ok,text_programm
