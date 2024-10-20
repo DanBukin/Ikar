@@ -883,7 +883,7 @@ def three_d_graph(data_1,frame):
     fig.patch.set_facecolor('#1A1A1A')
     ax.set_facecolor('#1A1A1A')
 
-    fig.subplots_adjust(left=0.04, bottom=0.02, right=0.98, top=0.98)
+    fig.subplots_adjust(left=0.05, bottom=0.05, right=0.95, top=0.95)
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     ax.set_xlim(min(x)*1.1, max(x)*1.1)
@@ -900,7 +900,7 @@ def three_d_graph(data_1,frame):
     colorbar.ax.tick_params(color='white', labelcolor='white')  # Устанавливаем цвет меток и текста
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=10, y=10)
+    canvas_widget.place(x=2, y=35)
 
 def multiply_graph(data_1):
     result = []
