@@ -74,7 +74,7 @@ class Window_1(ctk.CTk):
     def print_radio_button(self):
         """Создание дерево выбора смесительной головки (ответвлениями являются функции show_choice_1...12)"""
         self.radio_var_1 = ctk.IntVar(value=1)
-        self.radio_var_2 = ctk.IntVar(value=2)
+        self.radio_var_2 = ctk.IntVar(value=1)
         self.radio_var_3 = ctk.IntVar(value=3)
         self.radio_var_4 = ctk.IntVar(value=1)
         self.radio_option1 = ctk.CTkRadioButton(self, text="Пристеночный слой есть", variable=self.radio_var_1,
@@ -154,7 +154,7 @@ class Window_2(ctk.CTk):
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
         self.choice = choice
-        self.H=15
+        self.H=17
         self.number_pr=60
         self.delta_wall=3
         self.delta=3
@@ -182,7 +182,7 @@ class Window_2(ctk.CTk):
         self.label2 = create_label(self.frame2, "Выберите шаг между форсунками (мм) :", 0, 0)
         self.label_3_1 = create_label(self.frame2, "12", 30, 20)
         self.label_3_2 = create_label(self.frame2, "30", 300, 20)
-        self.label4 = create_label(self.frame2, "Выбранный шаг равен: 15 мм", 10, 40)
+        self.label4 = create_label(self.frame2, "Выбранный шаг равен: 17 мм", 10, 40)
         self.label5 = create_label(self.frame2, "Выберите расстояние между форсунками (мм):", 10, 85)
         self.label_5_1 = create_label(self.frame2, "3", 40, 105)
         self.label_5_2 = create_label(self.frame2, "10", 300, 105)
@@ -230,7 +230,7 @@ class Window_2(ctk.CTk):
                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                     progress_color=("#D44B46"))
         self.slider1.place(x=50, y=30)
-        self.slider1.set(15)
+        self.slider1.set(17)
         self.slider2 = ctk.CTkSlider(self.frame2, from_=3, to=10, command=self.on_slider_change_1, number_of_steps=7,
                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                      progress_color=("#D44B46"))
@@ -778,7 +778,7 @@ class Window_5(ctk.CTk):
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
 
-        self.n=3
+        self.n=1
         self.n_g_pr=n_g_pr
         self.n_o_pr=n_o_pr
         self.n_g_y=n_g_y
@@ -912,10 +912,17 @@ class Window_6(ctk.CTk):
         self.coord_gor=coord_gor
         self.coord_ok=coord_ok
 
+        self.scrollrfame()
         self.print_images()
         self.print_label()
         self.print_button()
 
+    def scrollrfame(self):
+        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=700, height=400, fg_color='#171717')  # 171717
+        self.scrollbar_frame.place(x=5, y=30)
+        self.frame_0 = ctk.CTkFrame(master=self.scrollbar_frame, width=700, height=2000, fg_color="#171717",
+                                   bg_color="transparent")
+        self.frame_0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_images(self):
         self.k=0
         self.km_graph=[]
@@ -937,7 +944,7 @@ class Window_6(ctk.CTk):
                 # self.txt_button = create_button(self.frame0, "txt", lambda text_programm_y=self.text_programm_y: save_txt_fors(text_programm_y), self.font1, 60, 540,411 * self.k + 45)
                 # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k), self.font1,60, 540, 411 * self.k + 80)
             self.k+=1
-        three_d_graph(self.km_graph, self)
+        three_d_graph(self.km_graph, self.frame_0,user.D_k)
     def print_label(self):
         self.label1 = create_label(self, "Распределение km по смесительной головке:", 40, 4)
     def print_button(self):

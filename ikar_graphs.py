@@ -860,7 +860,19 @@ def save_png_fors(center_x, center_y, points_itog, H,D):
     ax.tick_params(axis='y', colors='black', labelsize=11)
 
     plt.show()
-def three_d_graph(data_1,frame):
+def multiply_graph(data_1):
+    result = []
+    data = np.array(data_1)
+    for point in data:
+        x, y, z = point
+        result.append((x, y, z))
+        result.append((-x, y, z))
+        result.append((x, -y, z))
+        result.append((-x, -y, z))
+    result = list(set(result))
+    result = np.array(result)
+    return result
+def three_d_graph(data_1,frame,D):
     array=multiply_graph(data_1)
     x = array[:, 0]  # Координаты X
     y = array[:, 1]  # Координаты Y
@@ -871,10 +883,9 @@ def three_d_graph(data_1,frame):
 
     # Интерполяция km по сетке
     grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
-
     # Построение графика
-    fig = plt.figure(figsize=(8, 6))
-    ax = fig.add_subplot(111, projection='3d')
+    fig = plt.figure(figsize=(8, 22))
+    ax = fig.add_subplot(311, projection='3d')
 
     # Построение поверхности
     surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='hot', linewidth=0.5, edgecolors='k') #autumn_r
@@ -883,7 +894,7 @@ def three_d_graph(data_1,frame):
     fig.patch.set_facecolor('#1A1A1A')
     ax.set_facecolor('#1A1A1A')
 
-    fig.subplots_adjust(left=0.05, bottom=0.05, right=0.95, top=0.95)
+    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.95, top=0.95)
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     ax.set_xlim(min(x)*1.1, max(x)*1.1)
@@ -898,19 +909,88 @@ def three_d_graph(data_1,frame):
     colorbar = fig.colorbar(surf, shrink=0.5, aspect=5)
     colorbar.outline.set_edgecolor('white')  # Устанавливаем цвет рамки
     colorbar.ax.tick_params(color='white', labelcolor='white')  # Устанавливаем цвет меток и текста
-    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+
+    array_radius_0=points_near_line(array, [-D/2, 0], [D/2, 0], tolerance=0.1)
+    array_radius = array_radius_0[np.argsort(array_radius_0[:, 0])]
+    print(array_radius)
+    x_1 = array_radius[:, 0]  # Координаты X
+    z_1 = array_radius[:, 2]  # km в точках
+    ax_1 = fig.add_subplot(312)
+    ax_1.plot(x_1, z_1,color='white')
+    ax_1.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
+    ax_1.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
+    ax_1.set_xlabel('Radius', color='white')
+    ax_1.set_ylabel('k_m', color='white')
+    ax_1.set_facecolor('#1A1A1A')
+
+    distances = np.sqrt(array[:, 0] ** 2 + array[:, 1] ** 2)
+    max_index = np.argmax(distances)
+    R=distances[max_index]
+    array_angle_0=points_near_arc(array, R, tolerance=0.5)
+    array_angle = array_angle_0[np.argsort(array_angle_0[:, 0])]
+    angles = np.degrees(np.arctan2(array_angle[:, 1], array_angle[:, 0]))
+    points_with_angles = np.column_stack((array_angle, angles))
+    x_2 = points_with_angles[:, 3]  # Координаты X
+    y_2 = points_with_angles[:, 2]  # km в точках
+    ax_2 = fig.add_subplot(313)
+    ax_2.plot(x_2, y_2,color='white')
+    ax_2.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
+    ax_2.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
+    ax_2.set_xlabel('Угол', color='white')
+    ax_2.set_ylabel('k_m', color='white')
+    ax_2.set_ylim(0,max(y_2)*1.1)
+    ax_2.set_facecolor('#1A1A1A')
+
+
+    # Отображение графиков в Tkinter
+    canvas = FigureCanvasTkAgg(fig, master=frame)
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=2, y=35)
 
-def multiply_graph(data_1):
-    result = []
-    data = np.array(data_1)
-    for point in data:
-        x, y, z = point
-        result.append((x, y, z))
-        result.append((-x, y, z))
-        result.append((x, -y, z))
-        result.append((-x, -y, z))
-    result = list(set(result))
-    result = np.array(result)
-    return result
+def points_near_line(points, P1, P2, tolerance=0.1):
+    x1, y1 = P1
+    x2, y2 = P2
+
+    # Извлечение координат x, y, z из точек
+    x0 = points[:, 0]  # x координаты
+    y0 = points[:, 1]  # y координаты
+    z0 = points[:, 2]  # z координаты (будем их сохранять в выводе)
+
+    # Формула для расстояния до прямой, только по x и y
+    numerator = np.abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
+    denominator = np.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
+
+    distances = numerator / denominator
+
+    # Фильтрация точек, которые находятся ближе к прямой чем tolerance
+    close_points_mask = distances <= tolerance
+    close_points = points[close_points_mask]
+
+    return close_points
+
+
+def points_near_arc(points, R, tolerance=0.1):
+
+    # Извлечение координат x, y
+    x = points[:, 0]
+    y = points[:, 1]
+
+    # Рассчитываем углы для каждой точки в градусах
+    angles = np.degrees(np.arctan2(y, x))
+
+    # Рассчитываем расстояния каждой точки от центра
+    distances = np.sqrt(x ** 2 + y ** 2)
+
+    # Определяем маску для точек, которые находятся в пределах углов 0° и 90°
+    angle_mask = (angles >= 0) & (angles <= 180)
+
+    # Определяем маску для точек, которые близки к радиусу дуги с заданной точностью
+    distance_mask = np.abs(distances - R) <= tolerance
+
+    # Применяем обе маски к массиву точек
+    arc_points_mask = angle_mask & distance_mask
+
+    # Возвращаем точки, которые удовлетворяют обоим условиям
+    close_points = points[arc_points_mask]
+
+    return close_points
