@@ -11,15 +11,20 @@ import math
 import os
 from scipy.interpolate import griddata
 from ctypes import windll
+from matplotlib.font_manager import FontProperties
+from matplotlib import font_manager
 
 
-formatter = FuncFormatter(lambda x, _: f"{x:.0f}")
-FR_PRIVATE = 0x10
-FR_NOT_ENUM = 0x20
+font_path = 'data/ofont.ru_Futura PT.ttf'
+font_props = font_manager.FontProperties(fname=font_path)
 if os.name == 'nt':
-    windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", FR_PRIVATE, 0) # Загрузка пользовательского шрифта
+    windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", 0x10, 0)
 else:
     pass
+font1 = ("Futura PT Book", 16)
+custom_font = FontProperties(fname='data/ofont.ru_Futura PT.ttf', size=16)
+formatter = FuncFormatter(lambda x, _: f"{x:.2f}")
+
 def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
 
     number_0=number
@@ -872,6 +877,39 @@ def multiply_graph(data_1):
     result = list(set(result))
     result = np.array(result)
     return result
+def points_near_line(points, P1, P2, tolerance=0.1):
+    x1, y1 = P1
+    x2, y2 = P2
+    # Извлечение координат x, y, z из точек
+    x0 = points[:, 0]  # x координаты
+    y0 = points[:, 1]  # y координаты
+    z0 = points[:, 2]  # z координаты (будем их сохранять в выводе)
+    # Формула для расстояния до прямой, только по x и y
+    numerator = np.abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
+    denominator = np.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
+    distances = numerator / denominator
+    # Фильтрация точек, которые находятся ближе к прямой чем tolerance
+    close_points_mask = distances <= tolerance
+    close_points = points[close_points_mask]
+    return close_points
+def points_near_arc(points, R, tolerance=0.1):
+
+    # Извлечение координат x, y
+    x = points[:, 0]
+    y = points[:, 1]
+    # Рассчитываем углы для каждой точки в градусах
+    angles = np.degrees(np.arctan2(y, x))
+    # Рассчитываем расстояния каждой точки от центра
+    distances = np.sqrt(x ** 2 + y ** 2)
+    # Определяем маску для точек, которые находятся в пределах углов 0° и 90°
+    angle_mask = (angles >= 0) & (angles <= 180)
+    # Определяем маску для точек, которые близки к радиусу дуги с заданной точностью
+    distance_mask = np.abs(distances - R) <= tolerance
+    # Применяем обе маски к массиву точек
+    arc_points_mask = angle_mask & distance_mask
+    # Возвращаем точки, которые удовлетворяют обоим условиям
+    close_points = points[arc_points_mask]
+    return close_points
 def three_d_graph(data_1,frame,D):
     array=multiply_graph(data_1)
     x = array[:, 0]  # Координаты X
@@ -884,44 +922,72 @@ def three_d_graph(data_1,frame,D):
     # Интерполяция km по сетке
     grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
     # Построение графика
-    fig = plt.figure(figsize=(8, 22))
+    fig = plt.figure(figsize=(8, 20))
     ax = fig.add_subplot(311, projection='3d')
 
     # Построение поверхности
     surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='hot', linewidth=0.5, edgecolors='k') #autumn_r
-
+    ax.set_title("Распределение km по смесительной головке", fontproperties=custom_font)
     ax.title.set_color('white')
-    fig.patch.set_facecolor('#1A1A1A')
-    ax.set_facecolor('#1A1A1A')
+    fig.patch.set_facecolor('#171717')
+    ax.set_facecolor('#171717')
 
-    fig.subplots_adjust(left=0.1, bottom=0.05, right=0.95, top=0.95)
+    fig.subplots_adjust(left=0.1, bottom=0.03, right=0.98, top=0.98)
     ax.xaxis.set_major_formatter(formatter)
     ax.yaxis.set_major_formatter(formatter)
     ax.set_xlim(min(x)*1.1, max(x)*1.1)
     ax.set_ylim(min(y) * 1.1, max(y) * 1.1)
     ax.set_zlim(0, max(z) * 1.1)
-    ax.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
-    ax.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
-    ax.tick_params(axis='z', colors='white', labelsize=11, labelcolor='white')
-    ax.set_xlabel('x', color='white')  # Устанавливаем цвет текста меток осей
-    ax.set_ylabel('y', color='white')
+    ax.grid(True, color='white', linestyle='--', linewidth=1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.set_xlabel('x, мм', color='white')  # Устанавливаем цвет текста меток осей
+    ax.set_ylabel('y, мм', color='white')
     ax.set_zlabel('k_m', color='white')
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.zaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax.set_xticklabels([f"{x:.0f}" for x in ax.get_xticks()], fontproperties=font_props)
+    ax.set_yticklabels([f"{x:.0f}" for x in ax.get_yticks()], fontproperties=font_props)
+    ax.set_zticklabels([f"{x:.0f}" for x in ax.get_zticks()], fontproperties=font_props)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='z', colors='white', labelsize=14)  # Используйте свой размер шрифта
+
     colorbar = fig.colorbar(surf, shrink=0.5, aspect=5)
     colorbar.outline.set_edgecolor('white')  # Устанавливаем цвет рамки
     colorbar.ax.tick_params(color='white', labelcolor='white')  # Устанавливаем цвет меток и текста
 
     array_radius_0=points_near_line(array, [-D/2, 0], [D/2, 0], tolerance=0.1)
     array_radius = array_radius_0[np.argsort(array_radius_0[:, 0])]
-    print(array_radius)
     x_1 = array_radius[:, 0]  # Координаты X
     z_1 = array_radius[:, 2]  # km в точках
+
     ax_1 = fig.add_subplot(312)
-    ax_1.plot(x_1, z_1,color='white')
-    ax_1.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
-    ax_1.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
-    ax_1.set_xlabel('Radius', color='white')
+    ax_1.plot(x_1, z_1,color='#D44B46')
+    ax_1.tick_params(axis='x', colors='white', labelsize=14, labelcolor='white')  # Добавляем labelcolor='white'
+    ax_1.tick_params(axis='y', colors='white', labelsize=14, labelcolor='white')
+    ax_1.set_xlabel('X, мм', color='white')
     ax_1.set_ylabel('k_m', color='white')
-    ax_1.set_facecolor('#1A1A1A')
+    # Установите форматирование для осей X и Y
+    ax_1.xaxis.set_major_formatter(formatter)
+    ax_1.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_1.set_xticklabels([f"{x:.0f}" for x in ax_1.get_xticks()], fontproperties=font_props)
+    ax_1.set_yticklabels([f"{x:.2f}" for x in ax_1.get_yticks()], fontproperties=font_props)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_1.tick_params(axis='x', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.tick_params(axis='y', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.set_facecolor('#171717')
+    ax_1.grid(True, color='white', linestyle='--', linewidth=1)
+    ax_1.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_1.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax_1.set_title("Распределение km по радиусу", fontproperties=custom_font, color='white')
 
     distances = np.sqrt(array[:, 0] ** 2 + array[:, 1] ** 2)
     max_index = np.argmax(distances)
@@ -933,64 +999,29 @@ def three_d_graph(data_1,frame,D):
     x_2 = points_with_angles[:, 3]  # Координаты X
     y_2 = points_with_angles[:, 2]  # km в точках
     ax_2 = fig.add_subplot(313)
-    ax_2.plot(x_2, y_2,color='white')
+    ax_2.plot(x_2, y_2,color='#D44B46')
     ax_2.tick_params(axis='x', colors='white', labelsize=11, labelcolor='white')  # Добавляем labelcolor='white'
     ax_2.tick_params(axis='y', colors='white', labelsize=11, labelcolor='white')
-    ax_2.set_xlabel('Угол', color='white')
+    ax_2.set_xlabel('Угол,°', color='white')
     ax_2.set_ylabel('k_m', color='white')
-    ax_2.set_ylim(0,max(y_2)*1.1)
-    ax_2.set_facecolor('#1A1A1A')
+    ax_2.grid(True, color='white', linestyle='--', linewidth=1)
+    ax_2.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_2.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    # Установите форматирование для осей X и Y
+    ax_2.xaxis.set_major_formatter(formatter)
+    ax_2.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_2.set_xticklabels([f"{x:.0f}" for x in ax_2.get_xticks()], fontproperties=font_props)
+    ax_2.set_yticklabels([f"{x:.3f}" for x in ax_2.get_yticks()], fontproperties=font_props)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_2.tick_params(axis='x', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.tick_params(axis='y', colors='white', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.set_facecolor('#171717')
+    ax_2.set_title("Распределение km по углу", fontproperties=custom_font, color='white')
 
 
     # Отображение графиков в Tkinter
     canvas = FigureCanvasTkAgg(fig, master=frame)
     canvas_widget = canvas.get_tk_widget()
-    canvas_widget.place(x=2, y=35)
+    canvas_widget.place(x=2, y=2)
 
-def points_near_line(points, P1, P2, tolerance=0.1):
-    x1, y1 = P1
-    x2, y2 = P2
-
-    # Извлечение координат x, y, z из точек
-    x0 = points[:, 0]  # x координаты
-    y0 = points[:, 1]  # y координаты
-    z0 = points[:, 2]  # z координаты (будем их сохранять в выводе)
-
-    # Формула для расстояния до прямой, только по x и y
-    numerator = np.abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1)
-    denominator = np.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2)
-
-    distances = numerator / denominator
-
-    # Фильтрация точек, которые находятся ближе к прямой чем tolerance
-    close_points_mask = distances <= tolerance
-    close_points = points[close_points_mask]
-
-    return close_points
-
-
-def points_near_arc(points, R, tolerance=0.1):
-
-    # Извлечение координат x, y
-    x = points[:, 0]
-    y = points[:, 1]
-
-    # Рассчитываем углы для каждой точки в градусах
-    angles = np.degrees(np.arctan2(y, x))
-
-    # Рассчитываем расстояния каждой точки от центра
-    distances = np.sqrt(x ** 2 + y ** 2)
-
-    # Определяем маску для точек, которые находятся в пределах углов 0° и 90°
-    angle_mask = (angles >= 0) & (angles <= 180)
-
-    # Определяем маску для точек, которые близки к радиусу дуги с заданной точностью
-    distance_mask = np.abs(distances - R) <= tolerance
-
-    # Применяем обе маски к массиву точек
-    arc_points_mask = angle_mask & distance_mask
-
-    # Возвращаем точки, которые удовлетворяют обоим условиям
-    close_points = points[arc_points_mask]
-
-    return close_points

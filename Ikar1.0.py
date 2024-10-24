@@ -914,13 +914,12 @@ class Window_6(ctk.CTk):
 
         self.scrollrfame()
         self.print_images()
-        self.print_label()
         self.print_button()
 
     def scrollrfame(self):
-        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=700, height=400, fg_color='#171717')  # 171717
-        self.scrollbar_frame.place(x=5, y=30)
-        self.frame_0 = ctk.CTkFrame(master=self.scrollbar_frame, width=700, height=2000, fg_color="#171717",
+        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=550, height=400+25, fg_color='#171717')  # 171717
+        self.scrollbar_frame.place(x=5, y=5)
+        self.frame_0 = ctk.CTkFrame(master=self.scrollbar_frame, width=550, height=1400, fg_color="#171717",
                                    bg_color="transparent")
         self.frame_0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_images(self):
@@ -945,8 +944,7 @@ class Window_6(ctk.CTk):
                 # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k), self.font1,60, 540, 411 * self.k + 80)
             self.k+=1
         three_d_graph(self.km_graph, self.frame_0,user.D_k)
-    def print_label(self):
-        self.label1 = create_label(self, "Распределение km по смесительной головке:", 40, 4)
+
     def print_button(self):
         self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 615, 450)
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
