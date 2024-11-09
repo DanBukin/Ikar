@@ -1,6 +1,7 @@
 from Ikar_functions import *
 from Ikar_Kompas_3D import *
 from ikar_graphs import *
+from ikar_cantera import *
 from Searching_for_component_costs import *
 import customtkinter as ctk
 import os
@@ -15,6 +16,12 @@ if os.name == 'nt':
     windll.gdi32.AddFontResourceExW("data/ofont.ru_Futura PT.ttf", FR_PRIVATE, 0) # Загрузка пользовательского шрифта
 else:
     pass
+with open('data/oxigen_data.json', 'r', encoding='utf-8') as file:
+    substances_data = json.load(file)
+with open('data/fuel_data.json', 'r', encoding='utf-8') as file:
+    substances_data_1 = json.load(file)
+with open('data/alpha_data.json', 'r', encoding='utf-8') as file:
+    substances_data_2 = json.load(file)
 
 class user:
     def __init__(self):
@@ -37,6 +44,15 @@ class user:
         self.coord_y_g_y = None
         self.coord_y_ok_x = None
         self.coord_y_ok_y = None
+        self.number = None
+        self.x_1 = None
+        self.x_2 = None
+        self.x_3 = None
+        self.x_4 = None
+        self.x_5 = None
+        self.x_6 = None
+        self.x_7 = None
+        self.x_8 = None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -730,6 +746,7 @@ class Window_4(ctk.CTk):
             )
         self.number = function_2(self.current_choice)
         print(f'Выбрана система: {self.number}')
+        user.number=self.number
         self.a = float(self.entry1_value.get())
         self.b=float(self.entry2_value.get())
         if self.Entry5:
@@ -747,6 +764,14 @@ class Window_4(ctk.CTk):
             if self.choice == 5 or self.choice == 7 or self.choice == 9:
                 self.g=float(self.entry4_value.get())
         self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8 = find_costs(self.number, self.a, self.b,self.c, self.d, self.f/100, self.g)
+        user.x_1 =self.x_1
+        user.x_2 =self.x_2
+        user.x_3 =self.x_3
+        user.x_4 =self.x_4
+        user.x_5 =self.x_5
+        user.x_6 =self.x_6
+        user.x_7 =self.x_7
+        user.x_8 =self.x_8
         self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'm_сумм={self.a:.3f} кг/с\nk_m={self.b:.3f}\nk_m_вгг={self.c:.3f}\nk_m_огг={self.d:.3f}\nn={self.f:.3f}\nk_m_пр ={self.g:.3f}', font=self.font1, justify='left')
         self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
         self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_2,
@@ -760,6 +785,15 @@ class Window_4(ctk.CTk):
         self.scrollbar_frame_2.place(x=625, y=220)
     def back_window(self):
         self.destroy()
+        user.number = None
+        user.x_1 = None
+        user.x_2 = None
+        user.x_3 = None
+        user.x_4 = None
+        user.x_5 = None
+        user.x_6 = None
+        user.x_7 = None
+        user.x_8 = None
         window_3 = Window_3(user.choice, user.D_k, user.H, user.number_pr, user.delta_wall, user.delta, user.delta_y_pr,user.second_layer)
         window_3.mainloop()
     def close_window(self):
@@ -887,7 +921,7 @@ class Window_5(ctk.CTk):
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
     def back_window(self):
         self.destroy()
-        window_4 = Window_4()
+        window_4 = Window_4(user.choice)
         window_4.mainloop()
 
     def close_window(self):
@@ -917,62 +951,188 @@ class Window_6(ctk.CTk):
         self.print_button()
 
     def scrollrfame(self):
-        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=550, height=400+25, fg_color='#171717')  # 171717
+        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=550, height=425, fg_color='#171717')  # 171717
         self.scrollbar_frame.place(x=5, y=5)
         self.frame_0 = ctk.CTkFrame(master=self.scrollbar_frame, width=550, height=1400, fg_color="#171717",
                                    bg_color="transparent")
         self.frame_0.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=200, height=370, fg_color='black')  # 171717
+        self.scrollbar_frame_1.place(x=590, y=5)
+
     def print_images(self):
         self.k=0
         self.km_graph=[]
         self.txt_programm=''
         for i, (x, y) in enumerate(self.centers_square):
-            # draw_circle_with_points(x, y, self.coord_graph, user.H, user.D_k,self.frame0,self.k)
             if self.angles_square[i] != 361:
                 self.m_gor_pl,self.m_ok_pl,self.n_gor,self.n_ok,self.text_programm_pl=method_by_ievlev_pr(np.deg2rad(self.angles_square[i]),x, y,self.coord_gor,self.coord_ok,user.H)
                 self.km_graph.append([float(x), float(y),self.m_ok_pl/self.m_gor_pl])
                 self.txt_programm+=(f"====================Площадка №{self.k+1}====================\n")
                 self.txt_programm+=(self.text_programm_pl+"\n")
-                # self.txt_button = create_button(self.frame0, "txt", lambda text_programm_pl=self.text_programm_pl: save_txt_fors(text_programm_pl), self.font1,60, 540, 411 * self.k + 45)
-                # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k),self.font1, 60, 540, 411 * self.k + 80)
+
             else:
                 self.m_gor_y,self.m_ok_y,self.n_gor,self.n_ok,self.text_programm_y=method_by_ievlev_core(x, y,self.coord_gor,self.coord_ok,user.H)
                 self.km_graph.append([float(x), float(y), self.m_ok_y / self.m_gor_y])
                 self.txt_programm += (f"====================Площадка №{self.k + 1}====================\n")
                 self.txt_programm += (self.text_programm_y + "\n")
-                # self.txt_button = create_button(self.frame0, "txt", lambda text_programm_y=self.text_programm_y: save_txt_fors(text_programm_y), self.font1, 60, 540,411 * self.k + 45)
-                # self.excel_button = create_button(self.frame0, "ч/б", lambda x=self.centers_square[i][0],y=self.centers_square[i][1]: save_png_fors(x, y, self.coord_graph, user.H, user.D_k), self.font1,60, 540, 411 * self.k + 80)
             self.k+=1
         three_d_graph(self.km_graph, self.frame_0,user.D_k)
+        self.k = 1
+        self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'X пл.', font=self.font1, justify='left')
+        self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+        self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'Y пл.', font=self.font1, justify='left')
+        self.label2.grid(row=0, column=1, sticky='w', padx=0, pady=0)
+        self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'km пл.', font=self.font1, justify='left')
+        self.label3.grid(row=0, column=2, sticky='w', padx=0, pady=0)
+        for i in range(len(self.km_graph)):
+            self.x, self.y, self.z = self.km_graph[i]
+            self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1,text=f'{self.x:.2f}',font=self.font1, justify='left')
+            self.label1.grid(row=self.k, column=0, sticky='w', padx=10, pady=0)
+            self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'{self.y:.2f}', font=self.font1, justify='left')
+            self.label2.grid(row=self.k, column=1, sticky='w', padx=10, pady=0)
+            self.label3 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'{self.z:.2f}', font=self.font1, justify='left')
+            self.label3.grid(row=self.k, column=2, sticky='w', padx=10, pady=0)
+            self.k+=1
 
     def print_button(self):
-        self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 615, 450)
+        self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 650, 450)
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
-        self.png_button=create_button(self, "Сохранить изображения в ч/б", lambda: print(1), self.font1, 100, 10, 450)
-        self.programm_button=create_button(self, "Сохранить всё в txt", lambda: save_txt_fors(self.txt_programm), self.font1, 100, 240, 450)
+        self.txt_button = create_button(self, "txt", lambda: save_txt_3(self.km_graph), self.font1, 100, 590, 400)
+        self.excel_button = create_button(self, "excel", lambda: save_to_excel(self.km_graph), self.font1, 100, 700, 400)
+        self.param_button = create_button(self, "Сохранить расчёт в txt", lambda: save_txt_fors(self.txt_programm), self.font1, 150, 15, 450)
 
     def back_window(self):
         self.destroy()
-        window_5 = Window_5()
+        window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y,user.choice,user.x_1, user.x_2, user.x_3, user.x_4, user.x_5, user.x_6, user.x_7, user.x_8,user.coord_pr_g_x,user.coord_pr_g_y,user.coord_y_g_x,user.coord_y_g_y,user.coord_y_ok_x,user.coord_y_ok_y)
         window_5.mainloop()
 
     def close_window(self):
         self.destroy()
-        window_7 = Window_6(self.n_pl, self.centers_square, self.coord_graph, self.angles_square, self.coord_gor,
-                            self.coord_ok)
+        window_7 = Window_7(self.km_graph)
         window_7.mainloop()
 class Window_7(ctk.CTk):
-    def __init__(self):
+    def __init__(self,km_graph):
         super().__init__()
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
-        self.title("Метод Иевлева")  # Название программы
+        self.title("Расчет распределения температуры")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.iconbitmap('data/sunset.ico')
+        self.km_graph=km_graph
+        self.label_oxigen=None
+        self.label_fuel=None
 
+        self.scrollrfame()
+        self.print_label()
+        self.setup_combobox()
+        self.print_button()
+        self.print_entry()
+    def scrollrfame(self):
+        self.frame_0 = ctk.CTkFrame(master=self, width=200, height=470, fg_color="#2B2B2B",bg_color="transparent")
+        self.frame_0.place(x=10,y=10)
+
+        self.frame_1 = ctk.CTkFrame(master=self, width=180, height=110, fg_color="#3D3D3D",bg_color="#2B2B2B")
+        self.frame_1.place(x=20,y=60)
+        self.frame_2 = ctk.CTkFrame(master=self, width=180, height=110, fg_color="#3D3D3D", bg_color="#2B2B2B")
+        self.frame_2.place(x=20, y=180)
+        self.frame_3 = ctk.CTkFrame(master=self, width=180, height=70, fg_color="#3D3D3D", bg_color="#2B2B2B")
+        self.frame_3.place(x=20, y=300)
+        self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=600, height=390, fg_color='#171717')  # 171717
+        self.scrollbar_frame.place(x=220, y=43)
+        self.frame_4 = ctk.CTkFrame(master=self.scrollbar_frame, width=600, height=1400, fg_color="#171717",bg_color="transparent")
+        self.frame_4.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    def print_label(self):
+        self.label= create_label(self.frame_0, "Пожалуйста,\nвыберите компоненты:", 20, 2)
+        self.label_0=create_label(self.frame_1,"Окислитель:",7,2)
+        self.label_0_1 = create_label(self.frame_1, "Энтальпия ок:", 7, 55)
+        self.label_1 = create_label(self.frame_2, "Горючее:", 7, 2)
+        self.label_1_1 = create_label(self.frame_2, "Энтальпия гор:", 7, 55)
+        self.label_2 = create_label(self.frame_3, "Давление в КС (МПа):", 7, 2)
+    def setup_combobox(self):
+        """=====Создание ячеек с компонентами====="""
+        self.combobox1 = ctk.CTkComboBox(self.frame_1,values=["", "Кислород", "Озон", "АК", "АК-27", "АТ", "Перекись водорода", "Воздух"],command=self.combobox_callback1, font=self.font2, width=170)
+        self.combobox2 = ctk.CTkComboBox(self.frame_2,values=["", "Водород", "НДМГ", "Метан", "Аммиак", "Керосин РГ-1", "Керосин Т-1","Керосин RP-1", "Синтин", "Боктан", "Этанол", "ММГ", "Гидразин", "Анилин","Триэтиламин", "Ксилидин", ], command=self.combobox_callback2, font=self.font2,width=170)
+        self.combobox1.place(x=5, y=30)
+        self.combobox2.place(x=5, y=30)
+    def combobox_callback1(self,value):
+        """=====Функиця, связанная с сохранением выбранного окислителя====="""
+        self.oxigen = value
+        self.periodic_check()
+    def combobox_callback2(self,value):
+        """=====Функиця, связанная с сохранением выбранного горючего====="""
+        self.fuel = value
+        self.periodic_check()
+    def periodic_check(self):
+        """=====Появляние и исчезновение объектов в заисимости от выбора пользователя====="""
+        self.selected_substance_oxigen = self.combobox1.get()  # Получаем выбранный окислитель
+        self.selected_substance_fuel = self.combobox2.get()  # Получаем выбранное горючее
+
+        # Получаем данные для выбранного окислителя
+        oxigen_data = substances_data.get(self.selected_substance_oxigen, {})
+        self.formula_ox = oxigen_data.get('formula', None)
+        self.H_ok = oxigen_data.get('H', None)
+        self.enthalpy_value_oxigen = f"{self.H_ok} кДж/кг" if self.H_ok is not None else ""
+
+        # Аналогично для горючего
+        fuel_data = substances_data_1.get(self.selected_substance_fuel, {})
+        self.formula_gor = fuel_data.get('formula', None)
+        self.H_gor = fuel_data.get('H', None)
+        self.enthalpy_value_fuel = f"{self.H_gor} кДж/кг" if self.H_gor is not None else ""
+
+
+        # Обновляем или создаем лейблы для оксидов и горючих веществ
+        if self.label_oxigen:
+            self.label_oxigen.configure(text=self.enthalpy_value_oxigen)
+        else:
+            self.label_oxigen = create_label(self.frame_1, self.enthalpy_value_oxigen, 20, 80)
+
+        if self.label_fuel:
+            self.label_fuel.configure(text=self.enthalpy_value_fuel)
+        else:
+            self.label_fuel = create_label(self.frame_2, self.enthalpy_value_fuel, 20, 80)
+    def print_entry(self):
+        self.entry1_value = ctk.StringVar()
+        self.Entry1 = create_entry(self.frame_3, 120, self.entry1_value, 5, 30)
+    def print_button(self):
+        self.enter_button=create_button(self.frame_0,'Расчёт',lambda: self.create_graph(),self.font1, 80, 10, 370)
+        self.button_1 = create_button(self, 'Свойства окислителя', lambda: print(1), self.font1, 200, 10+210, 10)
+        self.button_2 = create_button(self, 'Свойства горючего', lambda: print(1), self.font1, 200, 215+210, 10)
+        self.button_3 = create_button(self, 'Свойства топливной пары', lambda: print(1), self.font1, 210, 420+210, 10)
+        self.button_4 = create_button(self, 'Назад', lambda: print(1), self.font1, 100, 10 + 210, 450)
+        self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №5)', lambda: print(1), self.font1, 400, 215 + 110, 450)
+        self.button_6 = create_button(self, 'Далее', lambda: print(1), self.font1, 110, 420 + 310, 450)
+    def create_graph(self):
+        self.p_k = float(self.entry1_value.get())
+        self.km0 = float(substances_data_2.get(self.fuel, {}).get(self.oxigen, None))
+        print(self.p_k)
+        print(self.formula_ox)
+        print(self.H_ok)
+        print(self.formula_gor)
+        print(self.H_gor)
+        print(self.km0)
+
+        self.X_pl = []
+        self.Y_pl = []
+        self.Z_pl = []
+        for row in self.km_graph:
+            self.X_pl.append(row[0])
+        for row in self.km_graph:
+            self.Y_pl.append(row[1])
+        for row in self.km_graph:
+            self.Z_pl.append(row[2])
+        print(self.Z_pl)
+
+        self.T_pl=[]
+        for k_m in self.Z_pl:
+            self.alpha=k_m/self.km0
+            self.T_pl.append(find_temperature(self.p_k,self.alpha,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0))
+        self.T_graph=[]
+        for i in range(len(self.T_pl)):
+            self.T_graph.append([float(self.X_pl[i]), float(self.Y_pl[i]), float(self.T_pl[i])])
+        three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()

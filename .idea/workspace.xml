@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="fixed bugs">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add 3d graphs, graph near line and graphs near arc.">
+      <change afterPath="$PROJECT_DIR$/ikar_cantera.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ikar1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar1.0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ikar_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729543700697</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add 3d graphs, graph near line and graphs near arc.">
+      <option name="closed" value="true" />
+      <created>1729750175718</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1729750175718</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -291,6 +302,7 @@
     <MESSAGE value="add Method by Ievlev." />
     <MESSAGE value="add ikar_graphs, the final completion of the Ievlev method" />
     <MESSAGE value="fixed bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
+    <MESSAGE value="add 3d graphs, graph near line and graphs near arc." />
+    <option name="LAST_COMMIT_MESSAGE" value="add 3d graphs, graph near line and graphs near arc." />
   </component>
 </project>
