@@ -146,6 +146,83 @@ def show_frame_5(app):
         app.image_label_5.configure(text="")
         app.image_label_5.place_forget()
         app.image_label_5 = None
+
+def show_oxigen_properties(app):
+    """=====Создание изображения с параметрами окислителей====="""
+    # Если изображение еще не было загружено, загружаем его
+    if app.global_image is None:
+        original_image = Image.open("data/oxigen.png")  # Путь к изображению
+        resized_image = original_image.resize((round(1205 * 0.8), round(763 * 0.8)), Image.Resampling.LANCZOS)
+        app.global_image = ImageTk.PhotoImage(resized_image)
+
+    # Если метка изображения еще не была создана, создаем ее
+    if app.image_label is None:
+        app.image_label = ctk.CTkLabel(app, image=app.global_image)
+        app.image_label.place(x=216, y=41)
+        app.image_label.configure(text="")
+    else:
+        app.image_label.configure(image=app.global_image)
+        app.image_label.place(x=216, y=41)
+        app.image_label.configure(text="")
+    if app.image_label_1 is not None:
+        app.image_label_1.place_forget()
+    if app.image_label_2 is not None:
+        app.image_label_2.place_forget()
+
+def show_fuel_properties(app):
+    """=====Создание изображения с параметрами горючих====="""
+    if app.global_image_1 is None:
+        # Сначала изменяем размер изображения с помощью Pillow
+        original_image_1 = Image.open("data/fuel.png")  # Замените на путь к вашему изображению
+        resized_image_1 = original_image_1.resize((round(1205 * 0.8), round(763 * 0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
+        app.global_image_1 = ImageTk.PhotoImage(resized_image_1)
+
+    # Если метка изображения еще не была создана, создаем ее
+    if app.image_label_1 is None:
+        app.image_label_1 = ctk.CTkLabel(app, image=app.global_image_1)
+        app.image_label_1.place(x=216, y=41)  # Размещаем метку в координатах x=220, y=150
+        app.image_label_1.configure(text="")
+    else:
+        # Просто обновляем изображение метки
+        app.image_label_1.configure(image=app.global_image_1)
+        app.image_label_1.place(x=216, y=41)
+        app.image_label_1.configure(text="")
+    if app.image_label is not None:
+        app.image_label.place_forget()  # Скрываем метку изображения
+    if app.image_label_2 is not None:
+        app.image_label_2.place_forget()
+
+def show_alpha_properties(app):
+    """=====Создание изображения с параметрами смешения компонентов====="""
+    if app.global_image_2 is None:
+        # Сначала изменяем размер изображения с помощью Pillow
+        original_image_2 = Image.open("data/alpha_105.png")  # Замените на путь к вашему изображению
+        resized_image_2 = original_image_2.resize((round(1205 * 0.8), round(763 * 0.8)),Image.Resampling.LANCZOS)  # Изменяем размер
+        app.global_image_2 = ImageTk.PhotoImage(resized_image_2)
+
+    # Если метка изображения еще не была создана, создаем ее
+    if app.image_label_2 is None:
+        app.image_label_2 = ctk.CTkLabel(app, image=app.global_image_2)
+        app.image_label_2.place(x=216, y=41)  # Размещаем метку в координатах x=220, y=150
+        app.image_label_2.configure(text="")
+    else:
+        # Просто обновляем изображение метки
+        app.image_label_2.configure(image=app.global_image_2)
+        app.image_label_2.place(x=216, y=41)
+        app.image_label_2.configure(text="")
+    if app.image_label is not None:
+        app.image_label.place_forget()  # Скрываем метку изображения
+    if app.image_label_1 is not None:
+        app.image_label_1.place_forget()  # Скрываем метку изображения
+
+def hide_images(app):
+    if app.image_label is not None:
+        app.image_label.place_forget()  # Скрываем метку изображения
+    if app.image_label_2 is not None:
+        app.image_label_2.place_forget()
+    if app.image_label_1 is not None:
+        app.image_label_1.place_forget()  # Скрываем метку изображения
+
 def function_1(array):
     choice_mapping = {
         (1, 1, 1, 1): 1,  # Есть пристенок, ядро однокомпонентное, шахматная, прист. одн.

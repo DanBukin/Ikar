@@ -902,7 +902,7 @@ def points_near_arc(points, R, tolerance=0.1):
     # Рассчитываем расстояния каждой точки от центра
     distances = np.sqrt(x ** 2 + y ** 2)
     # Определяем маску для точек, которые находятся в пределах углов 0° и 90°
-    angle_mask = (angles >= 0) & (angles <= 180)
+    angle_mask = (angles >= 0) & (angles <= 90)
     # Определяем маску для точек, которые близки к радиусу дуги с заданной точностью
     distance_mask = np.abs(distances - R) <= tolerance
     # Применяем обе маски к массиву точек

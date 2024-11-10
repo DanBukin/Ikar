@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add 3d graphs, graph near line and graphs near arc.">
-      <change afterPath="$PROJECT_DIR$/ikar_cantera.py" afterDir="false" />
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add &quot;cantera&quot;, add 3d graph (Temperature)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ikar1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar1.0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ikar_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729750175718</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add &quot;cantera&quot;, add 3d graph (Temperature)">
+      <option name="closed" value="true" />
+      <created>1731179418144</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1731179418144</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -303,6 +309,7 @@
     <MESSAGE value="add ikar_graphs, the final completion of the Ievlev method" />
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="add 3d graphs, graph near line and graphs near arc." />
-    <option name="LAST_COMMIT_MESSAGE" value="add 3d graphs, graph near line and graphs near arc." />
+    <MESSAGE value="add &quot;cantera&quot;, add 3d graph (Temperature)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add &quot;cantera&quot;, add 3d graph (Temperature)" />
   </component>
 </project>

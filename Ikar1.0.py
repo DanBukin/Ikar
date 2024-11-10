@@ -7,6 +7,7 @@ import customtkinter as ctk
 import os
 from ctypes import windll
 import warnings
+import sys
 
 warnings.filterwarnings("ignore", category=UserWarning)
 ctk.deactivate_automatic_dpi_awareness()
@@ -79,6 +80,12 @@ class Window_1(ctk.CTk):
         self.print_radio_button()
         self.print_button()
         self.choice_1()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
     def print_label(self):
         """Визуализация текста в окне"""
         self.label1 = create_label(self, "Добро пожаловавть в программу 'Икар' !", 50, 2)
@@ -183,6 +190,12 @@ class Window_2(ctk.CTk):
         self.print_slider()
         if self.choice<10:
             self.print_radio_button()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=320,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_0.place(x=10, y=100)
@@ -440,7 +453,12 @@ class Window_3(ctk.CTk):
         self.coord_y_g_x,self.coord_y_g_y,self.coord_y_ok_x,self.coord_y_ok_y=find_coord_core(self.choice,self.D_k,self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer)
 
         self.print_label_core()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
 
     def print_label_core(self):
         self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=200, height=320, fg_color='black')  # 171717
@@ -591,6 +609,12 @@ class Window_4(ctk.CTk):
         self.print_button()
         self.place_scrollbar()
         show_frame_4(self)
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
 
     def print_label(self):
         self.label_1 = create_label(self, "Введите суммарный расход:                     кг/с", 10, 10)
@@ -840,6 +864,12 @@ class Window_5(ctk.CTk):
         self.print_costs()
         self.input_n()
         self.print_button()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=180, height=200,fg_color='black')  # 171717
         self.scrollbar_frame_1.place(x=430, y=10)
@@ -949,6 +979,12 @@ class Window_6(ctk.CTk):
         self.scrollrfame()
         self.print_images()
         self.print_button()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
 
     def scrollrfame(self):
         self.scrollbar_frame = ctk.CTkScrollableFrame(self, width=550, height=425, fg_color='#171717')  # 171717
@@ -1022,6 +1058,17 @@ class Window_7(ctk.CTk):
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.iconbitmap('data/sunset.ico')
         self.km_graph=km_graph
+
+        self.global_image = None
+        self.image_label = None
+        self.global_image_1 = None
+        self.image_label_1 = None
+        self.global_image_2 = None
+        self.image_label_2 = None
+        self.label_oxigen = None
+        self.label_fuel = None
+        self.oxigen = None
+        self.fuel = None
         self.label_oxigen=None
         self.label_fuel=None
 
@@ -1030,6 +1077,13 @@ class Window_7(ctk.CTk):
         self.setup_combobox()
         self.print_button()
         self.print_entry()
+        show_fuel_properties(self)
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
     def scrollrfame(self):
         self.frame_0 = ctk.CTkFrame(master=self, width=200, height=470, fg_color="#2B2B2B",bg_color="transparent")
         self.frame_0.place(x=10,y=10)
@@ -1098,41 +1152,29 @@ class Window_7(ctk.CTk):
         self.Entry1 = create_entry(self.frame_3, 120, self.entry1_value, 5, 30)
     def print_button(self):
         self.enter_button=create_button(self.frame_0,'Расчёт',lambda: self.create_graph(),self.font1, 80, 10, 370)
-        self.button_1 = create_button(self, 'Свойства окислителя', lambda: print(1), self.font1, 200, 10+210, 10)
-        self.button_2 = create_button(self, 'Свойства горючего', lambda: print(1), self.font1, 200, 215+210, 10)
-        self.button_3 = create_button(self, 'Свойства топливной пары', lambda: print(1), self.font1, 210, 420+210, 10)
+        self.button_1 = create_button(self, 'Свойства окислителя', lambda: show_oxigen_properties(self), self.font1, 200, 218, 10)
+        self.button_2 = create_button(self, 'Свойства горючего', lambda: show_fuel_properties(self), self.font1, 200, 423, 10)
+        self.button_3 = create_button(self, 'Свойства топливной пары', lambda: show_alpha_properties(self), self.font1, 200, 625, 10)
         self.button_4 = create_button(self, 'Назад', lambda: print(1), self.font1, 100, 10 + 210, 450)
         self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №5)', lambda: print(1), self.font1, 400, 215 + 110, 450)
-        self.button_6 = create_button(self, 'Далее', lambda: print(1), self.font1, 110, 420 + 310, 450)
+        self.button_6 = create_button(self, 'Далее', lambda: self.close_window(), self.font1, 110, 420 + 310, 450)
     def create_graph(self):
+        hide_images(self)
         self.p_k = float(self.entry1_value.get())
         self.km0 = float(substances_data_2.get(self.fuel, {}).get(self.oxigen, None))
-        print(self.p_k)
-        print(self.formula_ox)
-        print(self.H_ok)
-        print(self.formula_gor)
-        print(self.H_gor)
-        print(self.km0)
 
-        self.X_pl = []
-        self.Y_pl = []
-        self.Z_pl = []
-        for row in self.km_graph:
-            self.X_pl.append(row[0])
-        for row in self.km_graph:
-            self.Y_pl.append(row[1])
-        for row in self.km_graph:
-            self.Z_pl.append(row[2])
-        print(self.Z_pl)
+        self.results = {}
+        self.T_graph = []
+        for x, y, value in self.km_graph:
+            self.rounded_value = round(value, 2)
+            if self.rounded_value not in self.results:
+                self.results[self.rounded_value] = find_temperature(self.p_k,self.rounded_value/self.km0,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0)
+            self.T_graph.append([x, y, self.results[self.rounded_value]])
 
-        self.T_pl=[]
-        for k_m in self.Z_pl:
-            self.alpha=k_m/self.km0
-            self.T_pl.append(find_temperature(self.p_k,self.alpha,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0))
-        self.T_graph=[]
-        for i in range(len(self.T_pl)):
-            self.T_graph.append([float(self.X_pl[i]), float(self.Y_pl[i]), float(self.T_pl[i])])
         three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
+    def close_window(self):
+        self.destroy()
+        sys.exit()
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()
