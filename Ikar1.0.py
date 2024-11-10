@@ -54,6 +54,12 @@ class user:
         self.x_6 = None
         self.x_7 = None
         self.x_8 = None
+        self.n_pl = None
+        self.centers_square = None
+        self.coord_graph = None
+        self.angles_square = None
+        self.coord_gor = None
+        self.coord_ok = None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -836,7 +842,7 @@ class Window_5(ctk.CTk):
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
 
-        self.n=1
+        self.n=3
         self.n_g_pr=n_g_pr
         self.n_o_pr=n_o_pr
         self.n_g_y=n_g_y
@@ -956,6 +962,12 @@ class Window_5(ctk.CTk):
 
     def close_window(self):
         self.destroy()
+        user.n_pl=self.n_pl
+        user.centers_square = self.centers_square
+        user.coord_graph = self.coord_graph
+        user.angles_square = self.angles_square
+        user.coord_gor = self.coord_gor
+        user.coord_ok = self.coord_ok
         window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square,self.coord_gor,self.coord_ok)
         window_6.mainloop()
 class Window_6(ctk.CTk):
@@ -1155,8 +1167,8 @@ class Window_7(ctk.CTk):
         self.button_1 = create_button(self, 'Свойства окислителя', lambda: show_oxigen_properties(self), self.font1, 200, 218, 10)
         self.button_2 = create_button(self, 'Свойства горючего', lambda: show_fuel_properties(self), self.font1, 200, 423, 10)
         self.button_3 = create_button(self, 'Свойства топливной пары', lambda: show_alpha_properties(self), self.font1, 200, 625, 10)
-        self.button_4 = create_button(self, 'Назад', lambda: print(1), self.font1, 100, 10 + 210, 450)
-        self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №5)', lambda: print(1), self.font1, 400, 215 + 110, 450)
+        self.button_4 = create_button(self, 'Назад', lambda: self.back_window(), self.font1, 100, 10 + 210, 450)
+        self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №5)', lambda: self.open_window_5(), self.font1, 400, 215 + 110, 450)
         self.button_6 = create_button(self, 'Далее', lambda: self.close_window(), self.font1, 110, 420 + 310, 450)
     def create_graph(self):
         hide_images(self)
@@ -1166,12 +1178,23 @@ class Window_7(ctk.CTk):
         self.results = {}
         self.T_graph = []
         for x, y, value in self.km_graph:
-            self.rounded_value = round(value, 2)
+            self.rounded_value = round(value, 3)
             if self.rounded_value not in self.results:
                 self.results[self.rounded_value] = find_temperature(self.p_k,self.rounded_value/self.km0,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0)
             self.T_graph.append([x, y, self.results[self.rounded_value]])
 
         three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
+    def back_window(self):
+        self.destroy()
+        window_6 = Window_6(user.n_pl, user.centers_square, user.coord_graph, user.angles_square, user.coord_gor,
+                            user.coord_ok)
+        window_6.mainloop()
+    def open_window_5(self):
+        self.destroy()
+        window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y, user.choice, user.x_1, user.x_2, user.x_3,
+                            user.x_4, user.x_5, user.x_6, user.x_7, user.x_8, user.coord_pr_g_x, user.coord_pr_g_y,
+                            user.coord_y_g_x, user.coord_y_g_y, user.coord_y_ok_x, user.coord_y_ok_y)
+        window_5.mainloop()
     def close_window(self):
         self.destroy()
         sys.exit()
