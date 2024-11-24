@@ -1138,3 +1138,95 @@ def three_d_graph_T(data_1,frame,D):
     canvas = FigureCanvasTkAgg(fig, master=frame)
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=2, y=2)
+
+def print_nozzle_1(H,d_f,l,d_c,h_og,h_sr,h_ras,frame):
+    fig = Figure(figsize=(7, 7), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('#131212')
+
+    ax.plot([-0.5*(d_f),-0.5*(d_c)],[0,0], color="#D44B46")
+    ax.plot([-0.5*(d_f),-0.5*(d_c)-1],[l,l], color="#D44B46")
+
+    ax.plot([0.5*(d_c),0.5*(d_f)],[0,0], color="#D44B46")
+    ax.plot([0.5*(d_c)+1,0.5*(d_f)],[l,l], color="#D44B46")
+
+    ax.plot([-0.5*(d_f),-0.5*(d_f)],[0,l], color="#D44B46")
+    ax.plot([-0.5*(d_c),-0.5*(d_c)],[0,l-1], color="#D44B46")
+
+    ax.plot([0.5*(d_c),0.5*(d_c)],[0,l-1], color="#D44B46")
+    ax.plot([0.5*(d_f),0.5*(d_f)],[0,l], color="#D44B46")
+
+    ax.plot([-0.5*(d_c),-0.5*(d_c)-1], [l-1, l], color="#D44B46")
+    ax.plot([0.5*(d_c), 0.5*(d_c)+1], [l-1, l], color="#D44B46")
+
+    ax.plot([-0.5*H,-d_f/2],[0,0], color="#D44B46")
+    ax.plot([-0.5*H,-d_f/2],[h_og,h_og], color="#D44B46")
+
+    ax.plot([0.5*d_f,H/2],[0,0], color="#D44B46")
+    ax.plot([0.5*d_f,H/2],[h_og,h_og], color="#D44B46")
+
+    ax.plot([-0.5*H,-d_f/2],[h_og+h_ras,h_og+h_ras], color="#D44B46")
+    ax.plot([-0.5*H,-d_f/2],[h_og+h_ras+h_sr,h_og+h_ras+h_sr], color="#D44B46")
+
+    ax.plot([0.5*d_f,H/2],[h_og+h_ras,h_og+h_ras], color="#D44B46")
+    ax.plot([0.5*d_f,H/2],[h_og+h_ras+h_sr,h_og+h_ras+h_sr], color="#D44B46")
+
+    ax.plot([-0.5 * (d_c), 0.5 * (d_c)], [l - 1, l - 1], color="#D44B46")
+    ax.plot([-0.5 * (d_c), 0.5 * (d_c)], [0, 0], color="#D44B46")
+    ax.plot([-0.5 * (d_c)-1, 0.5 * (d_c) + 1], [l, l], color="#D44B46")
+
+    ax.plot([0, 0], [-0.5, l+0.5], color="#D44B46",linestyle='-.')
+
+    square = patches.Polygon(
+        [[-0.5*(d_f),0 ], [-0.5*(d_f),l], [-0.5*(d_c)-1,l], [-0.5*(d_c),l-1], [-0.5*(d_c),0]],
+        edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square)
+    square = patches.Polygon(
+        [[0.5*d_c,0 ], [0.5*d_f,0 ], [0.5*d_f,l], [0.5*d_c+1,l], [0.5*d_c,l-1]],
+        edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square)
+
+    square = patches.Polygon(
+        [[-H/2,0 ], [-0.5*d_f, 0], [-0.5*d_f,h_og], [-H/2,h_og ]],
+        edgecolor='#9E3C39', facecolor='none', hatch="\\")
+    ax.add_patch(square)
+
+    square = patches.Polygon(
+        [[-H / 2, h_og+h_ras], [-0.5 * d_f, h_og+h_ras], [-0.5 * d_f, h_og+h_ras+h_sr], [-H / 2, h_og+h_ras+h_sr]],
+        edgecolor='#9E3C39', facecolor='none', hatch="\\")
+    ax.add_patch(square)
+
+    square = patches.Polygon(
+        [[H / 2, 0], [0.5 * d_f, 0], [0.5 * d_f, h_og], [H / 2, h_og]],
+        edgecolor='#9E3C39', facecolor='none', hatch="\\")
+    ax.add_patch(square)
+
+    square = patches.Polygon(
+        [[H / 2, h_og + h_ras], [0.5 * d_f, h_og + h_ras], [0.5 * d_f, h_og + h_ras + h_sr],
+         [H / 2, h_og + h_ras + h_sr]],
+        edgecolor='#9E3C39', facecolor='none', hatch="\\")
+    ax.add_patch(square)
+
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim(-1.1*H/2,1.1*H/2)
+    ax.set_ylim(-1, 1.1*l)
+    ax.tick_params(axis='x', colors='white', labelsize=10)
+    ax.tick_params(axis='y', colors='white', labelsize=10)
+    ax.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('white')
+    fig.patch.set_facecolor('#131212')
+    ax.set_facecolor('#131212')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.tick_params(axis='x', colors='white', labelsize=11)
+    ax.tick_params(axis='y', colors='white', labelsize=11)
+
+    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.place(x=600, y=10)
