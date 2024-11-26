@@ -1,3 +1,5 @@
+import math
+
 from Ikar_functions import *
 from Ikar_Kompas_3D import *
 from ikar_graphs import *
@@ -1219,7 +1221,6 @@ class Window_example(ctk.CTk):
         self.h_og = 2.5
         self.h_sr = 2.5
         self.h_ras = 10
-        self.m_f=1
 
         self.place_scrollbar()
         self.setup_frame()
@@ -1260,11 +1261,11 @@ class Window_example(ctk.CTk):
         self.label_7_0 = create_label(self.frame2, "2", 35, 292)
         self.label_7_1 = create_label(self.frame2, "3", 300, 292)
         self.label_8 = create_label(self.frame2, "Выберите расстояние между днищами: 10 мм", 2, 315)
-        self.label_8_0 = create_label(self.frame2, "8", 35, 342)
-        self.label_8_1 = create_label(self.frame2, "12", 300, 342)
-        self.label_9 = create_label(self.frame2, "Введите расход через форсунку (кг/с):", 2, 360)
-        self.label_10 = create_label(self.frame2, f"Площадь сопла форсунки:\n... мм^2", 2, 415)
-        self.label_11 = create_label(self.frame2, f"Число Рейнольдса:\n...", 2, 460)
+        self.label_8_0 = create_label(self.frame2, "8", 35, 338)
+        self.label_8_1 = create_label(self.frame2, "12", 300, 338)
+        self.label_9 = create_label(self.frame2, "- расход через форсунку (кг/с)", 90, 370)
+        self.label_10 = create_label(self.frame2, f"- динамическая вязкость (Па*с*1000)", 90, 405)
+        self.label_11 = create_label(self.frame2, f"- плотность компонента (кг/м^3)", 90, 440)
 
     def print_slider(self):
         self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change, number_of_steps=18,
@@ -1295,7 +1296,7 @@ class Window_example(ctk.CTk):
         self.slider6 = ctk.CTkSlider(self.frame2, from_=8, to=12, command=self.on_slider_change_5, number_of_steps=16,
                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                      progress_color=("#D44B46"))
-        self.slider6.place(x=50, y=350)
+        self.slider6.place(x=50, y=347)
         self.slider6.set(10)
     def on_slider_change(self, value):
         """Обновление текста метки в соответствии со значением ползунка"""
@@ -1306,46 +1307,56 @@ class Window_example(ctk.CTk):
             self.D_f=10
         self.label_2.configure(text=f"Диаметр форсунки равен: {self.D_f} мм")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def on_slider_change_1(self, value):
         self.l = int(value)
         self.label_3.configure(text=f"Выбери длину форсунки: {self.l} мм")
         self.label_5.configure(text=f"Относительная длина форсунки: {(self.l / self.d_c):.2f}")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def on_slider_change_2(self, value):
         self.d_c = float(value)
         self.label_4.configure(text=f"Выберите диаметр сопла форсунки: {self.d_c} мм")
         self.label_5.configure(text=f"Относительная длина форсунки: {(self.l / self.d_c):.2f}")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def on_slider_change_3(self, value):
         self.h_og = float(value)
         self.label_6.configure(text=f"Выберите толщину огневого днища: {self.h_og} мм")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def on_slider_change_4(self, value):
         self.h_sr = float(value)
         self.label_7.configure(text=f"Выберите толщину среднего днища: {self.h_sr} мм")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def on_slider_change_5(self, value):
         self.h_ras = float(value)
         self.label_8.configure(text=f"Выберите расстояние между днищами: {self.h_ras} мм")
         print_nozzle_1(self.H, self.D_f, self.l, self.d_c, self.h_og, self.h_sr, self.h_ras, self)
-        self.configure_label()
     def print_entry(self):
         self.entry1_value = ctk.StringVar()
-        self.Entry1 = create_entry(self.frame2, 70, self.entry1_value, 10, 385)
+        self.Entry1 = create_entry(self.frame2, 80, self.entry1_value, 2, 370)
+        self.entry2_value = ctk.StringVar()
+        self.Entry2 = create_entry(self.frame2, 80, self.entry2_value, 2, 405)
+        self.entry3_value = ctk.StringVar()
+        self.Entry3 = create_entry(self.frame2, 80, self.entry3_value, 2, 440)
     def print_button(self):
-        self.back_button = create_button(self.frame2, "✓", lambda: self.entry_m(), self.font1, 25, 85, 385)
+        self.button_1 = create_button(self.frame2, "Расчёт при выбранных значениях", lambda: self.entry_m(), self.font1, 25, 10, 475)
     def entry_m(self):
         self.m_f = float(self.entry1_value.get())
+        self.nu = float(self.entry2_value.get())/1000
+        self.rho = float(self.entry3_value.get())
         self.configure_label()
     def configure_label(self):
         self.F_f = (math.pi * self.d_c * self.d_c / 4)
-        self.label_10.configure(text=f'Площадь сопла форсунки:\n{self.F_f:.3f} мм^2')
-        self.Re=(4*self.m_f)/(math.pi*self.d_c*0.001)
+        self.label_12 = create_label_left(self.frame2, f'•Площадь сопла форсунки:\n{self.F_f:.2f} мм^2', 10, 505)
+        self.Re=(4*self.m_f)/(math.pi*self.d_c/1000*self.nu)
+        self.label_13 = create_label_left(self.frame2, f'•Число Рейнольдса:\n{self.Re:.1f}', 10, 550)
+        self.W=self.m_f*1000000/(self.rho*self.F_f)
+        self.label_14 = create_label_left(self.frame2, f'•Средняя скорость компонента на выходе:\n{self.W:.2f} м/с', 10, 595)
+        if self.Re<2000:
+            self.lambda_0=64/self.Re
+        elif self.Re>10000:
+            self.lambda_0=0.031
+        else:
+            self.lambda_0=0.3164*(self.Re**(-0.25))
+        self.label_15 = create_label_left(self.frame2, f'•Коэффициент линейн. гидравл. сопротивления:\n{self.lambda_0:.6f}', 10,640)
 if __name__ == "__main__":
     app = Window_example()
     app.mainloop()

@@ -43,6 +43,10 @@ def create_label(parent, text, x, y):
     label = ctk.CTkLabel(parent, text=text, font=font1)
     label.place(x=x, y=y)
     return label
+def create_label_left(parent, text, x, y):
+    label = ctk.CTkLabel(parent, text=text, font=font1, justify='left')
+    label.place(x=x, y=y)
+    return label
 def create_label_red(parent, text, x, y):
     label = ctk.CTkLabel(parent, text=text, font=font1,fg_color="#B62626", corner_radius=10)
     label.place(x=x, y=y)
