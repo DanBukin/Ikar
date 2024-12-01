@@ -25,6 +25,14 @@ with open('data/fuel_data.json', 'r', encoding='utf-8') as file:
     substances_data_1 = json.load(file)
 with open('data/alpha_data.json', 'r', encoding='utf-8') as file:
     substances_data_2 = json.load(file)
+with open('data/fors_data_pr.json', 'r', encoding='utf-8') as file:
+    fors_data_pr = json.load(file)
+with open('data/fors_data_y_2.json', 'r', encoding='utf-8') as file:
+    fors_data_y_2 = json.load(file)
+with open('data/fors_data_y_1_gor.json', 'r', encoding='utf-8') as file:
+    fors_data_y_1_gor = json.load(file)
+with open('data/fors_data_y_1_ok.json', 'r', encoding='utf-8') as file:
+    fors_data_y_1_ok = json.load(file)
 
 class user:
     def __init__(self):
@@ -1198,7 +1206,176 @@ class Window_7(ctk.CTk):
         window_5.mainloop()
     def close_window(self):
         self.destroy()
-        sys.exit()
+        window_8 = Window_8()
+        window_8.mainloop()
+class Window_8(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Выбор форсунок")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        #ctk.deactivate_automatic_dpi_awareness()
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
+        self.configure(bg_color="black")  # Установка цвета фона окна
+
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.place_scrollbar()
+        self.setup_frame()
+        self.find_type()
+        #self.print_button()
+
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
+    def find_type(self):
+        if (user.choice>=4 and user.choice<=9) or user.choice == 13 or user.choice == 14 or user.choice == 15 :
+            self.label_1=create_label(self.frame2,"Ядро Двухкомпонентное",10,2)
+            self.type_y_2 = find_value(user.choice, user.number, fors_data_y_2)
+            self.label_2=create_label(self.frame2,f'Рекомендуемые схемы форсунок:',10,27)
+            self.x=self.print_fors_y_2(self.type_y_2,57)
+            if user.choice!=13 and user.choice!=14 and user.choice!=15 or user.choice==4 or user.choice==6 or user.choice==8:
+                self.type_pr = find_value(user.choice, user.number, fors_data_pr)
+                self.label_3 = create_label(self.frame2, "Пристенок однокомпонентный", 10, self.x)
+                self.x_1 = self.print_fors_y_2(self.type_pr,self.x+25)
+            elif user.choice==5 or user.choice==7 or user.choice==9:
+                self.type_pr = find_value(user.choice, user.number, fors_data_pr)
+                self.label_3 = create_label(self.frame2, "Пристенок двухкомпонентный", 10, self.x)
+                self.x_1 = self.print_fors_y_2(self.type_pr, self.x+25)
+            else:
+                self.label_3 = create_label(self.frame2, "Пристенок отсутствует", 10, self.x)
+        else:
+            self.label_1 = create_label(self.frame2, "Ядро Однокомпонентное", 10, 2)
+            self.type_y_1_gor=find_value(user.choice, user.number, fors_data_y_1_gor)
+            self.label_2 = create_label(self.frame2, f'Рекомендуемые схемы форсунок горючего в ядре:', 10, 27)
+            self.x = self.print_fors_y_2(self.type_y_1_gor, 57)
+            self.type_y_1_ok = find_value(user.choice, user.number, fors_data_y_1_ok)
+            self.label_2 = create_label(self.frame2, f'Рекомендуемые схемы форсунок окислителя в ядре:', 10, self.x)
+            self.x_1 = self.print_fors_y_2(self.type_y_1_ok, self.x+25)
+            if user.choice==1 or user.choice==2 or user.choice==3:
+                self.type_pr = find_value(user.choice, user.number, fors_data_pr)
+                self.label_3 = create_label(self.frame2, "Пристенок однокомпонентный", 10, self.x_1)
+                self.x_2=self.print_fors_y_2(self.type_pr, self.x_1+25)
+            else:
+                self.label_3 = create_label(self.frame2, "Пристенок отсутствует", 10, self.x_1)
+    def print_button(self):
+        self.image_path = "data/Frame57.png"  # Укажите путь к изображению
+        self.image = Image.open(self.image_path).resize((666, 750))  # Изменяем размер изображения
+        self.photo = ctk.CTkImage(light_image=self.image, size=(round(666*0.6), round(750*0.6)))  # Создаем объект ctk.CTkImage
+        self.image_button = ctk.CTkButton(self.frame2,image=self.photo,text="",width=round(666/4),height=round(750/4),fg_color="transparent",hover_color="#9E3C39",command=self.on_button_click)
+        self.image_button.place(x=10,y=10)
+    def on_button_click(self):
+        print('Кнопка нажата!')
+    def place_scrollbar(self):
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=845, height=475,fg_color='#1A1A1A')  # 171717
+        self.scrollbar_frame_0.place(x=0, y=0)
+    def setup_frame(self):
+        """--------------------Создание мини-окон--------------------"""
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=845, height=2000, fg_color="#1A1A1A",bg_color="transparent")
+        self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+
+    def print_fors_y_2(self,type_y_2,y):
+        y = y
+        x = 10
+        kolvo = 1
+        kolvo_1=len(type_y_2)
+        if isinstance(type_y_2, list):
+            for num in type_y_2:
+                if kolvo == 1:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_0=num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_0))
+                    image_button.place(x=x, y=y)
+                    x += round(666 * 0.55) + 60
+                    kolvo += 1
+                elif kolvo == 2:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_1=num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4),
+                                                 fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_1))
+                    image_button.place(x=x, y=y)
+                    x -= round(666 * 0.55) + 60
+                    y += round(666 * 0.55) + 60
+                    kolvo += 1
+                else:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_2=num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4),
+                                                 fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_2))
+                    image_button.place(x=x, y=y)
+                    x -= round(666 * 0.55) + 60
+                    y += round(666 * 0.55) + 60
+        if kolvo_1==1:
+            y+=round(666 * 0.55) + 60
+        return y
+    def print_fors_pr_1(self,y):
+        y = y
+        x = 10
+        kolvo = 1
+        if isinstance(self.type_y_2, list):
+            for num in self.type_y_2:
+                if kolvo == 1:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_0 = num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_0))
+                    image_button.place(x=x, y=y)
+                    x += round(666 * 0.55) + 60
+                    kolvo += 1
+                elif kolvo == 2:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_1 = num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4),
+                                                 fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_1))
+                    image_button.place(x=x, y=y)
+                    x -= round(666 * 0.55) + 60
+                    y += round(666 * 0.55) + 60
+                    kolvo += 1
+                else:
+                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
+                    num_2 = num
+                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
+                    photo = ctk.CTkImage(light_image=image,
+                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
+                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
+                                                 height=round(750 / 4),
+                                                 fg_color="transparent", hover_color="#9E3C39",
+                                                 command=lambda: self.on_button_click(num_2))
+                    image_button.place(x=x, y=y)
+                    x -= round(666 * 0.55) + 60
+                    y += round(666 * 0.55) + 60
+        return y
+    def on_button_click(self,num):
+        print(num)
 class Window_example(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -1221,6 +1398,17 @@ class Window_example(ctk.CTk):
         self.h_og = 2.5
         self.h_sr = 2.5
         self.h_ras = 10
+        self.x = 50
+        self.choice_ist = 1
+
+        # self.result = find_value(1, 5,fors_data_pr)
+        # print(self.result)
+        # self.result = find_value(12, 3, fors_data_y_2)
+        # print(self.result)
+        # self.result = find_value(7, 6, fors_data_y_1_gor)
+        # print(self.result)
+        # self.result = find_value(7, 6, fors_data_y_1_ok)
+        # print(self.result)
 
         self.place_scrollbar()
         self.setup_frame()
@@ -1228,6 +1416,7 @@ class Window_example(ctk.CTk):
         self.print_slider()
         self.print_entry()
         self.print_button()
+        self.print_radio_button()
         print_nozzle_1(self.H,self.D_f,self.l,self.d_c,self.h_og,self.h_sr,self.h_ras,self)
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -1337,7 +1526,20 @@ class Window_example(ctk.CTk):
         self.entry3_value = ctk.StringVar()
         self.Entry3 = create_entry(self.frame2, 80, self.entry3_value, 2, 440)
     def print_button(self):
-        self.button_1 = create_button(self.frame2, "Расчёт при выбранных значениях", lambda: self.entry_m(), self.font1, 25, 10, 475)
+        self.button_1 = create_button(self.frame2, "Расчёт при выбранных значениях", lambda: self.entry_m(), self.font1, 25, 10, 475+self.x)
+    def print_radio_button(self):
+        self.radio_var_1 = ctk.IntVar(value=1)
+        self.radio_option1 = ctk.CTkRadioButton(self.frame2, text="Безотрывный режим истечения", variable=self.radio_var_1,font=self.font1,
+                                                command=lambda: self.choice_1(), value=1)
+        self.radio_option1.place(x=10, y=475)
+        self.radio_option2 = ctk.CTkRadioButton(self.frame2, text="Отрывной режим истечения", variable=self.radio_var_1,font=self.font1,
+                                                command=lambda: self.choice_1(), value=2)
+        self.radio_option2.place(x=10, y=500)
+    def choice_1(self):
+        if self.radio_var_1.get() == 1:
+            self.choice_ist=1
+        else:
+            self.choice_ist = 2
     def entry_m(self):
         self.m_f = float(self.entry1_value.get())
         self.nu = float(self.entry2_value.get())/1000
@@ -1345,18 +1547,34 @@ class Window_example(ctk.CTk):
         self.configure_label()
     def configure_label(self):
         self.F_f = (math.pi * self.d_c * self.d_c / 4)
-        self.label_12 = create_label_left(self.frame2, f'•Площадь сопла форсунки:\n{self.F_f:.2f} мм^2', 10, 505)
+        self.label_12 = create_label_left(self.frame2, f'•Площадь сопла форсунки:\n{self.F_f:.2f} мм^2', 10, 505+self.x)
         self.Re=(4*self.m_f)/(math.pi*self.d_c/1000*self.nu)
-        self.label_13 = create_label_left(self.frame2, f'•Число Рейнольдса:\n{self.Re:.1f}', 10, 550)
+        self.label_13 = create_label_left(self.frame2, f'•Число Рейнольдса:\n{self.Re:.1f}', 10, 550+self.x)
         self.W=self.m_f*1000000/(self.rho*self.F_f)
-        self.label_14 = create_label_left(self.frame2, f'•Средняя скорость компонента на выходе:\n{self.W:.2f} м/с', 10, 595)
-        if self.Re<2000:
-            self.lambda_0=64/self.Re
-        elif self.Re>10000:
-            self.lambda_0=0.031
+        self.label_14 = create_label_left(self.frame2, f'•Средняя скорость компонента на выходе:\n{self.W:.2f} м/с', 10, 595+self.x)
+        if self.choice_ist==1:
+            if self.Re<2000:
+                self.lambda_0=64/self.Re
+                self.K=2.2-(0.726*math.exp((-74.5)*((self.nu*self.l/1000)/(self.m_f))))
+            elif self.Re>10000:
+                self.lambda_0=0.031
+                self.K =1+2.65*self.lambda_0
+            else:
+                self.lambda_0=0.3164*(self.Re**(-0.25))
+                self.K = 1 + 2.65 * self.lambda_0
+            self.label_15 = create_label_left(self.frame2, f'•Коэффициент линейн. гидравл. сопротивления:\n{self.lambda_0:.6f}', 10,640+self.x)
+            self.label_16 = create_label_left(self.frame2,f'•Потери на входе струйной форсунки:\n{self.K:.4f}', 10, 685 + self.x)
+            self.mu=1/math.sqrt(self.K+(self.lambda_0*self.l / self.d_c))
+            self.label_17 = create_label_left(self.frame2, f'•Коэффициент расхода форсунки:\n{self.mu:.6f}', 10, 685 + self.x+45)
+            self.delta_p=(self.m_f*self.m_f*(10**(12)))/(2*self.rho*self.mu*self.mu*self.F_f*self.F_f)
+            self.label_18 = create_label_left(self.frame2, f'•Перепад давления на форсунке:\n{self.delta_p/10**(6):.3f} МПа', 10,
+                                              685 + self.x+90)
         else:
-            self.lambda_0=0.3164*(self.Re**(-0.25))
-        self.label_15 = create_label_left(self.frame2, f'•Коэффициент линейн. гидравл. сопротивления:\n{self.lambda_0:.6f}', 10,640)
+            self.mu =0.63
+            self.label_17 = create_label_left(self.frame2, f'•Коэффициент расхода форсунки:\n{0.63}', 10,640 + self.x)
+            self.delta_p = (self.m_f * self.m_f * (10 ** (12))) / (2 * self.rho * self.mu * self.mu * self.F_f * self.F_f)
+            self.label_18 = create_label_left(self.frame2, f'•Перепад давления на форсунке:\n{self.delta_p/10**(6):.3f} МПа', 10, 640 + self.x+45)
+
 if __name__ == "__main__":
-    app = Window_example()
+    app = Window_1()
     app.mainloop()

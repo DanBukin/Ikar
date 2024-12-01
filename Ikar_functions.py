@@ -802,3 +802,17 @@ def method_by_ievlev_core(x_0,y_0,coord_gor,coord_ok,H):
         m_ok_1+=m*((Phi_x_2_ok-Phi_x_1_ok)*(Phi_y_2_ok-Phi_y_1_ok))
         text_programm+=(f'{x_1:.3f},{x_2:.3f},{y_1:.3f},{y_2:.3f}, mOx={m:.3f}\n')
     return 0.25 * m_gor_1, 0.25 * m_ok_1, n_gor, n_ok,text_programm
+
+def find_value(first, second,data):
+    # Преобразуем числа в строки для поиска в JSON
+    first = str(first)
+    second = str(second)
+
+    # Проверяем, есть ли ключи в верхнем уровне
+    if first in data:
+        sub_dict = data[first]
+        # Проверяем, есть ли второй ключ во вложенном словаре
+        if second in sub_dict:
+            return sub_dict[second]
+    return None
+

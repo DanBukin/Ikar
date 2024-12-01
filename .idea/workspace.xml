@@ -316,7 +316,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732474795460</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="add window (nozzle №1)">
+      <option name="closed" value="true" />
+      <created>1732664249779</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1732664249779</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -343,11 +351,6 @@
           <url>file://$PROJECT_DIR$/ikar_graphs.py</url>
           <line>687</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Ikar1.0.py</url>
-          <line>175</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
