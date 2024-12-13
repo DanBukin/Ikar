@@ -16,12 +16,12 @@ def open_window_fors(i):
     if i==1:
         app = Window_1()
         app.mainloop()
-    # elif i==2:
-    #     app = Window_2()
-    #     app.mainloop()
-    # elif i==3:
-    #     app = Window_3()
-    #     app.mainloop()
+    elif i==2:
+        app = Window_2()
+        app.mainloop()
+    elif i==3:
+        app = Window_3()
+        app.mainloop()
     # elif i==4:
     #     app = Window_4()
     #     app.mainloop()
