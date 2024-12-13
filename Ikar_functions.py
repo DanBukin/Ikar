@@ -815,4 +815,9 @@ def find_value(first, second,data):
         if second in sub_dict:
             return sub_dict[second]
     return None
-
+def find_l_otn_kz(D_kz,D_f,d_vh,x_st):
+    beta=math.acos((0.5*(D_kz-d_vh))/(0.5*D_kz))
+    alpha=math.acos(((0.5*D_f)-(x_st)-(0.5*d_vh))/(0.5*D_f))
+    l_1=(D_kz/2)*math.sin(beta)
+    l_2=(D_f/2)*math.sin(alpha)
+    return l_2-l_1

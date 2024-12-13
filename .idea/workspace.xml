@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add ikar_fors_window.py">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="window design &quot;nozzle No. 1&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ikar_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -387,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733169759672</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="window design &quot;nozzle No. 1&quot;">
+      <option name="closed" value="true" />
+      <created>1734086892827</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1734086892827</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -407,14 +417,15 @@
     <MESSAGE value="add window (nozzle №1)" />
     <MESSAGE value="add window (nozzle_type)" />
     <MESSAGE value="add ikar_fors_window.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ikar_fors_window.py" />
+    <MESSAGE value="window design &quot;nozzle No. 1&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="window design &quot;nozzle No. 1&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ikar_graphs.py</url>
-          <line>687</line>
+          <line>692</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
