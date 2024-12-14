@@ -540,6 +540,8 @@ class Window_3(ctk.CTk):
         self.place_scrollbar()
         self.setup_frame()
         self.print_label()
+        self.print_entry()
+        self.print_button()
         self.print_slider()
         print_nozzle_2(self.H, self.d_f, self.d_kz, self.d_vh, self.x_st, self.num_copies, self.l_kz_otn, self.phi, self.d_c_otn, self.l_c_otn, self.h_og, self.h_sr, self.h_ras,self.frame2_1)
 
@@ -555,13 +557,13 @@ class Window_3(ctk.CTk):
         self.scrollbar_frame_1.place(x=400, y=10)
     def setup_frame(self):
         """--------------------Создание мини-окон--------------------"""
-        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=1030, fg_color="#2b2b2b",bg_color="transparent")
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=1660, fg_color="#2b2b2b",bg_color="transparent")
         self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
         self.frame2_1 = ctk.CTkFrame(master=self.scrollbar_frame_1, width=445, height=1030, fg_color="#131212",
                                    bg_color="transparent")
         self.frame2_1.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_label(self):
-        self.x_1=240-215+50+25
+        self.x_1=240-215+50+25+25
         self.label_1=create_label(self.frame2,"Выбери шаг между форсунками: 17 мм",2,2)
         self.label_1_0 = create_label(self.frame2, "12", 25, 26)
         self.label_1_1 = create_label(self.frame2, "30", 300, 26)
@@ -599,7 +601,100 @@ class Window_3(ctk.CTk):
         self.label_10_1 = create_label(self.frame2, "1.0", 305, 415 + 27 + self.x_1)
         self.label_11 = create_label(self.frame2, "Выберите относит. длину сопла: 0.5", 2, 465 + self.x_1)
         self.label_11_0 = create_label(self.frame2, "0.2", 26, 465 + 27 + self.x_1)
-        self.label_11_1 = create_label(self.frame2, "1.0", 305, 465 + 27 + self.x_1)
+        self.label_11_1 = create_label(self.frame2, "1.0", 305, 492 + self.x_1)
+
+        self.label_13 = create_label(self.frame2, "- расход через форсунку (кг/с)", 90, 492 + self.x_1+32)
+        self.label_14 = create_label(self.frame2, f"- динамическая вязкость (Па*с*1000)", 90, 492 + self.x_1+32+35)
+        self.label_15 = create_label(self.frame2, f"- плотность компонента (кг/м^3)", 90, 492 + self.x_1+32+70)
+        self.label_16 = create_label(self.frame2, f"- коэф. поверхн. натяжения (Н/м)", 90, 492 + self.x_1+32+105)
+        self.label_17 = create_label(self.frame2, f"- плотность компонента в КС (кг/м^3)", 90, 492 + self.x_1 + 32 + 140)
+
+        self.x_2=629 + self.x_1+70+35
+        self.label_2_1=create_label_left(self.frame2, "•Геометрическая хар-ка форсунки:\nA=", 10, self.x_2)
+        self.label_2_2 = create_label_left(self.frame2, "•Число Рейнольдса на входе в форсунку:\nRe_вх=", 10, self.x_2+45)
+        self.label_2_3 = create_label_left(self.frame2, "•Коэффициент трения:\nλ=", 10,self.x_2 + 90)
+        self.label_2_4 = create_label_left(self.frame2, "•Эквивалентная геом. хар-ка форсунки:\nА_э=", 10, self.x_2 + 135)
+        self.label_2_5 = create_label_left(self.frame2, "•Коэффициент живого сечения:\nφ=", 10,self.x_2 + 180)
+        self.label_2_6 = create_label_left(self.frame2, "•Коэффициент расхода:\nμ=", 10, self.x_2 + 225)
+        self.label_2_7 = create_label_left(self.frame2, "•Средний угол факела распыла:\n2α=", 10, self.x_2 + 270)
+        self.label_2_8 = create_label_left(self.frame2, "•Площадь сопла форсунки:\nF_ф=", 10, self.x_2 + 315)
+        self.label_2_9 = create_label_left(self.frame2, "•Перепад давления на форсунке:\nΔp=", 10, self.x_2 + 360)
+        self.label_2_10 = create_label_left(self.frame2, "•Радиус вихря жидкости:\nr_ж=", 10, self.x_2 + 360+45)
+        self.label_2_11 = create_label_left(self.frame2, "•Площадь живого сечения сопла:\nF_ж=", 10, self.x_2 + 450)
+        self.label_2_12 = create_label_left(self.frame2, "•Среднее значение осевой скорости:\nW_a=", 10, self.x_2 + 450+45)
+        self.label_2_13 = create_label_left(self.frame2, "•Среднее значение абсолютной скорости:\nW=", 10, self.x_2 + 540)
+        self.label_2_14 = create_label_left(self.frame2, "•Толщина пелены на выходе:\nδ_n=", 10, self.x_2 + 540+45)
+        self.label_2_15 = create_label_left(self.frame2, "•Критерий Вебера:\nWe=", 10, self.x_2 + 630)
+        self.label_2_16 = create_label_left(self.frame2, "•Критерий Лапласа:\nL_p=", 10, self.x_2 + 630+45)
+        self.label_2_17 = create_label_left(self.frame2, "•Медианный диаметр капель:\nd_м=", 10, self.x_2 + 720)
+
+        self.button_2 = create_button(self.frame2, "Сохранить", lambda: save_txt_fors(self.text_f), self.font1, 25, 10,
+                                      self.x_2 + 720+50)
+        self.button_3 = create_button(self.frame2, "Выход", lambda: self.destroy(), self.font1, 25, 100, self.x_2 + 720+50)
+
+    def print_entry(self):
+        self.entry1_value = ctk.StringVar()
+        self.Entry1 = create_entry(self.frame2, 80, self.entry1_value, 2, 492 + self.x_1+32)
+        self.entry2_value = ctk.StringVar()
+        self.Entry2 = create_entry(self.frame2, 80, self.entry2_value, 2, 492 + self.x_1+32+35)
+        self.entry3_value = ctk.StringVar()
+        self.Entry3 = create_entry(self.frame2, 80, self.entry3_value, 2, 492 + self.x_1+32+70)
+        self.entry4_value = ctk.StringVar()
+        self.Entry4 = create_entry(self.frame2, 80, self.entry4_value, 2, 492 + self.x_1+32+105)
+        self.entry5_value = ctk.StringVar()
+        self.Entry5 = create_entry(self.frame2, 80, self.entry5_value, 2, 492 + self.x_1 + 32 + 140)
+    def print_button(self):
+        self.button_1 = create_button(self.frame2, "Расчёт при выбранных значениях", lambda: self.entry_m(), self.font1,25, 10, 629 + self.x_1+70)
+    def entry_m(self):
+        self.m_f = float(self.entry1_value.get())
+        self.nu = float(self.entry2_value.get())/1000
+        self.rho = float(self.entry3_value.get())
+        self.sigma = float(self.entry4_value.get())
+        self.rho_ks = float(self.entry5_value.get())
+        self.configure_label()
+    def configure_label(self):
+        self.text_f=''
+        self.R_vh=(0.5*self.d_kz)-(0.5*self.d_vh)
+        self.d_c = self.d_c_otn * self.d_kz
+
+        self.A=(self.R_vh*0.5*self.d_c)/(self.num_copies*0.5*self.d_vh*0.5*self.d_vh)
+        self.Re_vh=(4*self.m_f)/(math.pi*self.nu*self.d_vh*0.001*math.sqrt(self.num_copies))
+        self.lambda_1=10**(((25.8)/((math.log(self.Re_vh,10))**(2.58)))-2)
+        self.A_e=(self.A)/(1+(0.5*self.lambda_1*self.R_vh*0.001)*((self.R_vh*0.001)+(self.d_vh*0.001)-(self.d_c*0.5*0.001)))
+        self.phi_zh=1/(( ( ((self.A_e/(2*math.sqrt(2)))+(math.sqrt((self.A_e*self.A_e/8)-(1/27))))**(1/3) )+( ((self.A_e/(2*math.sqrt(2)))-(math.sqrt((self.A_e*self.A_e/8)-(1/27))))**(1/3)) )**2)
+        self.mu=self.phi_zh*math.sqrt((self.phi_zh)/(2-self.phi_zh))
+        self.alpha_rasp=(math.atan( (2*self.mu*self.A_e)/(math.sqrt( ((1+math.sqrt(1-self.phi_zh))**2)-(4*self.mu*self.mu*self.A_e*self.A_e) )) ))*180/math.pi
+        self.F_f=math.pi*self.d_c*self.d_c*0.001*0.001/4
+        self.delta_p=(self.m_f**2)/(2*self.rho*self.mu*self.mu*self.F_f*self.F_f)
+        self.r_zh=self.d_c*0.5*math.sqrt(1-self.phi_zh)
+        self.F_zh=self.phi_zh*self.F_f
+        self.W_a=(self.m_f/(self.rho*self.F_zh))
+        self.W=self.W_a/math.cos(self.alpha_rasp*math.pi/180)
+        self.delta_pelen=0.5*self.d_c-self.r_zh
+        self.We=(self.rho_ks*self.W*self.W*self.d_c*0.001)/(self.sigma)
+        self.L_p=(self.rho*self.delta_pelen*0.001*self.sigma)/(self.nu)
+        self.d_m=269*((self.L_p)**(-0.35))*(((self.We*self.rho_ks)/(self.rho))**(-0.483))
+
+
+        self.label_2_1.configure(text=f"•Геометрическая хар-ка форсунки:\nA= {self.A:.3f}")
+        self.label_2_2.configure(text=f"•Число Рейнольдса на входе в форсунку:\nRe_вх= {self.Re_vh:.1f}")
+        self.label_2_3.configure(text=f"•Коэффициент трения:\nλ= {self.lambda_1:.3f}")
+        self.label_2_4.configure(text=f"•Эквивалентная геом. хар-ка форсунки:\nА_э= {self.A_e:.3f}")
+        self.label_2_5.configure(text=f"•Коэффициент живого сечения:\nφ= {self.phi_zh:.3f}")
+        self.label_2_6.configure(text=f"•Коэффициент расхода:\nμ= {self.mu:.3f}")
+        self.label_2_7.configure(text=f"•Средний угол факела распыла:\n2α= {2*self.alpha_rasp:.1f}°")
+        self.label_2_8.configure(text=f"•Площадь сопла форсунки:\nF_ф= {self.F_f*1000000:.2f} мм^2")
+        self.label_2_9.configure(text=f"•Перепад давления на форсунке:\nΔp= {self.delta_p*(10**(-6)):.3f}")
+        self.label_2_10.configure(text=f"•Радиус вихря жидкости:\nr_ж= {self.r_zh:.3f}")
+        self.label_2_11.configure(text=f"•Площадь живого сечения сопла:\nF_ж= {self.F_zh*1000000:.3f}")
+        self.label_2_12.configure(text=f"•Среднее значение осевой скорости:\nW_a= {self.W_a:.3f}")
+        self.label_2_13.configure(text=f"•Среднее значение абсолютной скорости:\nW= {self.W:.3f}")
+        self.label_2_14.configure(text=f"•Толщина пелены на выходе:\nδ_n= {self.delta_pelen:.3f}")
+        self.label_2_15.configure(text=f"•Критерий Вебера:\nWe= {self.We:.3f}")
+        self.label_2_16.configure(text=f"•Критерий Лапласа:\nL_p= {self.L_p:.3f}")
+        self.label_2_17.configure(text=f"•Медианный диаметр капель:\nd_м= {self.d_m:.3f}")
+
+
     def print_slider(self):
         self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change, number_of_steps=18,
                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
@@ -662,11 +757,12 @@ class Window_3(ctk.CTk):
         """Обновление текста метки в соответствии со значением ползунка"""
         self.H = int(value)
         self.label_1.configure(text=f"Выбери шаг между форсунками: {self.H} мм")
-        self.D_f=0.75*self.H
-        if self.D_f<10:
-            self.D_f=10
-        self.label_2.configure(text=f"Диаметр форсунки равен: {self.D_f} мм")
-        self.l_otn=find_l_otn_kz(self.d_kz,self.D_f,self.d_vh,self.x_st)
+        self.d_f=0.75*self.H
+        self.d_kz = self.d_f - (2 * self.x_st)
+        if self.d_f<10:
+            self.d_f=10
+        self.label_2.configure(text=f"Диаметр форсунки равен: {self.d_f} мм")
+        self.l_otn=find_l_otn_kz(self.d_kz,self.d_f,self.d_vh,self.x_st)
         self.label_5_2_1.configure(text=f"Длина входного отверстия: {self.l_otn:.2f} мм")
         self.label_5_2_2.configure(text=f"Отношение l_вх/d_вх: {self.l_otn/self.d_vh:.2f}")
         print_nozzle_2(self.H, self.d_f, self.d_kz, self.d_vh, self.x_st, self.num_copies, self.l_kz_otn, self.phi,
@@ -675,7 +771,7 @@ class Window_3(ctk.CTk):
         self.x_st = float(value)
         self.d_kz = self.d_f - (2 * self.x_st)
         self.label_3.configure(text=f"Выберите толщину стенок: {self.x_st:.2f} мм")
-        self.l_otn = find_l_otn_kz(self.d_kz, self.D_f, self.d_vh, self.x_st)
+        self.l_otn = find_l_otn_kz(self.d_kz, self.d_f, self.d_vh, self.x_st)
         self.label_5_2_1.configure(text=f"Длина входного отверстия: {self.l_otn:.2f} мм")
         self.label_5_2_2.configure(text=f"Отношение l_вх/d_вх: {self.l_otn / self.d_vh:.2f}")
 
@@ -689,7 +785,7 @@ class Window_3(ctk.CTk):
     def on_slider_change_2_1(self, value):
         self.d_vh = float(value)
         self.label_5.configure(text=f"Выберите входной диаметр отверстия: {self.d_vh:.1f} мм")
-        self.l_otn = find_l_otn_kz(self.d_kz, self.D_f, self.d_vh, self.x_st)
+        self.l_otn = find_l_otn_kz(self.d_kz, self.d_f, self.d_vh, self.x_st)
         self.label_5_2_1.configure(text=f"Длина входного отверстия: {self.l_otn:.2f} мм")
         self.label_5_2_2.configure(text=f"Отношение l_вх/d_вх: {self.l_otn / self.d_vh:.2f}")
         print_nozzle_2(self.H, self.d_f, self.d_kz, self.d_vh, self.x_st, self.num_copies, self.l_kz_otn, self.phi,

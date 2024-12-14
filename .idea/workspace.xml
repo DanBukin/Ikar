@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="window design &quot;nozzle No. 1&quot;">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="making everything up to the geometry of nozzle No. 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -397,7 +395,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734086892827</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="making everything up to the geometry of nozzle No. 3">
+      <option name="closed" value="true" />
+      <created>1734125826555</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1734125826555</updated>
+    </task>
+    <task id="LOCAL-00030" summary="making everything up to the geometry of nozzle No. 3">
+      <option name="closed" value="true" />
+      <created>1734125902549</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1734125902549</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -418,7 +432,8 @@
     <MESSAGE value="add window (nozzle_type)" />
     <MESSAGE value="add ikar_fors_window.py" />
     <MESSAGE value="window design &quot;nozzle No. 1&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="window design &quot;nozzle No. 1&quot;" />
+    <MESSAGE value="making everything up to the geometry of nozzle No. 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="making everything up to the geometry of nozzle No. 3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
