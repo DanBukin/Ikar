@@ -55,6 +55,7 @@ def create_button(parent, text, command, font, width, x, y):
     button = ctk.CTkButton(master=parent, text=text, command=command, font=font, width=width)
     button.place(x=x, y=y)
     return button
+
 def show_frame_1(app):
     # Если изображение еще не было загружено, загружаем его
     if app.global_image is None:

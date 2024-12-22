@@ -1397,3 +1397,280 @@ def print_nozzle_2(H,d_f,d_kz,d_vh,x_st,num_copies,l_kz_otn,phi,d_c_otn,l_c_otn,
   canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
   canvas_widget = canvas.get_tk_widget()
   canvas_widget.place(x=50, y=10)
+def find_h_phi(d_kz,d_c,phi):
+    phi_rad=grad_to_rad(phi)
+    return ((0.5*d_kz)-(0.5*d_c))*math.tan(phi_rad)
+def find_l_arc(x,R):
+    beta=math.acos( x/R)
+    l=(R)*math.sin(beta)
+    return l,beta
+def print_nozzle_4(frame,H,delta_st_n,l_c_n,l_kz_n,phi_n,d_c_n,d_vh_n,i_vh_n,delta_st_v,l_kz_v,l_c_v,phi_v,d_vh_v,i_vh_v,d_kz_v,d_c_v,h_og,h_sr):
+    d_f = 0.75 * H
+    d_kz_n = d_f - (2 * delta_st_n)
+    h_1 = find_h_phi(d_kz_n, d_c_n, phi_n)
+    h_2 = find_h_phi(d_kz_v, d_c_v, phi_v)
+    h_max = l_c_v + h_2 + l_kz_v + delta_st_n
+
+    fig = Figure(figsize=(6.5, 20), dpi=100)
+    ax_2 = fig.add_subplot(312)
+    ax = fig.add_subplot(311)
+    ax_3 = fig.add_subplot(313)
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('#1A1A1A')  # 171717
+# =========================Построение первого графика=========================
+    square = patches.Polygon([[-0.5 * d_kz_v - delta_st_n, l_c_v + h_2 + l_kz_v + delta_st_n],
+                              [0.5 * d_kz_v + delta_st_n, l_c_v + h_2 + l_kz_v + delta_st_n],
+                              [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+                              [0.5 * d_f, l_c_n + h_1 + l_kz_n + delta_st_n], [0.5 * d_f, 0], [0.5 * d_c_n, 0],
+                              [0.5 * d_c_n, l_c_n], [0.5 * d_kz_n, l_c_n + h_1], [0.5 * d_kz_n, l_c_n + h_1 + l_kz_n],
+                              [0.5 * d_kz_v + delta_st_v, l_c_n + h_1 + l_kz_n], [0.5 * d_kz_v + delta_st_v, 0],
+                              [0.5 * d_c_v, 0], [0.5 * d_c_v, l_c_v], [0.5 * d_kz_v, l_c_v + h_2],
+                              [0.5 * d_kz_v, l_c_v + h_2 + l_kz_v],
+                              [-0.5 * d_kz_v, l_c_v + h_2 + l_kz_v], [-0.5 * d_kz_v, l_c_v + h_2],
+                              [-0.5 * d_c_v, l_c_v], [-0.5 * d_c_v, 0], [-0.5 * d_kz_v - delta_st_v, 0],
+                              [-0.5 * d_kz_v - delta_st_v, l_c_n + h_1 + l_kz_n], [-0.5 * d_kz_n, l_c_n + h_1 + l_kz_n],
+                              [-0.5 * d_kz_n, l_c_n + h_1], [-0.5 * d_c_n, l_c_n], [-0.5 * d_c_n, 0], [-0.5 * d_f, 0],
+                              [-0.5 * d_f, l_c_n + h_1 + l_kz_n + delta_st_n],
+                              [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n]], edgecolor='#9E3C39',
+                             facecolor='none', hatch="\\")
+    ax.add_patch(square)
+
+    square_1 = patches.Polygon([[-0.5 * d_kz_v - delta_st_n, l_c_v + h_2 + l_kz_v + delta_st_n],
+                                [0.5 * d_kz_v + delta_st_n, l_c_v + h_2 + l_kz_v + delta_st_n],
+                                [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+                                [0.5 * d_f, l_c_n + h_1 + l_kz_n + delta_st_n], [0.5 * d_f, 0], [0.5 * d_c_n, 0],
+                                [0.5 * d_c_n, l_c_n], [0.5 * d_kz_n, l_c_n + h_1], [0.5 * d_kz_n, l_c_n + h_1 + l_kz_n],
+                                [0.5 * d_kz_v + delta_st_v, l_c_n + h_1 + l_kz_n], [0.5 * d_kz_v + delta_st_v, 0],
+                                [0.5 * d_c_v, 0], [0.5 * d_c_v, l_c_v], [0.5 * d_kz_v, l_c_v + h_2],
+                                [0.5 * d_kz_v, l_c_v + h_2 + l_kz_v],
+                                [-0.5 * d_kz_v, l_c_v + h_2 + l_kz_v], [-0.5 * d_kz_v, l_c_v + h_2],
+                                [-0.5 * d_c_v, l_c_v], [-0.5 * d_c_v, 0], [-0.5 * d_kz_v - delta_st_v, 0],
+                                [-0.5 * d_kz_v - delta_st_v, l_c_n + h_1 + l_kz_n],
+                                [-0.5 * d_kz_n, l_c_n + h_1 + l_kz_n],
+                                [-0.5 * d_kz_n, l_c_n + h_1], [-0.5 * d_c_n, l_c_n], [-0.5 * d_c_n, 0], [-0.5 * d_f, 0],
+                                [-0.5 * d_f, l_c_n + h_1 + l_kz_n + delta_st_n],
+                                [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n]], edgecolor='#D44B46',
+                               facecolor='none')
+    ax.add_patch(square_1)
+
+    square_2 = patches.Polygon([[-0.5 * H, 0], [-0.5 * H, h_og], [-0.5 * d_f, h_og], [-0.5 * d_f, 0]],
+                               edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square_2)
+    square_3 = patches.Polygon([[-0.5 * H, 0], [-0.5 * H, h_og], [-0.5 * d_f, h_og], [-0.5 * d_f, 0]],
+                               edgecolor='#D44B46', facecolor='none')
+    ax.add_patch(square_3)
+
+    square_2_1 = patches.Polygon([[0.5 * H, 0], [0.5 * H, h_og], [0.5 * d_f, h_og], [0.5 * d_f, 0]],
+                                 edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square_2_1)
+    square_3_1 = patches.Polygon([[0.5 * H, 0], [0.5 * H, h_og], [0.5 * d_f, h_og], [0.5 * d_f, 0]],
+                                 edgecolor='#D44B46', facecolor='none')
+    ax.add_patch(square_3_1)
+
+    square_4 = patches.Polygon(
+        [[0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n], [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+         [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr],
+         [0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr]], edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square_4)
+    square_5 = patches.Polygon(
+        [[0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n], [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+         [0.5 * d_kz_v + delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr],
+         [0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr]], edgecolor='#D44B46', facecolor='none')
+    ax.add_patch(square_5)
+
+    square_4_1 = patches.Polygon(
+        [[-0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n], [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+         [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr],
+         [-0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr]], edgecolor='#9E3C39', facecolor='none', hatch='/')
+    ax.add_patch(square_4_1)
+    square_5_1 = patches.Polygon(
+        [[-0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n], [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n],
+         [-0.5 * d_kz_v - delta_st_n, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr],
+         [-0.5 * H, l_c_n + h_1 + l_kz_n + delta_st_n + h_sr]], edgecolor='#D44B46', facecolor='none')
+    ax.add_patch(square_4_1)
+
+    ax.plot([-0.5 * d_kz_n, -0.5 * d_kz_v - delta_st_v], [h_1 + l_c_n, h_1 + l_c_n], color="#D44B46")
+    ax.plot([0.5 * d_kz_n, 0.5 * d_kz_v + delta_st_v], [h_1 + l_c_n, h_1 + l_c_n], color="#D44B46")
+    ax.plot([-0.5 * d_c_n, -0.5 * d_kz_v - delta_st_v], [l_c_n, l_c_n], color="#D44B46")
+    ax.plot([0.5 * d_c_n, 0.5 * d_kz_v + delta_st_v], [l_c_n, l_c_n], color="#D44B46")
+    ax.plot([-0.5 * d_kz_v, 0.5 * d_kz_v], [l_c_v + h_2, l_c_v + h_2], color="#D44B46")
+    ax.plot([-0.5 * d_c_v, 0.5 * d_c_v], [l_c_v, l_c_v], color="#D44B46")
+
+    circle = plt.Circle((0.5 * d_kz_n - 0.5 * d_vh_n, l_c_n + h_1 + l_kz_n - 0.5 * d_vh_n), d_vh_n / 2, color='#D44B46',
+                        fill=False)
+    ax.add_patch(circle)
+
+    circle_1 = plt.Circle((0.5 * d_kz_v - 0.5 * d_vh_v, l_c_v + h_2 + l_kz_v - 0.5 * d_vh_v), d_vh_v / 2,
+                          color='#D44B46', fill=False)
+    ax.add_patch(circle_1)
+
+    ax.plot([0.5 * d_kz_n - 0.5 * d_vh_n, 0.5 * d_kz_n - 0.5 * d_vh_n],
+            [l_c_n + h_1 + l_kz_n - 0.5 * d_vh_n - 1.2 * 0.5 * d_vh_n,
+             l_c_n + h_1 + l_kz_n - 0.5 * d_vh_n + 1.2 * 0.5 * d_vh_n], color="#D44B46", linestyle='-.')
+    ax.plot([0.5 * d_kz_n - 0.5 * d_vh_n - 1.2 * 0.5 * d_vh_n, 0.5 * d_kz_n - 0.5 * d_vh_n + 1.2 * 0.5 * d_vh_n],
+            [l_c_n + h_1 + l_kz_n - 0.5 * d_vh_n, l_c_n + h_1 + l_kz_n - 0.5 * d_vh_n], color="#D44B46", linestyle='-.')
+
+    ax.plot([0.5 * d_kz_v - 0.5 * d_vh_v, 0.5 * d_kz_v - 0.5 * d_vh_v],
+            [l_c_v + h_2 + l_kz_v - 0.5 * d_vh_v - 1.2 * 0.5 * d_vh_v,
+             l_c_v + h_2 + l_kz_v - 0.5 * d_vh_v + 1.2 * 0.5 * d_vh_v], color="#D44B46", linestyle='-.')
+    ax.plot([0.5 * d_kz_v - 0.5 * d_vh_v - 1.2 * 0.5 * d_vh_v, 0.5 * d_kz_v - 0.5 * d_vh_v + 1.2 * 0.5 * d_vh_v],
+            [l_c_v + h_2 + l_kz_v - 0.5 * d_vh_v, l_c_v + h_2 + l_kz_v - 0.5 * d_vh_v], color="#D44B46", linestyle='-.')
+
+    ax.plot([0, 0], [-1, 1.1 * h_max], color="#D44B46", linestyle='-.')
+    ax.plot([-1.1 * d_f / 2, 1.1 * d_f / 2], [0, 0], color="#D44B46", linestyle='-.')
+
+    ax.set_xlim(-1.1 * H / 2, 1.1 * H / 2)
+    ax.set_ylim(-1, 1.1 * h_max)
+
+# =========================Построение второго графика=========================
+    ax_2.set_aspect('equal', adjustable='box')
+    ax_2.set_facecolor('#1A1A1A')  # 171717
+
+    l_1, beta_1 = find_l_arc(d_kz_n * 0.5, d_f * 0.5)
+    l_2, beta_2 = find_l_arc((0.5 * d_kz_n) - 0.5 * d_vh_n, 0.5 * d_kz_n)
+    l_3, beta_3 = find_l_arc((0.5 * d_kz_n) - 0.5 * d_vh_n, 0.5 * d_f)
+    l_4, beta_4 = find_l_arc((0.5 * d_kz_n) - d_vh_n, 0.5 * d_kz_n)
+    l_5, beta_5 = find_l_arc((0.5 * d_kz_n) - d_vh_n, 0.5 * d_f)
+
+    circle = plt.Circle((0, 0), d_f / 2, color='#D44B46', fill=False)
+    ax_2.add_patch(circle)
+
+    circle = plt.Circle((0, 0), d_kz_n / 2, color='#D44B46', fill=False)
+    ax_2.add_patch(circle)
+
+    circle = plt.Circle((0, 0), d_kz_v / 2, color='#D44B46', fill=False)
+    ax_2.add_patch(circle)
+
+    circle = plt.Circle((0, 0), (d_kz_v / 2) + delta_st_v, color='#D44B46', fill=False)
+    ax_2.add_patch(circle)
+
+    for i in range(i_vh_n):
+        angle = i * 2 * math.pi / i_vh_n
+
+        x_1 = (d_kz_n / 2) * math.cos(angle + beta_2)
+        y_1 = (d_kz_n / 2) * math.sin(angle + beta_2)
+
+        x_2 = (d_f / 2) * math.cos(angle + beta_3)
+        y_2 = (d_f / 2) * math.sin(angle + beta_3)
+        ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46", linestyle='-.')
+
+        x_1 = (d_kz_n / 2) * math.cos(angle)
+        y_1 = (d_kz_n / 2) * math.sin(angle)
+
+        x_2 = (d_f / 2) * math.cos(angle + beta_1)
+        y_2 = (d_f / 2) * math.sin(angle + beta_1)
+        ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+
+        x_1 = (d_kz_n / 2) * math.cos(angle + beta_4)
+        y_1 = (d_kz_n / 2) * math.sin(angle + beta_4)
+
+        x_2 = (d_f / 2) * math.cos(angle + beta_5)
+        y_2 = (d_f / 2) * math.sin(angle + beta_5)
+        ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+
+    ax_2.plot([0, 0], [-1.1 * d_f / 2, 1.1 * d_f / 2], color="#D44B46", linestyle='-.')
+    ax_2.plot([-1.1 * d_f / 2, 1.1 * d_f / 2], [0, 0], color="#D44B46", linestyle='-.')
+    ax_2.set_xlim(-1.1 * H / 2, 1.1 * H / 2)
+    ax_2.set_ylim(-1.1 * H / 2, 1.1 * H / 2)
+
+    ax_3.set_aspect('equal', adjustable='box')
+    ax_3.set_facecolor('#1A1A1A')  # 171717
+
+    circle = plt.Circle((0, 0), d_kz_v / 2, color='#D44B46', fill=False)
+    ax_3.add_patch(circle)
+    circle = plt.Circle((0, 0), (d_kz_v / 2) + delta_st_n, color='#D44B46', fill=False)
+    ax_3.add_patch(circle)
+
+    d_f_1 = d_kz_v + 2 * delta_st_n
+    l_1, beta_1 = find_l_arc(d_kz_v * 0.5, d_f_1 * 0.5)
+    l_2, beta_2 = find_l_arc((0.5 * d_kz_v) - 0.5 * d_vh_v, 0.5 * d_kz_v)
+    l_3, beta_3 = find_l_arc((0.5 * d_kz_v) - 0.5 * d_vh_v, 0.5 * d_f_1)
+    l_4, beta_4 = find_l_arc((0.5 * d_kz_v) - d_vh_v, 0.5 * d_kz_v)
+    l_5, beta_5 = find_l_arc((0.5 * d_kz_v) - d_vh_v, 0.5 * d_f_1)
+    for i in range(i_vh_v):
+        angle = i * 2 * math.pi / i_vh_v
+
+        x_1 = (d_kz_v / 2) * math.cos(angle + beta_2)
+        y_1 = (d_kz_v / 2) * math.sin(angle + beta_2)
+
+        x_2 = (d_f_1 / 2) * math.cos(angle + beta_3)
+        y_2 = (d_f_1 / 2) * math.sin(angle + beta_3)
+        ax_3.plot([x_1, x_2], [y_1, y_2], color="#D44B46", linestyle='-.')
+
+        x_1 = (d_kz_v / 2) * math.cos(angle)
+        y_1 = (d_kz_v / 2) * math.sin(angle)
+
+        x_2 = (d_f_1 / 2) * math.cos(angle + beta_1)
+        y_2 = (d_f_1 / 2) * math.sin(angle + beta_1)
+        ax_3.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+
+        x_1 = (d_kz_v / 2) * math.cos(angle + beta_4)
+        y_1 = (d_kz_v / 2) * math.sin(angle + beta_4)
+
+        x_2 = (d_f_1 / 2) * math.cos(angle + beta_5)
+        y_2 = (d_f_1 / 2) * math.sin(angle + beta_5)
+        ax_3.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+
+    ax_3.plot([0, 0], [-1.1 * ((d_kz_v / 2) + delta_st_n), 1.1 * ((d_kz_v / 2) + delta_st_n)], color="#D44B46",
+              linestyle='-.')
+    ax_3.plot([-1.1 * ((d_kz_v / 2) + delta_st_n), 1.1 * ((d_kz_v / 2) + delta_st_n)], [0, 0], color="#D44B46",
+              linestyle='-.')
+    ax_3.set_xlim(-1.1 * ((d_kz_v / 2) + delta_st_n), 1.1 * ((d_kz_v / 2) + delta_st_n))
+    ax_3.set_ylim(-1.1 * ((d_kz_v / 2) + delta_st_n), 1.1 * ((d_kz_v / 2) + delta_st_n))
+
+
+
+
+    ax.tick_params(axis='x', colors='white', labelsize=10)
+    ax.tick_params(axis='y', colors='white', labelsize=10)
+    ax.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('white')
+    fig.patch.set_facecolor('#131212')
+    ax.set_facecolor('#131212')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.tick_params(axis='x', colors='white', labelsize=11)
+    ax.tick_params(axis='y', colors='white', labelsize=11)
+
+
+    ax_2.tick_params(axis='x', colors='white', labelsize=10)
+    ax_2.tick_params(axis='y', colors='white', labelsize=10)
+    ax_2.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax_2.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax_2.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax_2.xaxis.set_minor_locator(AutoMinorLocator())
+    ax_2.yaxis.set_minor_locator(AutoMinorLocator())
+    ax_2.title.set_color('white')
+    fig.patch.set_facecolor('#131212')
+    ax_2.set_facecolor('#131212')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax_2.xaxis.set_major_formatter(formatter)
+    ax_2.yaxis.set_major_formatter(formatter)
+    ax_2.tick_params(axis='x', colors='white', labelsize=11)
+    ax_2.tick_params(axis='y', colors='white', labelsize=11)
+
+
+    ax_3.tick_params(axis='x', colors='white', labelsize=10)
+    ax_3.tick_params(axis='y', colors='white', labelsize=10)
+    ax_3.grid(True, color='#D44B46', linestyle='--', linewidth=0.1)
+    ax_3.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax_3.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax_3.xaxis.set_minor_locator(AutoMinorLocator())
+    ax_3.yaxis.set_minor_locator(AutoMinorLocator())
+    ax_3.title.set_color('white')
+    fig.patch.set_facecolor('#131212')
+    ax_3.set_facecolor('#131212')
+    fig.subplots_adjust(left=0.07, bottom=0.05, right=0.98, top=0.98)
+    ax_3.xaxis.set_major_formatter(formatter)
+    ax_3.yaxis.set_major_formatter(formatter)
+    ax_3.tick_params(axis='x', colors='white', labelsize=11)
+    ax_3.tick_params(axis='y', colors='white', labelsize=11)
+
+    canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
+    canvas_widget = canvas.get_tk_widget()
+    canvas_widget.place(x=10, y=10)

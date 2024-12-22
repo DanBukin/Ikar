@@ -827,7 +827,317 @@ class Window_3(ctk.CTk):
         self.label_11.configure(text=f"Выберите относит. длину сопла: {self.l_c_otn:.2f}")
         print_nozzle_2(self.H, self.d_f, self.d_kz, self.d_vh, self.x_st, self.num_copies, self.l_kz_otn, self.phi,
                        self.d_c_otn, self.l_c_otn, self.h_og, self.h_sr, self.h_ras, self.frame2_1)
+class Window_4(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Двухкомпонентная центробежно-центробежная жидкостная форсунка")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        #ctk.deactivate_automatic_dpi_awareness()
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
+        self.configure(bg_color="black")  # Установка цвета фона окна
 
+        self.H = 24
+        self.d_f = 18
+        self.delta_st_n=1.5
+        self.l_c_n=1.5
+        self.d_c_n=12
+        self.l_kz_n=7
+        self.phi_n=45
+        self.d_vh_n=1.5
+        self.i_vh_n=4
+        self.delta_st_v=1.5
+        self.d_kz_v=4
+        self.l_kz_v=13
+        self.d_c_v=2
+        self.l_c_v =1
+        self.phi_v=45
+        self.d_vh_v=1
+        self.i_vh_v=4
+        self.h_og = 2
+        self.h_sr = 2
+
+
+        self.place_scrollbar()
+        self.setup_frame()
+        self.print_label()
+        self.print_slider()
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n, self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v,self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
+    def place_scrollbar(self):
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
+        self.scrollbar_frame_0.place(x=10, y=10)
+        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=445, height=455, fg_color='#131212')  # 171717
+        self.scrollbar_frame_1.place(x=400, y=10)
+    def setup_frame(self):
+        """--------------------Создание мини-окон--------------------"""
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=1660, fg_color="#2b2b2b",bg_color="transparent")
+        self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+        self.frame2_1 = ctk.CTkFrame(master=self.scrollbar_frame_1, width=445, height=1600, fg_color="#131212",
+                                   bg_color="transparent")
+        self.frame2_1.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    def print_label(self):
+        self.label_1 = create_label(self.frame2, "Выбери шаг между форсунками: 24 мм", 2, 2)
+        self.label_1_0 = create_label(self.frame2, "12", 25, 26)
+        self.label_1_1 = create_label(self.frame2, "30", 300, 26)
+        self.label_2 = create_label(self.frame2, "Диаметр форсунки равен: 18.00 мм", 2, 60)
+        self.label_3 = create_label(self.frame2, "Выберите толщину стенок: 1.50 мм", 2, 85)
+        self.label_3_0 = create_label(self.frame2, "0.5", 25, 112)
+        self.label_3_1 = create_label(self.frame2, "3.0", 300, 112)
+        self.label_4 = create_label(self.frame2, "Выберите длину наружнего сопла: 1.50 мм", 2, 140)
+        self.label_4_0 = create_label(self.frame2, "0.5", 25, 167)
+        self.label_4_1 = create_label(self.frame2, f"5.0", 300, 167)
+        self.label_5 = create_label(self.frame2, "Выберите наружний диаметр сопла: 12.00 мм", 2, 140+55)
+        self.label_5_0 = create_label(self.frame2, "5", 35, 167+55)
+        self.label_5_1 = create_label(self.frame2, f"20", 300, 167+55)
+        self.label_6 = create_label(self.frame2, "Выберите длину наруж. камеры закруч-ия: 7.00 мм", 2, 140 + 2*55)
+        self.label_6_0 = create_label(self.frame2, "1", 35, 167 + 2*55)
+        self.label_6_1 = create_label(self.frame2, f"20", 300, 167 + 2*55)
+        self.label_7 = create_label(self.frame2, "Выберите наружний угол сужения: 45°", 2, 140 + 3*55)
+        self.label_7_0 = create_label(self.frame2, "30", 30, 167 + 3*55)
+        self.label_7_1 = create_label(self.frame2, f"85", 300, 167 + 3*55)
+        self.label_8 = create_label(self.frame2, "Выберите диаметр наружних отверстий: 1.5 мм", 2, 140 + 4 * 55)
+        self.label_8_0 = create_label(self.frame2, "0.2", 25, 167 + 4 * 55)
+        self.label_8_1 = create_label(self.frame2, f"6.0", 300, 167 + 4 * 55)
+        self.label_9 = create_label(self.frame2, "Выберите число наружних отверстий: 4", 2, 140 + 5 * 55)
+        self.label_9_0 = create_label(self.frame2, "2", 35, 167 + 5 * 55)
+        self.label_9_1 = create_label(self.frame2, f"6", 300, 167 + 5 * 55)
+        self.label_10 = create_label(self.frame2, "Выберите внутреннюю толщину стенок: 1.5 мм", 2, 140 + 6 * 55)
+        self.label_10_0 = create_label(self.frame2, "0.5", 25, 167 + 6 * 55)
+        self.label_10_1 = create_label(self.frame2, f"3.0", 300, 167 + 6 * 55)
+        self.label_11 = create_label(self.frame2, "Выберите внутр. диаметр камеры закруч-ия: 4.0 мм", 2, 140 + 7 * 55)
+        self.label_11_0 = create_label(self.frame2, "0.5", 25, 167 + 7 * 55)
+        self.label_11_1 = create_label(self.frame2, f"12.5", 300, 167 + 7 * 55)
+        self.label_12 = create_label(self.frame2, "Выберите длину внутр. камеры закруч-ия: 13 мм ", 2, 140 + 8 * 55)
+        self.label_12_0 = create_label(self.frame2, "1", 35, 167 + 8 * 55)
+        self.label_12_1 = create_label(self.frame2, f"40", 300, 167 + 8 * 55)
+        self.label_13 = create_label(self.frame2, "Выберите внутренний диаметр сопла: 2.0 мм", 2, 140 + 9 * 55)
+        self.label_13_0 = create_label(self.frame2, "0.2", 25, 167 + 9 * 55)
+        self.label_13_1 = create_label(self.frame2, f"8.0", 300, 167 + 9 * 55)
+        self.label_14 = create_label(self.frame2, "Выберите длину внутреннего сопла: 1.00 мм ", 2, 140 + 10 * 55)
+        self.label_14_0 = create_label(self.frame2, "0.5", 25, 167 + 10 * 55)
+        self.label_14_1 = create_label(self.frame2, f"5.0", 300, 167 + 10 * 55)
+        self.label_15 = create_label(self.frame2, "Выберите внутренний угол сужения: 45°", 2, 140 + 11 * 55)
+        self.label_15_0 = create_label(self.frame2, "30", 25, 167 + 11 * 55)
+        self.label_15_1 = create_label(self.frame2, f"85", 300, 167 + 11 * 55)
+        self.label_16 = create_label(self.frame2, "Выберите диаметр внутренних отверстий: 1.0 мм", 2, 140 + 12 * 55)
+        self.label_16_0 = create_label(self.frame2, "0.2", 25, 167 + 12 * 55)
+        self.label_16_1 = create_label(self.frame2, f"8.0", 300, 167 + 12 * 55)
+        self.label_17 = create_label(self.frame2, "Выберите число внутренних отверстий: 4", 2, 140 + 13 * 55)
+        self.label_17_0 = create_label(self.frame2, "2", 35, 167 + 13 * 55)
+        self.label_17_1 = create_label(self.frame2, f"6", 300, 167 + 13 * 55)
+
+    def print_slider(self):
+        self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change_1, number_of_steps=18,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider1.place(x=50, y=35)
+        self.slider1.set(24)
+        self.slider2 = ctk.CTkSlider(self.frame2, from_=0.5, to=3, command=self.on_slider_change_2, number_of_steps=25,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider2.place(x=50, y=120)
+        self.slider2.set(1.5)
+        self.slider3 = ctk.CTkSlider(self.frame2, from_=0.5, to=5, command=self.on_slider_change_3, number_of_steps=18,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider3.place(x=50, y=120+55)
+        self.slider3.set(1.5)
+        self.slider4 = ctk.CTkSlider(self.frame2, from_=5, to=20, command=self.on_slider_change_4, number_of_steps=30,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider4.place(x=50, y=120 + 2*55)
+        self.slider4.set(12)
+        self.slider5 = ctk.CTkSlider(self.frame2, from_=1, to=20, command=self.on_slider_change_5, number_of_steps=38,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider5.place(x=50, y=120 + 3 * 55)
+        self.slider5.set(7)
+        self.slider6 = ctk.CTkSlider(self.frame2, from_=30, to=85, command=self.on_slider_change_6, number_of_steps=11,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider6.place(x=50, y=120 + 4 * 55)
+        self.slider6.set(45)
+        self.slider7 = ctk.CTkSlider(self.frame2, from_=0.2, to=6, command=self.on_slider_change_7, number_of_steps=29,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider7.place(x=50, y=120 + 5 * 55)
+        self.slider7.set(1.5)
+        self.slider8 = ctk.CTkSlider(self.frame2, from_=2, to=6, command=self.on_slider_change_8, number_of_steps=4,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider8.place(x=50, y=120 + 6 * 55)
+        self.slider8.set(4)
+        self.slider9 = ctk.CTkSlider(self.frame2, from_=0.5, to=3.0, command=self.on_slider_change_9, number_of_steps=25,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider9.place(x=50, y=120 + 7 * 55)
+        self.slider9.set(1.5)
+        self.slider10 = ctk.CTkSlider(self.frame2, from_=0.5, to=12.5, command=self.on_slider_change_10,number_of_steps=24,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider10.place(x=50, y=120 + 8 * 55)
+        self.slider10.set(4)
+        self.slider11 = ctk.CTkSlider(self.frame2, from_=1, to=40, command=self.on_slider_change_11,number_of_steps=39,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider11.place(x=50, y=120 + 9 * 55)
+        self.slider11.set(13)
+        self.slider12 = ctk.CTkSlider(self.frame2, from_=0.2, to=8, command=self.on_slider_change_12,number_of_steps=39,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider12.place(x=50, y=120 + 10 * 55)
+        self.slider12.set(2)
+        self.slider13 = ctk.CTkSlider(self.frame2, from_=0.5, to=5.0, command=self.on_slider_change_13,number_of_steps=18,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider13.place(x=50, y=120 + 11 * 55)
+        self.slider13.set(1)
+        self.slider14 = ctk.CTkSlider(self.frame2, from_=30, to=85, command=self.on_slider_change_14,number_of_steps=11,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider14.place(x=50, y=120 + 12 * 55)
+        self.slider14.set(45)
+        self.slider15 = ctk.CTkSlider(self.frame2, from_=0.2, to=8.0, command=self.on_slider_change_15,
+                                      number_of_steps=39,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider15.place(x=50, y=120 + 13 * 55)
+        self.slider15.set(1)
+        self.slider16 = ctk.CTkSlider(self.frame2, from_=2, to=6, command=self.on_slider_change_16,
+                                      number_of_steps=4,
+                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                      progress_color=("#D44B46"))
+        self.slider16.place(x=50, y=120 + 14 * 55)
+        self.slider16.set(4)
+    def on_slider_change_1(self, value):
+        self.H = float(value)
+        self.d_f=0.75*self.H
+        self.d_kz_n = self.d_f - (2 * self.delta_st_n)
+        self.label_1.configure(text=f"Выбери шаг между форсунками: {self.H:.0f} мм")
+        self.label_2.configure(text=f"Диаметр форсунки равен: {self.d_f:.2f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_2(self, value):
+        self.delta_st_n = float(value)
+        self.d_kz_n = self.d_f - (2 * self.delta_st_n)
+        self.label_3.configure(text=f"Выберите толщину стенок: {self.delta_st_n:.2f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_3(self, value):
+        self.l_c_n = float(value)
+        self.label_4.configure(text=f"Выберите длину наружнего сопла: {self.l_c_n:.2f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_4(self, value):
+        self.d_c_n = float(value)
+        self.label_5.configure(text=f"Выберите наружний диаметр сопла: {self.d_c_n:.2f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_5(self, value):
+        self.l_kz_n = float(value)
+        self.label_6.configure(text=f"Выберите длину наруж. камеры закруч-ия: {self.l_kz_n:.2f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_6(self, value):
+        self.phi_n = float(value)
+        self.label_7.configure(text=f"Выберите наружний угол сужения: {self.phi_n:.0f}°")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_7(self, value):
+        self.d_vh_n = float(value)
+        self.label_8.configure(text=f"Выберите диаметр наружних отверстий: {self.d_vh_n:.1f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_8(self, value):
+        self.i_vh_n = int(value)
+        self.label_9.configure(text=f'Выберите число наружних отверстий: {self.i_vh_n:.0f}')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_9(self, value):
+        self.delta_st_v = float(value)
+        self.label_10.configure(text=f'Выберите внутреннюю толщину стенок: {self.delta_st_v:.1f} мм')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_10(self, value):
+        self.d_kz_v=float(value)
+        self.label_11.configure(text=f'Выберите внутр. диаметр камеры закруч-ия: {self.d_kz_v:.1f} мм')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_11(self, value):
+        self.l_kz_v=float(value)
+        self.label_12.configure(text=f'Выберите длину внутр. камеры закруч-ия: {self.l_kz_v:.0f} мм')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_12(self, value):
+        self.d_c_v=float(value)
+        self.label_13.configure(text=f"Выберите внутренний диаметр сопла: {self.d_c_v:.1f} мм")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_13(self, value):
+        self.l_c_v=float(value)
+        self.label_14.configure(text=f"Выберите длину внутреннего сопла: {self.l_c_v:.2f} мм ")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_14(self, value):
+        self.phi_v=float(value)
+        self.label_15.configure(text=f'Выберите внутренний угол сужения: {self.phi_v:.0f}°')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_15(self, value):
+        self.d_vh_v=float(value)
+        self.label_16.configure(text=f'Выберите диаметр внутренних отверстий: {self.d_vh_v:.1f} мм')
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
+    def on_slider_change_16(self, value):
+        self.i_vh_v=int(value)
+        self.label_17.configure(text=f"Выберите число внутренних отверстий: {self.i_vh_v:.0f}")
+        print_nozzle_4(self.frame2_1, self.H, self.delta_st_n, self.l_c_n, self.l_kz_n, self.phi_n, self.d_c_n,
+                       self.d_vh_n,
+                       self.i_vh_n, self.delta_st_v, self.l_kz_v, self.l_c_v, self.phi_v, self.d_vh_v,
+                       self.i_vh_v, self.d_kz_v, self.d_c_v, self.h_og, self.h_sr)
 if __name__ == "__main__":
-    app = Window_3()
+    app = Window_4()
     app.mainloop()
