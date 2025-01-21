@@ -1284,7 +1284,11 @@ class Window_8(ctk.CTk):
         y = y
         x = 10
         kolvo = 1
-        kolvo_1=len(type_y_2)
+        try:
+            kolvo_1=len(type_y_2)
+        except:
+            type_y_2=[type_y_2]
+            kolvo_1=1
         if isinstance(type_y_2, list):
             for num in type_y_2:
                 if kolvo == 1:

@@ -822,3 +822,16 @@ def find_l_otn_kz(D_kz,D_f,d_vh,x_st):
     l_1=(D_kz/2)*math.sin(beta)
     l_2=(D_f/2)*math.sin(alpha)
     return l_2-l_1
+def find_otn_fors_4(H, delta_st_n, l_c_n, l_kz_n, phi_n, d_c_n, d_vh_n,h_og):
+    d_f=0.75*H
+    d_kz_n = d_f - (2 * delta_st_n)
+    h_1 = find_h_phi(d_kz_n, d_c_n, phi_n)
+    l_otn=find_l_otn_kz(d_kz_n,d_f,d_vh_n,delta_st_n)
+    otn_1=l_otn/d_vh_n
+    otn_2=l_kz_n/d_kz_n
+    otn_3=l_c_n+h_1+l_kz_n+delta_st_n-h_og
+    R_vh_n=(d_kz_n*0.5)-(d_vh_n*0.5)
+    otn_4=R_vh_n*2/d_c_n
+    otn_5=d_c_n/d_kz_n
+    otn_6=l_c_n/d_c_n
+    return otn_1,otn_2,otn_3,otn_4,otn_5,otn_6
