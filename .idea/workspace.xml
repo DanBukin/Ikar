@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="re-registration of window No. 5">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="Window number 6 is made.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ikar_graphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_graphs.py" afterDir="false" />
@@ -461,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737491901471</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Window number 6 is made.">
+      <option name="closed" value="true" />
+      <created>1737620619341</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1737620619341</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -486,7 +494,8 @@
     <MESSAGE value="re-registration of window No. 3" />
     <MESSAGE value="re-registration of window No. 4" />
     <MESSAGE value="re-registration of window No. 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="re-registration of window No. 5" />
+    <MESSAGE value="Window number 6 is made." />
+    <option name="LAST_COMMIT_MESSAGE" value="Window number 6 is made." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
