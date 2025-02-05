@@ -2246,7 +2246,59 @@ class Window_8(ctk.CTk):
         self.h_sr=float(value)
         self.label_12.configure(text=f"Выберите толщину среднего днища: {self.h_sr:.1f} мм")
         print_nozzle_8(self.frame2_1,self.H,self.d_z,self.h_otv,self.d_c_n,self.d_c_v,self.delta_st_v,self.l_c_n,self.h_og,self.h_sr,self.l_otv,self.l_c_v)
+class Window_9(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Двухкомпонентная струйно-струйная газовая форсунка с внутренним смешением")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        #ctk.deactivate_automatic_dpi_awareness()
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
+        self.configure(bg_color="black")  # Установка цвета фона окна
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+        self.H=20
+        self.delta_st_n=3
+        self.delta_st_v=2
+        self.d_c_v=6
+        self.l_c_n=10
+        self.l_c_v=10
+        self.h_og=2.5
+        self.h_sr=2.5
+        self.phi=30
+        self.d_vh=2
+        self.h_ot=8
+
+        self.place_scrollbar()
+        self.setup_frame()
+        self.create_buttons()
+
+        self.create_buttons()
+
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
+    def create_buttons(self):
+        self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 9 * 55-20)
+    def place_scrollbar(self):
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
+        self.scrollbar_frame_0.place(x=10, y=10)
+        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=445, height=455, fg_color='#131212')  # 171717
+        self.scrollbar_frame_1.place(x=400, y=10)
+    def setup_frame(self):
+        """--------------------Создание мини-окон--------------------"""
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=167 + 9 * 55+20, fg_color="#2b2b2b",bg_color="transparent")
+        self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+        self.frame2_1 = ctk.CTkFrame(master=self.scrollbar_frame_1, width=445, height=450, fg_color="#131212",
+                                   bg_color="transparent")
+        self.frame2_1.grid(row=0, column=0, sticky='w', padx=1, pady=1)
 if __name__ == "__main__":
-    app = Window_8()
+    app = Window_9()
     app.mainloop()
