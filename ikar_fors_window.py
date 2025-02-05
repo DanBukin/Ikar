@@ -94,7 +94,6 @@ class Window_1(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_0.place(x=10, y=10)
@@ -335,7 +334,6 @@ class Window_2(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_0.place(x=10, y=10)
@@ -547,7 +545,6 @@ class Window_3(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_0.place(x=10, y=10)
@@ -893,7 +890,6 @@ class Window_4(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def place_scrollbar(self):
         self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_0.place(x=10, y=10)
@@ -1398,7 +1394,6 @@ class Window_5(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def create_labels(self):
         self.label_1 = create_label(self.frame2, "Выбери шаг между форсунками: 24.00 мм", 2, 2)
         self.label_1_0 = create_label(self.frame2, "12", 25, 26)
@@ -1685,7 +1680,6 @@ class Window_6(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def create_buttons(self):
         self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 11 * 55-20)
     def place_scrollbar(self):
@@ -1904,7 +1898,6 @@ class Window_7(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def create_buttons(self):
         self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 11 * 55-20)
     def place_scrollbar(self):
@@ -2085,7 +2078,6 @@ class Window_8(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def create_buttons(self):
         self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 9 * 55-20)
     def place_scrollbar(self):
@@ -2285,7 +2277,6 @@ class Window_9(ctk.CTk):
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
-        sys.exit()  # Завершает работу программы
     def create_buttons(self):
         self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 9 * 55-20)
     def place_scrollbar(self):
