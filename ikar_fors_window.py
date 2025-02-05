@@ -31,18 +31,18 @@ def open_window_fors(i):
     elif i==6:
         app = Window_6()
         app.mainloop()
-    # elif i==7:
-    #     app = Window_7()
-    #     app.mainloop()
-    # elif i==8:
-    #     app = Window_8()
-    #     app.mainloop()
-    # elif i==9:
-    #     app = Window_9()
-    #     app.mainloop()
-    # else:
-    #     app = Window_10()
-    #     app.mainloop()
+    elif i==7:
+        app = Window_7()
+        app.mainloop()
+    elif i==8:
+        app = Window_8()
+        app.mainloop()
+    elif i==9:
+        app = Window_9()
+        app.mainloop()
+    else:
+        app = Window_10()
+        app.mainloop()
 
 class Window_1(ctk.CTk):
     def __init__(self):
@@ -2244,6 +2244,205 @@ class Window_9(ctk.CTk):
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Двухкомпонентная струйно-струйная газовая форсунка с внутренним смешением")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        #ctk.deactivate_automatic_dpi_awareness()
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
+        self.configure(bg_color="black")  # Установка цвета фона окна
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        self.H=20
+        self.delta_st_n=3
+        self.delta_st_v=2
+        self.d_c_v=6
+        self.l_c_n=10
+        self.l_c_v=10
+        self.h_og=2.5
+        self.h_sr=2.5
+        self.phi=30
+        self.d_vh=2
+        self.h_ot=8
+
+        self.place_scrollbar()
+        self.setup_frame()
+        self.create_buttons()
+        self.create_labels()
+        self.create_sliders()
+        self.create_buttons()
+
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+    def create_buttons(self):
+        self.exit_button = create_button(self.frame2, "Закрыть", lambda: self.destroy(), self.font1, 25, 10, 167 + 9 * 55-20)
+    def place_scrollbar(self):
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=360, height=455,fg_color='#2b2b2b')  # 171717
+        self.scrollbar_frame_0.place(x=10, y=10)
+        self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=445, height=455, fg_color='#131212')  # 171717
+        self.scrollbar_frame_1.place(x=400, y=10)
+    def setup_frame(self):
+        """--------------------Создание мини-окон--------------------"""
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=167 + 9 * 55+20, fg_color="#2b2b2b",bg_color="transparent")
+        self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+        self.frame2_1 = ctk.CTkFrame(master=self.scrollbar_frame_1, width=445, height=450, fg_color="#131212",
+                                   bg_color="transparent")
+        self.frame2_1.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    def create_labels(self):
+        self.label_1 = create_label(self.frame2, "Выбери шаг между форсунками: 20.00 мм", 2, 2)
+        self.label_1_0 = create_label(self.frame2, "12", 25, 26)
+        self.label_1_1 = create_label(self.frame2, "30", 300, 26)
+        self.label_2 = create_label(self.frame2, "Диаметр форсунки равен: 15.00 мм", 2, 60)
+        self.label_3 = create_label(self.frame2, "Выберите толщину наружних стенок: 3.00 мм", 2, 85)
+        self.label_3_0 = create_label(self.frame2, "0.5", 25, 112)
+        self.label_3_1 = create_label(self.frame2, "5.0", 300, 112)
+        self.label_4 = create_label(self.frame2, "Выберите толщину внутренних стенок: 2.00 мм", 2, 140)
+        self.label_4_0 = create_label(self.frame2, "0.5", 25, 167)
+        self.label_4_1 = create_label(self.frame2, f"5.0", 300, 167)
+        self.label_5 = create_label(self.frame2, "Выберите внутренний диаметр сопла: 6.0 мм", 2, 140 + 55)
+        self.label_5_0 = create_label(self.frame2, "1.0", 25, 167 + 55)
+        self.label_5_1 = create_label(self.frame2, f"20.0", 300, 167 + 55)
+        self.label_6 = create_label(self.frame2, "Выберите длину наружнего сопла: 10.0 мм", 2, 140 + 2*55)
+        self.label_6_0 = create_label(self.frame2, "1.0", 25, 167 + 2*55)
+        self.label_6_1 = create_label(self.frame2, f"20.0", 300, 167 + 2*55)
+        self.label_7 = create_label(self.frame2, "Выберите длину внутреннего сопла: 10.0 мм", 2, 140 + 3*55)
+        self.label_7_0 = create_label(self.frame2, "1.0", 25, 167 + 3*55)
+        self.label_7_1 = create_label(self.frame2, f"20.0", 300, 167 + 3*55)
+        self.label_8 = create_label(self.frame2, "Выберите угол наклона отверстий: 45°", 2, 140 + 4*55)
+        self.label_8_0 = create_label(self.frame2, "0", 25, 167 + 4*55)
+        self.label_8_1 = create_label(self.frame2, f"90", 300, 167 + 4*55)
+        self.label_9 = create_label(self.frame2, "Выберите диаметр входных отверстий: 2.0 мм", 2, 140 + 5*55)
+        self.label_9_0 = create_label(self.frame2, "0.5", 25, 167 + 5*55)
+        self.label_9_1 = create_label(self.frame2, f"5.0", 300, 167 + 5*55)
+        self.label_10 = create_label(self.frame2, "Выберите высоту отверстий: 8.0 мм", 2, 140 + 6*55)
+        self.label_10_0 = create_label(self.frame2, "1.0", 25, 167 + 6*55)
+        self.label_10_1 = create_label(self.frame2, f"15.0", 300, 167 + 6*55)
+        self.label_11 = create_label(self.frame2, "Выберите толщину огневого днища: 2.5 мм", 2, 140 + 7*55)
+        self.label_11_0 = create_label(self.frame2, "2", 25, 167 + 7*55)
+        self.label_11_1 = create_label(self.frame2, f"3", 300, 167 + 7*55)
+        self.label_12 = create_label(self.frame2, "Выберите толщину среднего днища: 2.5 мм", 2, 140 + 8*55)
+        self.label_12_0 = create_label(self.frame2, "2", 25, 167 + 8*55)
+        self.label_12_1 = create_label(self.frame2, f"3", 300, 167 + 8*55)
+    def create_sliders(self):
+        self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change_1, number_of_steps=18,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider1.place(x=50, y=35)
+        self.slider1.set(20)
+        self.slider2 = ctk.CTkSlider(self.frame2, from_=0.5, to=5, command=self.on_slider_change_2, number_of_steps=45,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider2.place(x=50, y=120)
+        self.slider2.set(3.0)
+        self.slider3 = ctk.CTkSlider(self.frame2, from_=0.5, to=5, command=self.on_slider_change_3, number_of_steps=45,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider3.place(x=50, y=120 + 55)
+        self.slider3.set(2.0)
+        self.slider4 = ctk.CTkSlider(self.frame2, from_=1, to=20, command=self.on_slider_change_4, number_of_steps=38,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider4.place(x=50, y=120 + 2 * 55)
+        self.slider4.set(6)
+        self.slider5 = ctk.CTkSlider(self.frame2, from_=1, to=20, command=self.on_slider_change_5, number_of_steps=38,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider5.place(x=50, y=120 + 3 * 55)
+        self.slider5.set(10)
+        self.slider6 = ctk.CTkSlider(self.frame2, from_=1, to=20, command=self.on_slider_change_6, number_of_steps=38,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider6.place(x=50, y=120 + 4 * 55)
+        self.slider6.set(10)
+        self.slider7 = ctk.CTkSlider(self.frame2, from_=0, to=90, command=self.on_slider_change_7, number_of_steps=18,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider7.place(x=50, y=120 + 5 * 55)
+        self.slider7.set(45)
+        self.slider8 = ctk.CTkSlider(self.frame2, from_=0.5, to=5, command=self.on_slider_change_8, number_of_steps=45,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider8.place(x=50, y=120 + 6 * 55)
+        self.slider8.set(2.0)
+        self.slider9 = ctk.CTkSlider(self.frame2, from_=1, to=15, command=self.on_slider_change_9, number_of_steps=28,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider9.place(x=50, y=120 + 7 * 55)
+        self.slider9.set(8)
+        self.slider10 = ctk.CTkSlider(self.frame2, from_=2, to=3, command=self.on_slider_change_10, number_of_steps=10,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider10.place(x=50, y=120 + 8 * 55)
+        self.slider10.set(2.5)
+        self.slider11 = ctk.CTkSlider(self.frame2, from_=2, to=3, command=self.on_slider_change_11, number_of_steps=10,
+                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
+                                     progress_color=("#D44B46"))
+        self.slider11.place(x=50, y=120 + 9 * 55)
+        self.slider11.set(2.5)
+    def on_slider_change_1(self, value):
+        self.H=float(value)
+        self.d_f=self.H*0.75
+        self.label_1.configure(text=f"Выбери шаг между форсунками: {self.H:.2f} мм")
+        self.label_2.configure(text=f"Диаметр форсунки равен: {self.d_f:.2f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+    def on_slider_change_2(self, value):
+        self.delta_st_n=float(value)
+        self.label_3.configure(text=f"Выберите толщину наружних стенок: {self.delta_st_n:.2f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_3(self, value):
+        self.delta_st_v=float(value)
+        self.label_4.configure(text=f"Выберите толщину внутренних стенок: {self.delta_st_v:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_4(self, value):
+        self.d_c_v=float(value)
+        self.label_5.configure(text=f"Выберите внутренний диаметр сопла: {self.d_c_v:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_5(self, value):
+        self.l_c_n=float(value)
+        self.label_6.configure(text=f"Выберите длину наружнего сопла: {self.l_c_n:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_6(self, value):
+        self.l_c_v=float(value)
+        self.label_7.configure(text=f"Выберите длину внутреннего сопла: {self.l_c_v:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_7(self, value):
+        self.phi=float(value)
+        self.label_8.configure(text=f"Выберите угол наклона отверстий: {self.phi:.0f}°")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_8(self, value):
+        self.d_vh=float(value)
+        self.label_9.configure(text=f"Выберите диаметр входных отверстий: {self.d_vh:.2f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_9(self, value):
+        self.h_ot=float(value)
+        self.label_10.configure(text=f"Выберите высоту отверстий: {self.h_ot:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_10(self, value):
+        self.h_og=float(value)
+        self.label_11.configure(text=f"Выберите толщину огневого днища: {self.h_og:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+
+    def on_slider_change_11(self, value):
+        self.h_sr=float(value)
+        self.label_12.configure(text=f"Выберите толщину среднего днища: {self.h_sr:.1f} мм")
+        print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
+class Window_10(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Двухкомпонентная струйно-струйная газожидкостная форсунка с внутренним смешением")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
         self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы

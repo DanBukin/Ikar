@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="nozzle numbers 9 and 10 are drawn.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="the functions of forced termination of the entire program have been removed">
       <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -492,12 +491,26 @@
       <option name="project" value="LOCAL" />
       <updated>1738757559917</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Window No. 9 is ready">
+      <option name="closed" value="true" />
+      <created>1738766495112</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1738766495112</updated>
+    </task>
+    <task id="LOCAL-00039" summary="the functions of forced termination of the entire program have been removed">
+      <option name="closed" value="true" />
+      <created>1738766587437</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1738766587437</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="initial commit" />
-    <MESSAGE value="add gitignore" />
     <MESSAGE value="add new comment" />
     <MESSAGE value="add changes" />
     <MESSAGE value="fix conflicts" />
@@ -521,7 +534,9 @@
     <MESSAGE value="Window number 7 is made." />
     <MESSAGE value="Window number 8 is made." />
     <MESSAGE value="nozzle numbers 9 and 10 are drawn." />
-    <option name="LAST_COMMIT_MESSAGE" value="nozzle numbers 9 and 10 are drawn." />
+    <MESSAGE value="Window No. 9 is ready" />
+    <MESSAGE value="the functions of forced termination of the entire program have been removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="the functions of forced termination of the entire program have been removed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -533,7 +548,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ikar_fors_window.py</url>
-          <line>1011</line>
+          <line>1007</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
