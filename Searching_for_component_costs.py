@@ -1,5 +1,3 @@
-from sympy import symbols, Eq, solve, oo
-import sympy
 def find_costs(i,a,b,c,d,f,g):
     x_1 = 0
     x_2 = 0
