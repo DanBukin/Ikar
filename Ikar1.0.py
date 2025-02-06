@@ -71,6 +71,7 @@ class user:
         self.angles_square = None
         self.coord_gor = None
         self.coord_ok = None
+        self.km_graph=None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -641,7 +642,7 @@ class Window_4(ctk.CTk):
         if self.choice<10:
             self.label_5 = create_label(self, "Какая доля идёт на пристенок:                      %", 10, 250)
             if self.choice==5 or self.choice==7 or self.choice==9:
-                self.label_6_0 = create_label(self, "Введите соотношение компонентов в пристенке:", 10, 280)
+                self.label_6_0 = create_label(self, "Введите соот-ие компонентов в пристенке:", 10, 280)
                 self.label_6 = create_label(self, "Какое горючее в пристенке?", 10, 310)
                 self.label_7 = create_label(self, "Какой окислитель в пристенке?", 10, 400)
             else:
@@ -669,7 +670,7 @@ class Window_4(ctk.CTk):
         if self.choice < 10:
             self.Entry3 = create_entry(self, 70, self.entry3_value, 215, 250)
             if self.choice == 5 or self.choice == 7 or self.choice == 9:
-                self.Entry4 = create_entry(self, 70, self.entry4_value, 330, 280)
+                self.Entry4 = create_entry(self, 70, self.entry4_value, 300, 280)
     def print_radio_button(self):
         self.radio_var_1 = ctk.IntVar(value=8)
         self.radio_var_2 = ctk.IntVar(value=1)
@@ -1067,6 +1068,7 @@ class Window_6(ctk.CTk):
 
     def close_window(self):
         self.destroy()
+        user.km_graph=self.km_graph
         window_7 = Window_7(self.km_graph)
         window_7.mainloop()
 class Window_7(ctk.CTk):
@@ -1228,8 +1230,22 @@ class Window_8(ctk.CTk):
         self.place_scrollbar()
         self.setup_frame()
         self.find_type()
-        #self.print_button()
-
+        self.print_button()
+    def print_button(self):
+        self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 10, 450)
+        self.window_button = create_button(self, "Открыть все возможные форсунки", lambda: self.open_window(), self.font1, 500, 200, 450)
+        self.exit_button = create_button(self, "Выход", lambda: self.exit_window(),self.font1, 100, 750, 450)
+    def back_window(self):
+        self.destroy()
+        window_7 = Window_7(user.km_graph)
+        window_7.mainloop()
+    def open_window(self):
+        self.destroy()
+        window_9 = Window_9()
+        window_9.mainloop()
+    def exit_window(self):
+        self.destroy()
+        sys.exit()
     def on_closing(self):
         """=====Действие при нажатии на крестик закрытия окна====="""
         self.destroy()
@@ -1240,13 +1256,15 @@ class Window_8(ctk.CTk):
             self.type_y_2 = find_value(user.choice, user.number, fors_data_y_2)
             self.label_2=create_label(self.frame2,f'Рекомендуемые схемы форсунок:',10,27)
             self.x=self.print_fors_y_2(self.type_y_2,57)
-            if user.choice!=13 and user.choice!=14 and user.choice!=15 or user.choice==4 or user.choice==6 or user.choice==8:
+            if (user.choice!=13 and user.choice!=14 and user.choice!=15 and user.choice!=5 and user.choice!=7 and user.choice!=9) or user.choice==4 or user.choice==6 or user.choice==8:
                 self.type_pr = find_value(user.choice, user.number, fors_data_pr)
                 self.label_3 = create_label(self.frame2, "Пристенок однокомпонентный", 10, self.x)
+                print(1)
                 self.x_1 = self.print_fors_y_2(self.type_pr,self.x+25)
             elif user.choice==5 or user.choice==7 or user.choice==9:
                 self.type_pr = find_value(user.choice, user.number, fors_data_pr)
                 self.label_3 = create_label(self.frame2, "Пристенок двухкомпонентный", 10, self.x)
+                print(2)
                 self.x_1 = self.print_fors_y_2(self.type_pr, self.x+25)
             else:
                 self.label_3 = create_label(self.frame2, "Пристенок отсутствует", 10, self.x)
@@ -1264,20 +1282,13 @@ class Window_8(ctk.CTk):
                 self.x_2=self.print_fors_y_2(self.type_pr, self.x_1+25)
             else:
                 self.label_3 = create_label(self.frame2, "Пристенок отсутствует", 10, self.x_1)
-    def print_button(self):
-        self.image_path = "data/Frame57.png"  # Укажите путь к изображению
-        self.image = Image.open(self.image_path).resize((666, 750))  # Изменяем размер изображения
-        self.photo = ctk.CTkImage(light_image=self.image, size=(round(666*0.6), round(750*0.6)))  # Создаем объект ctk.CTkImage
-        self.image_button = ctk.CTkButton(self.frame2,image=self.photo,text="",width=round(666/4),height=round(750/4),fg_color="transparent",hover_color="#9E3C39",command=self.on_button_click)
-        self.image_button.place(x=10,y=10)
-    def on_button_click(self):
-        print('Кнопка нажата!')
+
     def place_scrollbar(self):
-        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=845, height=475,fg_color='#1A1A1A')  # 171717
-        self.scrollbar_frame_0.place(x=0, y=0)
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=845, height=430,fg_color='#0E0E0E')  # 171717
+        self.scrollbar_frame_0.place(x=0, y=2)
     def setup_frame(self):
         """--------------------Создание мини-окон--------------------"""
-        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=845, height=2000, fg_color="#1A1A1A",bg_color="transparent")
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=845, height=2000, fg_color="#0E0E0E",bg_color="transparent")
         self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
 
     def print_fors_y_2(self,type_y_2,y):
@@ -1332,56 +1343,135 @@ class Window_8(ctk.CTk):
                     y += round(666 * 0.55) + 60
         if kolvo_1==1:
             y+=round(666 * 0.55) + 60
+        self.frame2.configure(height=y)
         return y
-    def print_fors_pr_1(self,y):
-        y = y
-        x = 10
-        kolvo = 1
-        if isinstance(self.type_y_2, list):
-            for num in self.type_y_2:
-                if kolvo == 1:
-                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
-                    num_0 = num
-                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
-                    photo = ctk.CTkImage(light_image=image,
-                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
-                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
-                                                 height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
-                                                 command=lambda: self.on_button_click(num_0))
-                    image_button.place(x=x, y=y)
-                    x += round(666 * 0.55) + 60
-                    kolvo += 1
-                elif kolvo == 2:
-                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
-                    num_1 = num
-                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
-                    photo = ctk.CTkImage(light_image=image,
-                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
-                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
-                                                 height=round(750 / 4),
-                                                 fg_color="transparent", hover_color="#9E3C39",
-                                                 command=lambda: self.on_button_click(num_1))
-                    image_button.place(x=x, y=y)
-                    x -= round(666 * 0.55) + 60
-                    y += round(666 * 0.55) + 60
-                    kolvo += 1
-                else:
-                    image_path = f"data/fors_{num}.png"  # Укажите путь к изображению
-                    num_2 = num
-                    image = Image.open(image_path).resize((666, 750))  # Изменяем размер изображения
-                    photo = ctk.CTkImage(light_image=image,
-                                         size=(round(666 * 0.55), round(750 * 0.55)))  # Создаем объект ctk.CTkImage
-                    image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=round(666 / 4),
-                                                 height=round(750 / 4),
-                                                 fg_color="transparent", hover_color="#9E3C39",
-                                                 command=lambda: self.on_button_click(num_2))
-                    image_button.place(x=x, y=y)
-                    x -= round(666 * 0.55) + 60
-                    y += round(666 * 0.55) + 60
-        return y
+
     def on_button_click(self,num):
         open_window_fors(num)
+class Window_9(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
+        self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
+        self.title("Все возможные форсунки")  # Название программы
+        self.resizable(False, False)  # Запрет изменения размера окна
+        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
+        self.fg_color = 'white'
+        ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        #ctk.deactivate_automatic_dpi_awareness()
+        self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
+        self.configure(bg_color="black")  # Установка цвета фона окна
 
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.place_scrollbar()
+        self.setup_frame()
+        self.print_images()
+        self.print_button()
+    def on_closing(self):
+        """=====Действие при нажатии на крестик закрытия окна====="""
+        self.destroy()
+        sys.exit()  # Завершает работу программы
+    def place_scrollbar(self):
+        self.scrollbar_frame_0 = ctk.CTkScrollableFrame(self, width=845, height=475,fg_color='#0E0E0E')  # 171717
+        self.scrollbar_frame_0.place(x=0, y=2)
+    def setup_frame(self):
+        """--------------------Создание мини-окон--------------------"""
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=845, height=310 * 4, fg_color="#0E0E0E",bg_color="transparent")
+        self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
+    def print_images(self):
+        image_path = f"data/fors_1.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image,size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(1))
+        image_button.place(x=2, y=2)
+
+        image_path = f"data/fors_2.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(2))
+        image_button.place(x=280, y=2)
+
+        image_path = f"data/fors_3.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(3))
+        image_button.place(x=555, y=2)
+
+        image_path = f"data/fors_4.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(4))
+        image_button.place(x=2, y=310)
+
+        image_path = f"data/fors_5.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(5))
+        image_button.place(x=280, y=310)
+
+        image_path = f"data/fors_6.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(6))
+        image_button.place(x=555, y=310)
+
+        image_path = f"data/fors_7.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(7))
+        image_button.place(x=2, y=310*2)
+
+        image_path = f"data/fors_8.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(8))
+        image_button.place(x=280, y=310*2)
+
+        image_path = f"data/fors_9.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(9))
+        image_button.place(x=555, y=310*2)
+
+        image_path = f"data/fors_10.png"
+        image = Image.open(image_path).resize((666, 750))
+        photo = ctk.CTkImage(light_image=image, size=(round(666 * 0.4), round(750 * 0.4)))
+        image_button = ctk.CTkButton(self.frame2, image=photo, text="", width=1,
+                                     height=round(750 / 4), fg_color="transparent", hover_color="#9E3C39",
+                                     command=lambda: self.on_button_click(10))
+        image_button.place(x=2, y=310 * 3)
+    def on_button_click(self,num):
+        open_window_fors(num)
+    def print_button(self):
+        self.back_button = create_button(self.frame2, "Назад", lambda: self.back_window(), self.font1, 100, 740, 310 * 4-62)
+        self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(),self.font1, 100, 740, 310 * 4-30)
+    def back_window(self):
+        self.destroy()
+        window_8 = Window_8()
+        window_8.mainloop()
+
+    def exit_window(self):
+        self.destroy()
+        sys.exit()
 if __name__ == "__main__":
     app = Window_1()
     app.mainloop()

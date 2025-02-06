@@ -23,22 +23,22 @@ def open_window_fors(i):
         app = Window_3()
         app.mainloop()
     elif i==4:
-        app = Window_4()
-        app.mainloop()
-    elif i==5:
         app = Window_5()
         app.mainloop()
-    elif i==6:
-        app = Window_6()
+    elif i==5:
+        app = Window_4()
         app.mainloop()
-    elif i==7:
+    elif i==6:
         app = Window_7()
         app.mainloop()
+    elif i==7:
+        app = Window_6()
+        app.mainloop()
     elif i==8:
-        app = Window_8()
+        app = Window_9()
         app.mainloop()
     elif i==9:
-        app = Window_9()
+        app = Window_8()
         app.mainloop()
     else:
         app = Window_10()
