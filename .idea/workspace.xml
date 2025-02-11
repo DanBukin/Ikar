@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="The program has been completed">
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add Ikar.exe">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/Ikar1.0/_internal/ikar/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/output/Ikar1.0/_internal/ikar/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ikar1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar1.0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -524,11 +526,26 @@
       <option name="project" value="LOCAL" />
       <updated>1738836896482</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1738840039468</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1738840039468</updated>
+    </task>
+    <task id="LOCAL-00043" summary="add Ikar.exe">
+      <option name="closed" value="true" />
+      <created>1738840886341</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1738840886341</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix conflicts" />
     <MESSAGE value="commit 1" />
     <MESSAGE value="commit 2" />
     <MESSAGE value="add requirements.txt" />
@@ -536,7 +553,6 @@
     <MESSAGE value="add ikar_graphs, the final completion of the Ievlev method" />
     <MESSAGE value="add 3d graphs, graph near line and graphs near arc." />
     <MESSAGE value="add &quot;cantera&quot;, add 3d graph (Temperature)" />
-    <MESSAGE value="fixed bugs" />
     <MESSAGE value="add window (nozzle №1)" />
     <MESSAGE value="add window (nozzle_type)" />
     <MESSAGE value="add ikar_fors_window.py" />
@@ -553,7 +569,9 @@
     <MESSAGE value="the functions of forced termination of the entire program have been removed" />
     <MESSAGE value="Window number 10 has been made" />
     <MESSAGE value="The program has been completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="The program has been completed" />
+    <MESSAGE value="fixed bugs" />
+    <MESSAGE value="add Ikar.exe" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Ikar.exe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -567,6 +585,11 @@
           <url>file://$PROJECT_DIR$/ikar_fors_window.py</url>
           <line>1007</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ikar_fors_window.py</url>
+          <line>1821</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

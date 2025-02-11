@@ -86,6 +86,7 @@ class Window_1(ctk.CTk):
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
+        ctk.set_appearance_mode("dark")
 
         self.global_image = None
         self.image_label = None
@@ -193,6 +194,7 @@ class Window_2(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
         self.choice = choice
         self.H=17
@@ -446,6 +448,7 @@ class Window_3(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
         self.choice = choice
         self.D_k=D_k
@@ -609,6 +612,7 @@ class Window_4(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
         self.choice = choice
         self.a=0
@@ -852,6 +856,7 @@ class Window_5(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
 
         self.n=3
@@ -992,6 +997,7 @@ class Window_6(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
         self.n_pl=n_pl
         self.centers_square=centers_square
@@ -1081,6 +1087,7 @@ class Window_7(ctk.CTk):
         self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         self.iconbitmap('data/sunset.ico')
         self.km_graph=km_graph
 
@@ -1132,8 +1139,8 @@ class Window_7(ctk.CTk):
         self.label_2 = create_label(self.frame_3, "Давление в КС (МПа):", 7, 2)
     def setup_combobox(self):
         """=====Создание ячеек с компонентами====="""
-        self.combobox1 = ctk.CTkComboBox(self.frame_1,values=["", "Кислород", "Озон", "АК", "АК-27", "АТ", "Перекись водорода", "Воздух"],command=self.combobox_callback1, font=self.font2, width=170)
-        self.combobox2 = ctk.CTkComboBox(self.frame_2,values=["", "Водород", "НДМГ", "Метан", "Аммиак", "Керосин РГ-1", "Керосин Т-1","Керосин RP-1", "Синтин", "Боктан", "Этанол", "ММГ", "Гидразин", "Анилин","Триэтиламин", "Ксилидин", ], command=self.combobox_callback2, font=self.font2,width=170)
+        self.combobox1 = ctk.CTkComboBox(self.frame_1,values=["", "Кислород", "Озон", "АК", "АК-27", "АТ", "Перекись водорода", "Воздух"],command=self.combobox_callback1, font=("Futura PT Book", 14),dropdown_font=("Futura PT Book", 14), width=170)
+        self.combobox2 = ctk.CTkComboBox(self.frame_2,values=["", "Водород", "НДМГ", "Метан", "Аммиак", "Керосин РГ-1", "Керосин Т-1","Керосин RP-1", "Синтин", "Боктан", "Этанол", "ММГ", "Гидразин", "Анилин","Триэтиламин", "Ксилидин", ], command=self.combobox_callback2, font=("Futura PT Book", 14),dropdown_font=("Futura PT Book", 14),width=170)
         self.combobox1.place(x=5, y=30)
         self.combobox2.place(x=5, y=30)
     def combobox_callback1(self,value):
@@ -1222,6 +1229,7 @@ class Window_8(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -1359,6 +1367,7 @@ class Window_9(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна

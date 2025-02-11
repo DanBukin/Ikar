@@ -1819,7 +1819,7 @@ class Window_6(ctk.CTk):
         self.label_3.configure(text=f'Выберите толщину наружних стенок: {self.delta_st_n:.2f} мм')
         print_nozzle_6(self.frame2_1, self.H,self.d_f,self.delta_st_n,self.d_c_n,self.phi_n,self.l_c_n,self.l_k_z,self.d_c_v,self.delta_st_v,self.l_c_v,self.d_vh_n,self.h_og,self.h_sr,self.i_vh_n)
     def on_slider_change_3(self, value):
-        self.i_vh_n=float(value)
+        self.i_vh_n=int(value)
         self.label_4.configure(text=f'Выберите число наружних отверстий: {self.i_vh_n:.0f}')
         print_nozzle_6(self.frame2_1, self.H,self.d_f,self.delta_st_n,self.d_c_n,self.phi_n,self.l_c_n,self.l_k_z,self.d_c_v,self.delta_st_v,self.l_c_v,self.d_vh_n,self.h_og,self.h_sr,self.i_vh_n)
     def on_slider_change_4(self, value):
