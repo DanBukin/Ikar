@@ -6,36 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="fixed the sliders">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/Ikar1.0.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/alpha_105.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/alpha_data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/dark-red.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_data_pr.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_data_y_1_gor.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_data_y_1_ok.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fors_data_y_2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/frame_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/frame_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/frame_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/frame_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/frame_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fuel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/fuel_data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/ofont.ru_Futura PT.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/oxigen.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/oxigen_data.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/data/sunset.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar_exe/gri30_highT.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -593,7 +563,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739287659135</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="fixed the sliders">
+      <option name="closed" value="true" />
+      <created>1739298961852</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1739298961852</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
