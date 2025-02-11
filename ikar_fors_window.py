@@ -1568,7 +1568,7 @@ class Window_5(ctk.CTk):
                        self.d_vh_n, self.l_kz_n, self.d_f_vn, self.phi_n, self.d_c_n, self.l_c_n, self.l_c_v,
                        self.i_vh_v, self.d_vh_v, self.h_vist, self.h_og, self.h_sr)
     def on_slider_change_3(self, value):
-        self.i_vh_n=float(value)
+        self.i_vh_n=int(value)
         self.label_4.configure(text=f"Выберите число наружних отверстий: {self.i_vh_n:.0f}")
         print_nozzle_5(self.frame2_1, self.H, self.d_f, self.delta_st_n, self.d_kz_n, self.i_vh_n,
                        self.d_vh_n, self.l_kz_n, self.d_f_vn, self.phi_n, self.d_c_n, self.l_c_n, self.l_c_v,
@@ -1616,7 +1616,7 @@ class Window_5(ctk.CTk):
                        self.d_vh_n, self.l_kz_n, self.d_f_vn, self.phi_n, self.d_c_n, self.l_c_n, self.l_c_v,
                        self.i_vh_v, self.d_vh_v, self.h_vist, self.h_og, self.h_sr)
     def on_slider_change_11(self, value):
-        self.i_vh_v=float(value)
+        self.i_vh_v=int(value)
         self.label_11.configure(text=f"Выберите число внутренних отверстий: {self.i_vh_v:.0f}")
         print_nozzle_5(self.frame2_1, self.H, self.d_f, self.delta_st_n, self.d_kz_n, self.i_vh_n,
                        self.d_vh_n, self.l_kz_n, self.d_f_vn, self.phi_n, self.d_c_n, self.l_c_n, self.l_c_v,
@@ -2012,7 +2012,7 @@ class Window_7(ctk.CTk):
         print_nozzle_7(self.frame2_1,self.H,self.delta_st,self.l_c_n,self.l_c_v,self.d_c_v,self.delta_og,self.delta_sr,self.d_vh,self.i_vh)
 
     def on_slider_change_3(self, value):
-        self.i_vh=float(value)
+        self.i_vh=int(value)
         self.label_4.configure(text=f"Выберите число наружних отверстий: {self.i_vh:.0f}")
         print_nozzle_7(self.frame2_1,self.H,self.delta_st,self.l_c_n,self.l_c_v,self.d_c_v,self.delta_og,self.delta_sr,self.d_vh,self.i_vh)
 
