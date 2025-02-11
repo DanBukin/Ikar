@@ -55,6 +55,7 @@ class Window_1(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -308,6 +309,7 @@ class Window_2(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -514,6 +516,7 @@ class Window_3(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -850,6 +853,7 @@ class Window_4(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -1344,6 +1348,7 @@ class Window_5(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -1651,6 +1656,7 @@ class Window_6(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -1873,6 +1879,7 @@ class Window_7(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -2051,6 +2058,7 @@ class Window_8(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -2249,6 +2257,7 @@ class Window_9(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
@@ -2448,6 +2457,7 @@ class Window_10(ctk.CTk):
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
+        ctk.set_appearance_mode("dark")
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
