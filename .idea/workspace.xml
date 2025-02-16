@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="added a button to save the images">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ikar1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Ikar2.0.py" afterDir="false" />
-    </list>
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="renamed from Ikar1.0.py" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -196,14 +193,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725614237278</updated>
-    </task>
-    <task id="LOCAL-00003" summary="add new comment">
-      <option name="closed" value="true" />
-      <created>1725615697719</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1725615697719</updated>
     </task>
     <task id="LOCAL-00004" summary="add changes">
       <option name="closed" value="true" />
@@ -589,11 +578,18 @@
       <option name="project" value="LOCAL" />
       <updated>1739714098887</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="renamed from Ikar1.0.py">
+      <option name="closed" value="true" />
+      <created>1739724291552</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1739724291552</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add ikar_graphs, the final completion of the Ievlev method" />
     <MESSAGE value="add 3d graphs, graph near line and graphs near arc." />
     <MESSAGE value="add &quot;cantera&quot;, add 3d graph (Temperature)" />
     <MESSAGE value="add window (nozzle №1)" />
@@ -618,7 +614,8 @@
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="added a button to save the results" />
     <MESSAGE value="added a button to save the images" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a button to save the images" />
+    <MESSAGE value="renamed from Ikar1.0.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed from Ikar1.0.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
