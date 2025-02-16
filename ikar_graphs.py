@@ -689,7 +689,6 @@ def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
     canvas_widget.place(x=650, y=70)
 
     return r_0*2
-
 def print_dot(coord,D_k,frame, H,n):
     fig = Figure(figsize=(6, 6), dpi=100)
     ax = fig.add_subplot(111)
@@ -747,7 +746,6 @@ def print_dot(coord,D_k,frame, H,n):
     canvas_widget.place(x=10, y=50)
     print(f'Количество площадок для расчёта равно: {k}')
     return k,centers_square,angles_square
-
 def draw_circle_with_points(center_x, center_y, points_itog, H,D,frame,k):
     fig = Figure(figsize=(5, 5), dpi=100)
     ax = fig.add_subplot(111)
@@ -818,7 +816,6 @@ def rotated_square(x, y, H, angle):
     rotated_vertices += np.array([x, y])
 
     return rotated_vertices
-
 def is_point_in_circle(x0, y0, x, y, H):
     '''=====Функция для проверки, находится ли точка в окружности====='''
     radius = 3.0001 * H
@@ -2109,7 +2106,6 @@ def print_nozzle_6(frame,H,d_f,delta_st_n,d_c_n,phi_n,l_c_n,l_k_z,d_c_v,delta_st
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=10)
-
 def print_nozzle_7(frame,H,delta_st,l_c_n,l_c_v,d_c_v,delta_og,delta_sr,d_vh,i_vh):
     d_f=H*0.75
     d_c_n=d_f-(2*delta_st)
@@ -2283,7 +2279,6 @@ def print_nozzle_7(frame,H,delta_st,l_c_n,l_c_v,d_c_v,delta_og,delta_sr,d_vh,i_v
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=10)
-
 def print_nozzle_8(frame,H,d_z,h_otv,d_c_n,d_c_v,delta_st_v,l_c_n,h_og,h_sr,l_otv,l_c_v):
     d_f=H*0.75
     x_f_otv=math.sqrt(0.5*d_f*0.5*d_f-(0.5*0.5*h_otv*h_otv))
@@ -2619,3 +2614,918 @@ def print_nozzle_9(frame,H,delta_st_n,delta_st_v,d_c_v,l_c_n,l_c_v,h_og,h_sr,phi
     canvas = FigureCanvasTkAgg(fig, master=frame)  # frame - это контейнер, где должен быть размещен график
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=10, y=10)
+def chess_scheme_with_a_wall_chb(D_k, H, edge_count,delta_wall,delta,delta_y_pr,number,dop_sloy):
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    number_0=number
+    color_g='black'
+    color_o='#353535'
+    color_y_1='#353535'
+    color_f='white'
+
+    if number_0==4:
+        color_pr=color_g
+        color_pr_1 = color_g
+        color_y_1=color_g
+        color_y_1_1 = color_f
+        color_y_2=color_g
+        color_y_2_1 = color_f
+    if number_0==5:
+        color_pr = color_g
+        color_pr_1 = color_f
+        color_y_1 = color_g
+        color_y_1_1 = color_f
+        color_y_2 = color_g
+        color_y_2_1 = color_f
+    if number_0==1:
+        color_pr = color_g
+        color_pr_1 = color_g
+        color_y_1 = color_g
+        color_y_1_1 = color_g
+        color_y_2 = color_o
+        color_y_2_1 = color_f
+    fig_10, ax_10 = plt.subplots()
+    fig_10.canvas.manager.set_window_title("График 1 - Шахматная схема расположения")
+    ax_10.set_aspect('equal', adjustable='box')
+    ax_10.set_facecolor('#FFFFFF')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+    r_0 = r - (delta*0.5)
+    centers = []  # Сюда будут записываться координаты форсунок
+    centers_ok=[]
+    centers_gor=[]
+
+    alpha = 360 / edge_count
+    i = 0
+    d_wall = (2 * (D_k / 2 - delta_wall) * np.sin(np.radians(180 / edge_count))) / (
+                1 + np.sin(np.radians(180 / edge_count)))
+
+    while i < 360:
+        x = (D_k / 2 - delta_wall - d_wall / 2) * np.cos(np.radians(i))
+        y = (D_k / 2 - delta_wall - d_wall / 2) * np.sin(np.radians(i))
+        i += alpha
+        circle = plt.Circle((x, y), d_wall / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+        circle_1 = plt.Circle((x, y), d_wall / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+        ax_10.add_patch(circle)
+        ax_10.add_patch(circle_1)
+        ax_10.add_patch(circle_2)
+    edge_radius = d_wall/2
+    # Границы сетки, чтобы покрыть всю большую окружность
+    max_index = int((R_k-2*edge_radius-delta_wall-delta_y_pr) // H) + 1
+
+    if dop_sloy == 2:
+        alpha_2 = 360 / (edge_count - 6)
+        i = 0
+        d_wall_2 = d_wall
+
+        while i < 360:
+            x = (R_k - delta_wall - d_wall - d_wall / 2) * np.cos(np.radians(i))
+            y = (R_k - delta_wall - d_wall - d_wall / 2) * np.sin(np.radians(i))
+            i += alpha_2
+            circle = plt.Circle((x, y), d_wall_2 / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+            circle_1 = plt.Circle((x, y), d_wall_2 / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+            ax_10.add_patch(circle)
+            ax_10.add_patch(circle_1)
+            ax_10.add_patch(circle_2)
+        max_index = int((R_k - 4 * edge_radius - delta_wall - delta_y_pr) // H) + 1
+
+    # Сетка
+    for i in range(-max_index, max_index + 1):
+        for j in range(-max_index, max_index + 1):
+            x = i * H
+            y = j * H
+            if dop_sloy == 1:
+                # Проверяем, что окружность не выходит за границы
+                if np.sqrt(x ** 2 + y ** 2) + r <= (R_k-2*edge_radius-delta_wall-delta_y_pr):
+                    centers.append((x, y))
+            else:
+                if np.sqrt(x ** 2 + y ** 2) + r <= (R_k-4*edge_radius-delta_wall-delta_y_pr):
+                    centers.append((x, y))
+
+    # Рисуем большую окружность
+    big_circle = plt.Circle((0, 0), R_k, fill=False, color=color_g)
+    ax_10.add_artist(big_circle)
+
+    # Рисуем маленькие окружности
+    n_gor_0=0
+    n_ok_0=0
+    for (x, y) in centers:
+        if (int((x / H) + (y / H)) % 2) == 0:
+            n_ok_0+=1
+            color = color_y_1 # Цвет окислительных форсунок, если они однокомпонентные (white)
+            color_1=color_y_1_1
+            centers_ok.append((x, y))
+        else:
+            n_gor_0 +=1
+            color = color_y_2
+            color_1=color_y_2_1
+            centers_gor.append((x, y))
+        small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color)
+        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color, facecolor=color_1)
+        dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color, facecolor=color_1)
+        ax_10.add_artist(small_circle)
+        ax_10.add_artist(small_circle_0)
+        ax_10.add_artist(dot_0)
+
+    ax_10.tick_params(axis='x', colors='black', labelsize=14)
+    ax_10.tick_params(axis='y', colors='black', labelsize=14)
+    ax_10.grid(True, color='white', linestyle='--', linewidth=0.1)
+    ax_10.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax_10.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax_10.xaxis.set_minor_locator(AutoMinorLocator())
+    ax_10.yaxis.set_minor_locator(AutoMinorLocator())
+    ax_10.title.set_color('black')
+    fig_10.patch.set_facecolor('white')  # 171717
+    fig_10.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax_10.xaxis.set_major_formatter(formatter)
+    ax_10.yaxis.set_major_formatter(formatter)
+
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_10.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_10.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_10.set_xlim(-R_k - H, R_k + H)
+    ax_10.set_ylim(-R_k - H, R_k + H)
+def cellular_scheme_with_a_wall_chb(D_k, H, edge_count,delta_wall,delta,delta_y_pr,number,dop_sloy):
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    number_0=number
+    color_g='black'
+    color_o='black'
+    color_f='white'
+
+    if number_0==6:
+        color_pr=color_g
+        color_pr_1 = color_g
+        color_y_1=color_f
+        color_y_2=color_g
+        color_y_1_0=color_f
+    if number_0==7:
+        color_pr = color_g
+        color_pr_1 = color_f
+        color_y_1 = color_f
+        color_y_2 = color_g
+
+    if number_0==2:
+        color_pr = color_g
+        color_pr_1 = color_g
+        color_y_1 = color_g
+        color_y_2 = color_o
+
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 1 - Сотовая схема расположения")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+
+
+    circle_0 = plt.Circle((0, 0), D_k / 2, edgecolor=color_g, facecolor=color_f)
+    ax.add_patch(circle_0)
+
+    alpha = 360 / edge_count
+    i = 0
+    d_wall = (2 * (D_k / 2 - delta_wall) * np.sin(np.radians(180 / edge_count))) / (1 + np.sin(np.radians(180 / edge_count)))
+    d_itog = 2 * (D_k / 2 - delta_wall - d_wall - delta_y_pr)
+
+    while i < 360:
+        x = (D_k / 2 - delta_wall - d_wall / 2) * np.cos(np.radians(i))
+        y = (D_k / 2 - delta_wall - d_wall / 2) * np.sin(np.radians(i))
+        i += alpha
+        circle = plt.Circle((x, y), d_wall / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+        circle_1 = plt.Circle((x, y), d_wall / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+        ax.add_patch(circle)
+        ax.add_patch(circle_1)
+        ax.add_patch(circle_2)
+
+    if dop_sloy == 2:
+        alpha_2 = 360 / (edge_count - 6)
+        i = 0
+        d_wall_2 = d_wall
+
+        while i < 360:
+            x = (R_k - delta_wall - d_wall - d_wall / 2) * np.cos(np.radians(i))
+            y = (R_k - delta_wall - d_wall - d_wall / 2) * np.sin(np.radians(i))
+            i += alpha_2
+            circle = plt.Circle((x, y), d_wall_2 / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+            circle_1 = plt.Circle((x, y), d_wall_2 / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+            ax.add_patch(circle)
+            ax.add_patch(circle_1)
+            ax.add_patch(circle_2)
+
+        d_itog = 2 * (R_k - delta_wall - 2 * d_wall - delta_y_pr)
+    n_1 = int((d_itog / 2 - H / 2) // H)
+    n_2 = int((d_itog / 2 - H / 2) // (H * np.sin(np.radians(60))))
+
+    for i in range(-n_1 - 1, n_1 + 2):
+        for j in range(-n_2, n_2 + 1):
+            if j % 2 == 0:
+                x = i * H
+                y = j * H * np.sin(np.radians(60))
+            else:
+                x = i * H + H / 2
+                y = j * H * np.sin(np.radians(60))
+            if np.sqrt(x ** 2 + y ** 2) + H / 2 <= d_itog / 2:
+                if (abs(i)) % 3 == 0 and j % 2 == 0:
+                    circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                    ax.add_patch(circle)
+                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                    ax.add_patch(circle_1)
+                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                    ax.add_patch(circle_2)
+                elif ((i)) % 3 == 1 and j % 2 == 1:
+                    circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                    ax.add_patch(circle)
+                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                    ax.add_patch(circle_1)
+                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                    ax.add_patch(circle_2)
+                else:
+                    circle = plt.Circle((x, y), H / 2, edgecolor=color_y_2, facecolor=color_f, linestyle='--')
+                    ax.add_patch(circle)
+                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_y_2, facecolor=color_f)
+                    ax.add_patch(circle_1)
+                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_y_2, facecolor=color_f)
+                    ax.add_patch(circle_2)
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.set_xlim(-R_k - H, R_k + H)
+    ax.set_ylim(-R_k - H, R_k + H)
+def concentric_scheme_with_a_wall_chb(D_k, H, edge_count,delta_wall,delta,delta_y_pr,number,dop_sloy):
+    number_0=number
+    color_g='black'
+    color_o='black'
+    color_f='white'
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+
+    if number_0==8:
+        color_pr=color_g
+        color_pr_1 = color_g
+        color_y_1=color_g
+        color_y_2=color_g
+        color_y_1_0=color_f
+    if number_0==9:
+        color_pr = color_g
+        color_pr_1 = color_f
+        color_y_1 = color_g
+        color_y_2 = color_g
+        color_y_1_0 = color_f
+    if number_0==3:
+        color_pr = color_g
+        color_pr_1 = color_g
+        color_y_1 = color_g
+        color_y_2 = color_o
+        color_y_1_0 = color_g
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 1 - Концентрическая схема расположения")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+    r_0 = r - (delta*0.5)
+    sin_60 = np.sin(np.radians(60))
+    centers = []  # Сюда будут записываться координаты форсунок
+
+    alpha = 360 / edge_count
+    i = 0
+    d_wall = (2 * (D_k / 2 - delta_wall) * np.sin(np.radians(180 / edge_count))) / (
+                1 + np.sin(np.radians(180 / edge_count)))
+    d_itog = 2 * (D_k / 2 - delta_wall - d_wall - delta_y_pr)
+
+    while i < 360:
+        x = (D_k / 2 - delta_wall - d_wall / 2) * np.cos(np.radians(i))
+        y = (D_k / 2 - delta_wall - d_wall / 2) * np.sin(np.radians(i))
+        i += alpha
+        circle = plt.Circle((x, y), d_wall / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+        circle_1 = plt.Circle((x, y), d_wall / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+        ax.add_patch(circle)
+        ax.add_patch(circle_1)
+        ax.add_patch(circle_2)
+    edge_radius=d_wall/2
+    # Границы сетки, чтобы покрыть всю большую окружность
+    max_index = int((R_k - 2 * edge_radius - delta_wall - delta_y_pr) // H) + 1
+    x = 0
+    y = 0
+    small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+    dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+    ax.add_artist(small_circle)
+    ax.add_artist(small_circle_0)
+    ax.add_artist(dot_0)
+
+    if dop_sloy == 2:
+        alpha_2 = 360 / (edge_count - 6)
+        i = 0
+        d_wall_2 = d_wall
+
+        while i < 360:
+            x = (R_k - delta_wall - d_wall - d_wall / 2) * np.cos(np.radians(i))
+            y = (R_k - delta_wall - d_wall - d_wall / 2) * np.sin(np.radians(i))
+            i += alpha_2
+            circle = plt.Circle((x, y), d_wall_2 / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
+            circle_1 = plt.Circle((x, y), d_wall_2 / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
+            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+            ax.add_patch(circle)
+            ax.add_patch(circle_1)
+            ax.add_patch(circle_2)
+
+        max_index = int((R_k - 4 * edge_radius - delta_wall - delta_y_pr) // H) + 1
+
+    for k in range(0, max_index + 1):
+        theta = np.linspace(0, 2 * np.pi, 6 * k, endpoint=False)
+        for angle in theta:
+            x = (k * H) * np.cos(angle)
+            y = (k * H) * np.sin(angle)
+            if dop_sloy==1 and np.sqrt(x ** 2 + y ** 2) + r <= (R_k - 2 * edge_radius - delta_wall - delta_y_pr):
+                centers.append((x, y,k))
+            if dop_sloy==2 and np.sqrt(x ** 2 + y ** 2) + r <= (R_k - 4 * edge_radius - delta_wall - delta_y_pr):
+                centers.append((x, y,k))
+    for (x, y,k) in centers:
+        if k % 2 == 0:
+            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        else:
+            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_2)
+            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_2, facecolor=color_y_2)
+        ax.add_artist(small_circle)
+        ax.add_artist(small_circle_0)
+        ax.add_artist(dot_0)
+    # Рисуем большую окружность
+    big_circle = plt.Circle((0, 0), R_k, fill=False, color=color_g)
+    ax.add_artist(big_circle)
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.set_xlim(-R_k - H, R_k + H)
+    ax.set_ylim(-R_k - H, R_k + H)
+def chess_scheme_chb(D_k, H,delta_wall,delta,number):
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    number_0=number
+    color_g='black'
+    color_o='black'
+    color_y_1='black'
+    color_f='white'
+    if number_0==13:
+        color_y_1=color_g
+        color_y_1_1 = color_f
+        color_y_2=color_g
+        color_y_2_1 = color_f
+    if number_0==10:
+        color_y_1 = color_g
+        color_y_1_1 = color_g
+        color_y_2 = color_o
+        color_y_2_1 = color_f
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 1 - Шахматная схема расположения")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+    r_0 = r - (delta*0.5)
+    centers = []  # Сюда будут записываться координаты форсунок
+
+    # Границы сетки, чтобы покрыть всю большую окружность
+    max_index = int((R_k-delta_wall) // H) + 1
+    # Сетка
+    for i in range(-max_index, max_index + 1):
+        for j in range(-max_index, max_index + 1):
+            x = i * H
+            y = j * H
+            # Проверяем, что окружность не выходит за границы
+            if np.sqrt(x ** 2 + y ** 2) + r <= (R_k-delta_wall):
+                centers.append((x, y))
+
+    # Рисуем большую окружность
+    big_circle = plt.Circle((0, 0), R_k, fill=False, color=color_g)
+    ax.add_artist(big_circle)
+
+    # Рисуем маленькие окружности
+    for (x, y) in centers:
+        if (int((x / H) + (y / H)) % 2) == 0:
+            color = color_y_1 # Цвет окислительных форсунок, если они однокомпонентные (white)
+            color_1=color_y_1_1
+        else:
+            color = color_y_2
+            color_1=color_y_2_1
+        small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color)
+        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color, facecolor=color_1)
+        dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color, facecolor=color_1)
+        ax.add_artist(small_circle)
+        ax.add_artist(small_circle_0)
+        ax.add_artist(dot_0)
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=12)  # Используйте свой размер шрифта
+    ax.set_xlim(-R_k - H, R_k + H)
+    ax.set_ylim(-R_k - H, R_k + H)
+def cellular_scheme_chb(D_k, H,delta_wall,delta,number):
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    number_0=number
+    color_g='black'
+    color_o='black'
+    color_f='white'
+    if number_0==14:
+        color_y_1 = color_g
+        color_y_2 = color_g
+        color_y_1_0 = color_f
+    if number_0==11:
+        color_y_1 = color_g
+        color_y_2 = color_o
+        color_y_1_0 = color_g
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 1 - Сотовая схема расположения")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+    r_0 = r - (delta*0.5)
+    sin_60 = np.sin(np.radians(60))
+
+
+    n_1 = int((R_k - delta_wall-r) // H)
+    n_2 = int((R_k -delta_wall- r) // (H * np.sin(np.radians(60))))
+    circle_0 = plt.Circle((0, 0), R_k, edgecolor=color_g, facecolor='white')
+    ax.add_patch(circle_0)
+
+    for i in range(-n_1, n_1 + 1):
+        for j in range(-n_2, n_2 + 1):
+            if j % 2 == 0:
+                x = i * H
+                y = j * H * sin_60
+            else:
+                x = i * H + r
+                y = j * H * sin_60
+            if np.sqrt(x ** 2 + y ** 2) + r <= R_k-delta_wall:
+                if (abs(i)) % 3 == 0 and j % 2 == 0:
+                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                    ax.add_patch(small_circle)
+                    ax.add_patch(small_circle_0)
+                    ax.add_patch(dot_0)
+                elif ((i)) % 3 == 1 and j % 2 == 1:
+                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                    ax.add_patch(small_circle)
+                    ax.add_patch(small_circle_0)
+                    ax.add_patch(dot_0)
+                else:
+                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_2, linestyle="--")
+                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_2)
+                    ax.add_patch(small_circle)
+                    ax.add_patch(small_circle_0)
+                    ax.add_patch(dot_0)
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=12)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=12)  # Используйте свой размер шрифта
+    ax.set_xlim(-R_k - H, R_k + H)
+    ax.set_ylim(-R_k - H, R_k + H)
+def concentric_scheme_chb(D_k, H,delta_wall,delta,number):
+    plt.close('all')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    number_0=number
+    color_g='black'
+    color_o='black'
+    color_f='white'
+    if number_0==15:
+        color_pr = color_g
+        color_pr_1 = color_f
+        color_y_1 = color_g
+        color_y_2 = color_g
+        color_y_1_0 = color_f
+    if number_0==12:
+        color_pr = color_g
+        color_pr_1 = color_g
+        color_y_1 = color_g
+        color_y_2 = color_o
+        color_y_1_0 = color_g
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 1 - Концентрическая схема расположения")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    R_k = D_k / 2  # радиус камеры сгорания
+    r = H / 2  # Половина шага
+    r_0 = r - (delta*0.5)
+    sin_60 = np.sin(np.radians(60))
+    centers = []  # Сюда будут записываться координаты форсунок
+
+    # Границы сетки, чтобы покрыть всю большую окружность
+    max_index = int((R_k  - delta_wall ) // H) + 1
+    x = 0
+    y = 0
+    small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+    dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+    ax.add_artist(small_circle)
+    ax.add_artist(small_circle_0)
+    ax.add_artist(dot_0)
+    for k in range(0, max_index + 1):
+        theta = np.linspace(0, 2 * np.pi, 6 * k, endpoint=False)
+        for angle in theta:
+            x = (k * H) * np.cos(angle)
+            y = (k * H) * np.sin(angle)
+            if np.sqrt(x ** 2 + y ** 2) + r <= (R_k  - delta_wall):
+                centers.append((x, y,k))
+    for (x, y,k) in centers:
+        if k % 2 == 0:
+            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        else:
+            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_2)
+            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_2, facecolor=color_y_2)
+        ax.add_artist(small_circle)
+        ax.add_artist(small_circle_0)
+        ax.add_artist(dot_0)
+    # Рисуем большую окружность
+    big_circle = plt.Circle((0, 0), R_k, fill=False, color=color_g)
+    ax.add_artist(big_circle)
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.set_xlim(-R_k - H, R_k + H)
+    ax.set_ylim(-R_k - H, R_k + H)
+def print_dot_chb(coord,D_k, H,n):
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    fig, ax = plt.subplots()
+    fig.canvas.manager.set_window_title("График 2 - Распложение площадок метода Иевлева")
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_facecolor('white')  # 171717
+
+    arc = patches.Arc((0, 0), D_k, D_k, theta1=0, theta2=90, edgecolor='black', facecolor='white')
+    ax.add_patch(arc)
+    line = Line2D([0, 0, D_k / 2], [D_k / 2, 0, 0], color="black")
+    ax.add_line(line)
+    k=0
+    centers_square=[]
+    angles_square=[]
+    for i, (x, y) in enumerate(coord):
+        circle_1 = plt.Circle((x, y), 1, edgecolor='black', facecolor='black')
+        ax.add_patch(circle_1)
+        if i % n == 0:
+            if x >= 0 and y >= 0:
+                if math.sqrt((abs(x) + H / (2 ** 0.5)) ** 2 + (abs(y) + H / (2 ** 0.5)) ** 2) <= D_k / 2:
+                    square = patches.Polygon([[x + H / 2, y + H / 2], [x + H / 2, y - H / 2],[x - H / 2, y - H / 2], [x - H / 2, y + H / 2]],edgecolor='black', facecolor='none', hatch='x')
+                    ax.add_patch(square)
+                    centers_square.append([x, y])
+                    k += 1
+                    angles_square.append(361)
+                else:
+                    angle = np.arctan2(y, x)
+                    square_vertices = rotated_square(x, y, H, angle)
+                    square = patches.Polygon(square_vertices, edgecolor='black', facecolor='none', hatch='x')
+                    ax.add_patch(square)
+                    centers_square.append([x, y])
+                    k += 1
+                    angles_square.append(np.rad2deg(angle))
+
+    ax.tick_params(axis='x', colors='black', labelsize=14)
+    ax.tick_params(axis='y', colors='black', labelsize=14)
+    ax.grid(True, color='black', linestyle='--', linewidth=0.1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=0.1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=0.1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')  # 171717
+    fig.subplots_adjust(left=0.15, bottom=0.05, right=0.98, top=0.98)
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.set_xlim(- H, D_k / 2 + H)
+    ax.set_ylim(- H, D_k / 2 + H)
+def three_d_graph_chb(data_1,D):
+    array=multiply_graph(data_1)
+    x = array[:, 0]  # Координаты X
+    y = array[:, 1]  # Координаты Y
+    z = array[:, 2]  # km в точках
+
+    # Создаем сетку для интерполяции
+    grid_x, grid_y = np.mgrid[min(x):max(x):100j, min(y):max(y):100j]
+
+    # Интерполяция km по сетке
+    grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
+    # Построение графика
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')  # Создаем 3D-оси
+    fig.canvas.manager.set_window_title("График 3.1 - Распределение соотношения компонентов по окружности")
+
+
+    # Построение поверхности
+    surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='gray', linewidth=0.5, edgecolors='k') #autumn_r
+    ax.set_title("Распределение km по смесительной головке", fontproperties='Times New Roman')
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')
+    ax.set_facecolor('white')
+
+    fig.subplots_adjust(left=0.02, bottom=0.02, right=0.9, top=0.9)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.set_xlim(min(x)*1.1, max(x)*1.1)
+    ax.set_ylim(min(y) * 1.1, max(y) * 1.1)
+    ax.set_zlim(0, max(z) * 1.1)
+    ax.grid(True, color='white', linestyle='--', linewidth=1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.set_xlabel('x, мм', color='black')  # Устанавливаем цвет текста меток осей
+    ax.set_ylabel('y, мм', color='black')
+    ax.set_zlabel('k_m', color='black')
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.zaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax.set_xticklabels([f"{x:.0f}" for x in ax.get_xticks()], fontproperties='Times New Roman')
+    ax.set_yticklabels([f"{x:.0f}" for x in ax.get_yticks()], fontproperties='Times New Roman')
+    ax.set_zticklabels([f"{x:.0f}" for x in ax.get_zticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='z', colors='black', labelsize=14)  # Используйте свой размер шрифта
+
+    colorbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+    colorbar.outline.set_edgecolor('black')  # Устанавливаем цвет рамки
+    colorbar.ax.tick_params(color='black', labelcolor='black')  # Устанавливаем цвет меток и текста
+
+    array_radius_0=points_near_line(array, [-D/2, 0], [D/2, 0], tolerance=0.1)
+    array_radius = array_radius_0[np.argsort(array_radius_0[:, 0])]
+    x_1 = array_radius[:, 0]  # Координаты X
+    z_1 = array_radius[:, 2]  # km в точках
+
+    fig, ax_1 = plt.subplots()
+    fig.canvas.manager.set_window_title("График 3.2 - Распределение соотношения компонентов по радиусу")
+    ax_1.plot(x_1, z_1,color='black')
+    ax_1.tick_params(axis='x', colors='black', labelsize=14, labelcolor='black')  # Добавляем labelcolor='white'
+    ax_1.tick_params(axis='y', colors='black', labelsize=14, labelcolor='black')
+    ax_1.set_xlabel('X, мм', color='black')
+    ax_1.set_ylabel('k_m', color='black')
+    # Установите форматирование для осей X и Y
+    ax_1.xaxis.set_major_formatter(formatter)
+    ax_1.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_1.set_xticklabels([f"{x:.0f}" for x in ax_1.get_xticks()], fontproperties='Times New Roman')
+    ax_1.set_yticklabels([f"{x:.2f}" for x in ax_1.get_yticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_1.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.set_facecolor('white')
+    ax_1.grid(True, color='black', linestyle='--', linewidth=1)
+    ax_1.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_1.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax_1.set_title("Распределение km по радиусу", fontproperties='Times New Roman', color='black')
+
+    distances = np.sqrt(array[:, 0] ** 2 + array[:, 1] ** 2)
+    max_index = np.argmax(distances)
+    R=distances[max_index]
+    array_angle_0=points_near_arc(array, R, tolerance=0.5)
+    array_angle = array_angle_0[np.argsort(array_angle_0[:, 0])]
+    angles = np.degrees(np.arctan2(array_angle[:, 1], array_angle[:, 0]))
+    points_with_angles = np.column_stack((array_angle, angles))
+    x_2 = points_with_angles[:, 3]  # Координаты X
+    y_2 = points_with_angles[:, 2]  # km в точках
+    fig, ax_2 = plt.subplots()
+    fig.canvas.manager.set_window_title("График 3.3 - Распределение соотношения компонентов по углу")
+    ax_2.plot(x_2, y_2,color='black')
+    ax_2.tick_params(axis='x', colors='black', labelsize=11, labelcolor='black')  # Добавляем labelcolor='white'
+    ax_2.tick_params(axis='y', colors='black', labelsize=11, labelcolor='black')
+    ax_2.set_xlabel('Угол,°', color='black')
+    ax_2.set_ylabel('k_m', color='black')
+    ax_2.grid(True, color='black', linestyle='--', linewidth=1)
+    ax_2.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_2.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    # Установите форматирование для осей X и Y
+    ax_2.xaxis.set_major_formatter(formatter)
+    ax_2.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_2.set_xticklabels([f"{x:.0f}" for x in ax_2.get_xticks()], fontproperties='Times New Roman')
+    ax_2.set_yticklabels([f"{x:.3f}" for x in ax_2.get_yticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_2.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.set_facecolor('white')
+    ax_2.set_title("Распределение km по углу", fontproperties='Times New Roman', color='black')
+def three_d_graph_T_chb(data_1,D):
+    array=multiply_graph(data_1)
+    x = array[:, 0]  # Координаты X
+    y = array[:, 1]  # Координаты Y
+    z = array[:, 2]  # km в точках
+
+    # Создаем сетку для интерполяции
+    grid_x, grid_y = np.mgrid[min(x):max(x):100j, min(y):max(y):100j]
+
+    # Интерполяция km по сетке
+    grid_z = griddata((x, y), z, (grid_x, grid_y), method='cubic')
+    # Настройка шрифта для всех текстовых элементов
+    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.size'] = 12
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')  # Создаем 3D-оси
+    fig.canvas.manager.set_window_title("График 4.1 - Распределение температуры по окружности")
+
+    # Построение поверхности
+    surf=ax.plot_surface(grid_x, grid_y, grid_z, cmap='gray', linewidth=0.5, edgecolors='k') #autumn_r
+    ax.set_title("Распределение температуры по смесительной головке", fontproperties='Times New Roman')
+    ax.title.set_color('black')
+    fig.patch.set_facecolor('white')
+    ax.set_facecolor('white')
+
+    fig.subplots_adjust(left=0.05, bottom=0.05, right=0.95, top=0.95)
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.set_xlim(min(x)*1.1, max(x)*1.1)
+    ax.set_ylim(min(y) * 1.1, max(y) * 1.1)
+    ax.set_zlim(0, max(z) * 1.1)
+    ax.grid(True, color='black', linestyle='--', linewidth=1)
+    ax.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.set_xlabel('x, мм', color='black')  # Устанавливаем цвет текста меток осей
+    ax.set_ylabel('y, мм', color='black')
+    ax.set_zlabel('T,K', color='black')
+    # Установите форматирование для осей X и Y
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_formatter(formatter)
+    ax.zaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax.set_xticklabels([f"{x:.0f}" for x in ax.get_xticks()], fontproperties='Times New Roman')
+    ax.set_yticklabels([f"{x:.0f}" for x in ax.get_yticks()], fontproperties='Times New Roman')
+    ax.set_zticklabels([f"{x:.0f}" for x in ax.get_zticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax.tick_params(axis='z', colors='black', labelsize=14)  # Используйте свой размер шрифта
+
+    colorbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+    colorbar.outline.set_edgecolor('black')  # Устанавливаем цвет рамки
+    colorbar.ax.tick_params(color='black', labelcolor='black')  # Устанавливаем цвет меток и текста
+
+    array_radius_0=points_near_line(array, [-D/2, 0], [D/2, 0], tolerance=0.1)
+    array_radius = array_radius_0[np.argsort(array_radius_0[:, 0])]
+    x_1 = array_radius[:, 0]  # Координаты X
+    z_1 = array_radius[:, 2]  # km в точках
+
+    fig, ax_1 = plt.subplots()
+    fig.canvas.manager.set_window_title("График 4.2 - Распределение температуры по радиусу")
+    ax_1.plot(x_1, z_1,color='black')
+    ax_1.tick_params(axis='x', colors='black', labelsize=14, labelcolor='black')  # Добавляем labelcolor='white'
+    ax_1.tick_params(axis='y', colors='black', labelsize=14, labelcolor='black')
+    ax_1.set_xlabel('X, мм', color='black')
+    ax_1.set_ylabel('T,K', color='black')
+    # Установите форматирование для осей X и Y
+    ax_1.xaxis.set_major_formatter(formatter)
+    ax_1.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_1.set_xticklabels([f"{x:.0f}" for x in ax_1.get_xticks()], fontproperties='Times New Roman')
+    ax_1.set_yticklabels([f"{x:.0f}" for x in ax_1.get_yticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_1.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_1.set_facecolor('white')
+    ax_1.grid(True, color='black', linestyle='--', linewidth=1)
+    ax_1.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_1.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    ax_1.set_title("Распределение Температуры по радиусу", fontproperties='Times New Roman', color='black')
+
+    distances = np.sqrt(array[:, 0] ** 2 + array[:, 1] ** 2)
+    max_index = np.argmax(distances)
+    R=distances[max_index]
+    array_angle_0=points_near_arc(array, R, tolerance=0.5)
+    array_angle = array_angle_0[np.argsort(array_angle_0[:, 0])]
+    angles = np.degrees(np.arctan2(array_angle[:, 1], array_angle[:, 0]))
+    points_with_angles = np.column_stack((array_angle, angles))
+    x_2 = points_with_angles[:, 3]  # Координаты X
+    y_2 = points_with_angles[:, 2]  # km в точках
+    fig, ax_2 = plt.subplots()
+    fig.canvas.manager.set_window_title("График 4.3 - Распределение температуры по углу")
+    ax_2.plot(x_2, y_2,color='black')
+    ax_2.tick_params(axis='x', colors='black', labelsize=11, labelcolor='black')  # Добавляем labelcolor='white'
+    ax_2.tick_params(axis='y', colors='black', labelsize=11, labelcolor='black')
+    ax_2.set_xlabel('Угол,°', color='black')
+    ax_2.set_ylabel('T,K', color='black')
+    ax_2.grid(True, color='black', linestyle='--', linewidth=1)
+    ax_2.grid(which='major', color='gray', linestyle='--', linewidth=1)
+    ax_2.grid(which='minor', color='gray', linestyle='--', linewidth=1)
+    # Установите форматирование для осей X и Y
+    ax_2.xaxis.set_major_formatter(formatter)
+    ax_2.yaxis.set_major_formatter(formatter)
+    # Получите текущие метки и примените к ним новые настройки шрифта
+    ax_2.set_xticklabels([f"{x:.0f}" for x in ax_2.get_xticks()], fontproperties='Times New Roman')
+    ax_2.set_yticklabels([f"{x:.0f}" for x in ax_2.get_yticks()], fontproperties='Times New Roman')
+    # Обновите параметры тиков после изменения меток, если нужно
+    ax_2.tick_params(axis='x', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.tick_params(axis='y', colors='black', labelsize=14)  # Используйте свой размер шрифта
+    ax_2.set_facecolor('white')
+    ax_2.set_title("Распределение температуры по углу", fontproperties='Times New Roman', color='black')

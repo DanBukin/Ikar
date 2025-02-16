@@ -7,6 +7,7 @@ from ikar_cantera import *
 from Searching_for_component_costs import *
 from ikar_fors_window import *
 from ikar_save_excel import *
+from ikar_save_images import *
 import customtkinter as ctk
 import os
 from ctypes import windll
@@ -44,6 +45,7 @@ class user:
         self.D_prist = None
         self.D_k = None
         self.H = None
+        self.n = None
         self.number_pr = None
         self.delta_wall = None
         self.delta = None
@@ -433,7 +435,7 @@ class Window_2(ctk.CTk):
         self.delta_y_pr = int(value)
         self.label10.configure(text=f"Выбранное расстояние равно : {self.delta_y_pr} мм")
         if self.choice == 1 or self.choice == 4 or self.choice == 5 :
-            self.D_y,self.D_prist=self.n_pr,self.D_pr,self.n_2k_y,self.D_2k_y,self.koord_pr,self.koord_ok,self.koord_gor=chess_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self,self.choice,self.checkbox.get())
+            self.D_y,self.D_prist=chess_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self,self.choice,self.checkbox.get())
         elif self.choice == 2 or self.choice == 6 or self.choice == 7:
             self.D_y,self.D_prist=cellular_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self, self.choice,self.checkbox.get())
         elif self.choice == 3 or self.choice == 8 or self.choice == 9:
@@ -1025,6 +1027,7 @@ class Window_5(ctk.CTk):
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
     def back_window(self):
         self.destroy()
+        user.n = None
         window_4 = Window_4(user.choice)
         window_4.mainloop()
 
@@ -1040,6 +1043,7 @@ class Window_5(ctk.CTk):
         user.angles_square = self.angles_square
         user.coord_gor = self.coord_gor
         user.coord_ok = self.coord_ok
+        user.n=self.n
         window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square,self.coord_gor,self.coord_ok)
         window_6.mainloop()
 class Window_6(ctk.CTk):
@@ -1327,8 +1331,9 @@ class Window_8(ctk.CTk):
         self.print_button()
     def print_button(self):
         self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 10, 450)
-        self.window_button = create_button(self, "Открыть все возможные форсунки", lambda: self.open_window(), self.font1, 200, 200, 450)
-        self.excel_button = create_button(self, "Сохранить все расчёты в excel", lambda: save_all_properties(user), self.font1, 200, 450, 450)
+        self.window_button = create_button(self, "Открыть все форсунки", lambda: self.open_window(), self.font1, 200, 120, 450)
+        self.excel_button = create_button(self, "Сохранить всё в excel", lambda: save_all_properties(user), self.font1, 200, 330, 450)
+        self.image_button = create_button(self, "Сохранить изображения", lambda: save_all_images(user), self.font1,200, 540, 450)
         self.exit_button = create_button(self, "Выход", lambda: self.exit_window(),self.font1, 100, 750, 450)
     def back_window(self):
         self.destroy()
@@ -1558,8 +1563,12 @@ class Window_9(ctk.CTk):
     def on_button_click(self,num):
         open_window_fors(num)
     def print_button(self):
-        self.back_button = create_button(self.frame2, "Назад", lambda: self.back_window(), self.font1, 100, 740, 310 * 4-62)
-        self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(),self.font1, 100, 740, 310 * 4-30)
+        self.back_button = create_button(self.frame2, "Назад", lambda: self.back_window(), self.font1, 100, 740, 310 * 4-30-35)
+        self.excel_button = create_button(self.frame2, "Сохранить всё в excel", lambda: save_all_properties(user), self.font1,
+                                          200, 320, 310 * 4-30)
+        self.image_button = create_button(self.frame2, "Сохранить изображения", lambda: save_all_images(user), self.font1, 200,
+                                          530, 310 * 4-30)
+        self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(), self.font1, 100, 740, 310 * 4-30)
     def back_window(self):
         self.destroy()
         window_8 = Window_8()
