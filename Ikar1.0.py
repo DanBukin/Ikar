@@ -6,6 +6,7 @@ from ikar_graphs import *
 from ikar_cantera import *
 from Searching_for_component_costs import *
 from ikar_fors_window import *
+from ikar_save_excel import *
 import customtkinter as ctk
 import os
 from ctypes import windll
@@ -39,6 +40,8 @@ class user:
     def __init__(self):
         self.nozzle_diagram=None # Схема форсуночной головки
         self.choice = None
+        self.D_y = None
+        self.D_prist = None
         self.D_k = None
         self.H = None
         self.number_pr = None
@@ -57,6 +60,12 @@ class user:
         self.coord_y_ok_x = None
         self.coord_y_ok_y = None
         self.number = None
+        self.a = None
+        self.b = None
+        self.c = None
+        self.d = None
+        self.f = None
+        self.g = None
         self.x_1 = None
         self.x_2 = None
         self.x_3 = None
@@ -65,13 +74,35 @@ class user:
         self.x_6 = None
         self.x_7 = None
         self.x_8 = None
+        self.m_f_g_y = None
+        self.m_f_o_y = None
+        self.m_f_g_pr = None
+        self.m_f_o_pr = None
         self.n_pl = None
         self.centers_square = None
         self.coord_graph = None
         self.angles_square = None
+        self.graph_x_1 = None
+        self.graph_y_1 = None
+        self.graph_z_1 = None
+        self.graph_x_2 = None
+        self.graph_y_2 = None
+        self.graph_x_3 = None
+        self.graph_y_3 = None
         self.coord_gor = None
         self.coord_ok = None
         self.km_graph=None
+        self.formula_ox = None
+        self.formula_gor = None
+        self.p_k = None
+        self.T_graph = None
+        self.x_1_T = None
+        self.y_1_T = None
+        self.z_1_T = None
+        self.x_2_T = None
+        self.y_2_T = None
+        self.x_3_T = None
+        self.y_3_T = None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -79,7 +110,7 @@ class Window_1(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Ikar")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # Установка размеров окна
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
@@ -191,11 +222,13 @@ class Window_2(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Выбор параметров")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))
+        self.D_y = None
+        self.D_prist = None
         self.choice = choice
         self.H=17
         self.number_pr=60
@@ -229,7 +262,7 @@ class Window_2(ctk.CTk):
         self.label1 = create_label(self.frame1, "Введите диаметр камеры сгорания (мм) :", 20, 5)
         self.label3=create_label(self.frame1, "Рекомендуемый шаг: ", 160, 35)
         self.label2 = create_label(self.frame2, "Выберите шаг между форсунками (мм) :", 0, 0)
-        self.label_3_1 = create_label(self.frame2, "12", 30, 20)
+        self.label_3_1 = create_label(self.frame2, "10", 30, 20)
         self.label_3_2 = create_label(self.frame2, "30", 300, 20)
         self.label4 = create_label(self.frame2, "Выбранный шаг равен: 17 мм", 10, 40)
         self.label5 = create_label(self.frame2, "Выберите расстояние между форсунками (мм):", 10, 85)
@@ -241,13 +274,13 @@ class Window_2(ctk.CTk):
         self.label_7_2 = create_label(self.frame2, "10", 300, 190)
         self.label8 = create_label(self.frame2, "Выбранное расстояние равно : 3 мм", 10, 210)
         if self.choice<10:
-            self.label9 = create_label(self.frame2, "Выберите расстояние от форуснок ядра и пристенка:", 10, 255)
-            self.label_9_1 = create_label(self.frame2, "1", 40, 275)
+            self.label9 = create_label(self.frame2, "Выберите расстояние от шага ядра и пристенка:", 10, 255)
+            self.label_9_1 = create_label(self.frame2, "0", 40, 275)
             self.label_9_2 = create_label(self.frame2, "10", 300, 275)
             self.label10 = create_label(self.frame2, "Выбранное расстояние равно : 3 мм", 10, 295)
             self.label11 = create_label(self.frame2, "Выберите количество форсунок пристенка:", 10, 340)
-            self.label_11_1 = create_label(self.frame2, "40", 30, 360)
-            self.label_11_2 = create_label(self.frame2, "200", 300, 360)
+            self.label_11_1 = create_label(self.frame2, "30", 30, 360)
+            self.label_11_2 = create_label(self.frame2, "190", 300, 360)
             self.label12 = create_label(self.frame2, "Выбранное количество равно : 60", 10, 380)
             self.label13 = create_label(self.frame2, "Диаметр форсунок в ядре равен: ", 10, 450)
             self.label14 = create_label(self.frame2, "Диаметр форсунок в пристенке равен: ", 10, 480)
@@ -275,7 +308,7 @@ class Window_2(ctk.CTk):
         self.label3.configure(text=f"Рекомендуемый шаг: {self.H_id} мм")
         self.on_slider_change_0()
     def print_slider(self):
-        self.slider1 = ctk.CTkSlider(self.frame2, from_=12, to=30, command=self.on_slider_change, number_of_steps=18,
+        self.slider1 = ctk.CTkSlider(self.frame2, from_=10, to=30, command=self.on_slider_change, number_of_steps=20,
                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                     progress_color=("#D44B46"))
         self.slider1.place(x=50, y=30)
@@ -291,12 +324,12 @@ class Window_2(ctk.CTk):
         self.slider3.place(x=50, y=200)
         self.slider3.set(3)
         if self.choice < 10:
-            self.slider4 = ctk.CTkSlider(self.frame2, from_=1, to=10, command=self.on_slider_change_3, number_of_steps=9,
+            self.slider4 = ctk.CTkSlider(self.frame2, from_=0, to=10, command=self.on_slider_change_3, number_of_steps=9,
                                         border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                         progress_color=("#D44B46"))
             self.slider4.place(x=50, y=285)
             self.slider4.set(3)
-            self.slider5 = ctk.CTkSlider(self.frame2, from_=40, to=200, command=self.on_slider_change_4, number_of_steps=80,
+            self.slider5 = ctk.CTkSlider(self.frame2, from_=30, to=190, command=self.on_slider_change_4, number_of_steps=80,
                                         border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                         progress_color=("#D44B46"))
             self.slider5.place(x=50, y=370)
@@ -436,6 +469,8 @@ class Window_2(ctk.CTk):
         user.delta =self.delta
         user.delta_y_pr =self.delta_y_pr
         user.second_layer =self.second_layer
+        user.D_y=self.D_y
+        user.D_prist=self.D_prist
         window_3 = Window_3(self.choice,self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer)
         window_3.mainloop()
 class Window_3(ctk.CTk):
@@ -445,7 +480,7 @@ class Window_3(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Результаты построения")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
@@ -609,7 +644,7 @@ class Window_4(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Предварительные расчеты по поиску массового расхода")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
@@ -810,6 +845,12 @@ class Window_4(ctk.CTk):
             if self.choice == 5 or self.choice == 7 or self.choice == 9:
                 self.g=float(self.entry4_value.get())
         self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8 = find_costs(self.number, self.a, self.b,self.c, self.d, self.f/100, self.g)
+        user.a=self.a
+        user.b=self.b
+        user.c=self.c
+        user.d=self.d
+        user.f=self.f
+        user.g=self.g
         user.x_1 =self.x_1
         user.x_2 =self.x_2
         user.x_3 =self.x_3
@@ -832,6 +873,12 @@ class Window_4(ctk.CTk):
     def back_window(self):
         self.destroy()
         user.number = None
+        user.a = None
+        user.b = None
+        user.c = None
+        user.d = None
+        user.f = None
+        user.g = None
         user.x_1 = None
         user.x_2 = None
         user.x_3 = None
@@ -853,7 +900,7 @@ class Window_5(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Вывод результатов расчёта массового расхода. Подготовка к методу Иевлева")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
@@ -958,6 +1005,10 @@ class Window_5(ctk.CTk):
         self.label_1 = create_label(self, "Выберите, какая часть форсунок будет рассчитываться?", 430, 260)
         self.label_2 = create_label(self, "n =", 430, 285)
         self.label_3 = create_label(self, "(каждая 2-ая, каждая 3-ья и т.д.)", 540, 285)
+        self.label_3_1 = create_label(self, f"Расход форсунки горючего в ядре: {self.m_f_g_y:.4f} кг/м", 430, 310)
+        self.label_3_2 = create_label(self, f"Расход форсунки оксислителя в ядре: {self.m_f_o_y:.4f} кг/м", 430, 310+25)
+        self.label_3_3 = create_label(self, f"Расход форсунки горючего в пристенке: {self.m_f_g_pr:.4f} кг/м", 430, 310+50)
+        self.label_3_4 = create_label(self, f"Расход форсунки окислителя в пристенке: {self.m_f_o_pr:.4f} кг/м", 430, 310+75)
         self.entry1_value = ctk.StringVar()
         self.Entry1 = ctk.CTkEntry(master=self, width=45, textvariable=self.entry1_value,placeholder_text="CTkEntry")
         self.Entry1.place(x=455, y=285)
@@ -979,6 +1030,10 @@ class Window_5(ctk.CTk):
 
     def close_window(self):
         self.destroy()
+        user.m_f_g_y=self.m_f_g_y
+        user.m_f_o_y = self.m_f_o_y
+        user.m_f_g_pr = self.m_f_g_pr
+        user.m_f_o_pr = self.m_f_o_pr
         user.n_pl=self.n_pl
         user.centers_square = self.centers_square
         user.coord_graph = self.coord_graph
@@ -994,7 +1049,7 @@ class Window_6(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Метод Иевлева")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
@@ -1042,7 +1097,14 @@ class Window_6(ctk.CTk):
                 self.txt_programm += (f"====================Площадка №{self.k + 1}====================\n")
                 self.txt_programm += (self.text_programm_y + "\n")
             self.k+=1
-        three_d_graph(self.km_graph, self.frame_0,user.D_k)
+        self.graph_x_1, self.graph_y_1, self.graph_z_1, self.graph_x_2, self.graph_y_2, self.graph_x_3, self.graph_y_3=three_d_graph(self.km_graph, self.frame_0,user.D_k)
+        user.graph_x_1 = self.graph_x_1
+        user.graph_y_1 = self.graph_y_1
+        user.graph_z_1 = self.graph_z_1
+        user.graph_x_2 = self.graph_x_2
+        user.graph_y_2 = self.graph_y_2
+        user.graph_x_3 = self.graph_x_3
+        user.graph_y_3 = self.graph_y_3
         self.k = 1
         self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'X пл.', font=self.font1, justify='left')
         self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
@@ -1069,6 +1131,13 @@ class Window_6(ctk.CTk):
 
     def back_window(self):
         self.destroy()
+        user.graph_x_1 = None
+        user.graph_y_1 = None
+        user.graph_z_1 = None
+        user.graph_x_2 = None
+        user.graph_y_1 = None
+        user.graph_x_3 = None
+        user.graph_y_3 = None
         window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y,user.choice,user.x_1, user.x_2, user.x_3, user.x_4, user.x_5, user.x_6, user.x_7, user.x_8,user.coord_pr_g_x,user.coord_pr_g_y,user.coord_y_g_x,user.coord_y_g_y,user.coord_y_ok_x,user.coord_y_ok_y)
         window_5.mainloop()
 
@@ -1084,7 +1153,7 @@ class Window_7(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Расчет распределения температуры")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # {1305}x{734}+{723}+{209}
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # {1305}x{734}+{723}+{209}
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
         ctk.set_appearance_mode("dark")
@@ -1188,7 +1257,7 @@ class Window_7(ctk.CTk):
         self.button_2 = create_button(self, 'Свойства горючего', lambda: show_fuel_properties(self), self.font1, 200, 423, 10)
         self.button_3 = create_button(self, 'Свойства топливной пары', lambda: show_alpha_properties(self), self.font1, 200, 625, 10)
         self.button_4 = create_button(self, 'Назад', lambda: self.back_window(), self.font1, 100, 10 + 210, 450)
-        self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №5)', lambda: self.open_window_5(), self.font1, 400, 215 + 110, 450)
+        self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №4)', lambda: self.open_window_5(), self.font1, 400, 215 + 110, 450)
         self.button_6 = create_button(self, 'Далее', lambda: self.close_window(), self.font1, 110, 420 + 310, 450)
     def create_graph(self):
         hide_images(self)
@@ -1202,20 +1271,37 @@ class Window_7(ctk.CTk):
             if self.rounded_value not in self.results:
                 self.results[self.rounded_value] = find_temperature(self.p_k,self.rounded_value/self.km0,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0)
             self.T_graph.append([x, y, self.results[self.rounded_value]])
-        three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
+        self.x_1_T,self.y_1_T,self.z_1_T,self.x_2_T,self.y_2_T,self.x_3_T,self.y_3_T=three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
+        user.T_graph=self.T_graph
+        user.x_1_T=self.x_1_T
+        user.y_1_T=self.y_1_T
+        user.z_1_T=self.z_1_T
+        user.x_2_T=self.x_2_T
+        user.y_2_T=self.y_2_T
+        user.x_3_T=self.x_3_T
+        user.y_3_T=self.y_3_T
     def back_window(self):
         self.destroy()
+        user.T_graph = None
+        user.x_1_T = None
+        user.y_1_T = None
+        user.z_1_T = None
+        user.x_2_T = None
+        user.y_2_T = None
+        user.x_3_T = None
+        user.y_3_T = None
         window_6 = Window_6(user.n_pl, user.centers_square, user.coord_graph, user.angles_square, user.coord_gor,
                             user.coord_ok)
         window_6.mainloop()
     def open_window_5(self):
         self.destroy()
-        window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y, user.choice, user.x_1, user.x_2, user.x_3,
-                            user.x_4, user.x_5, user.x_6, user.x_7, user.x_8, user.coord_pr_g_x, user.coord_pr_g_y,
-                            user.coord_y_g_x, user.coord_y_g_y, user.coord_y_ok_x, user.coord_y_ok_y)
-        window_5.mainloop()
+        window_4 = Window_4(user.choice)
+        window_4.mainloop()
     def close_window(self):
         self.destroy()
+        user.formula_ox=self.formula_ox
+        user.formula_gor=self.formula_gor
+        user.p_k=self.p_k
         window_8 = Window_8()
         window_8.mainloop()
 class Window_8(ctk.CTk):
@@ -1225,7 +1311,7 @@ class Window_8(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Выбор форсунок")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # Установка размеров окна
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
@@ -1241,7 +1327,8 @@ class Window_8(ctk.CTk):
         self.print_button()
     def print_button(self):
         self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 10, 450)
-        self.window_button = create_button(self, "Открыть все возможные форсунки", lambda: self.open_window(), self.font1, 500, 200, 450)
+        self.window_button = create_button(self, "Открыть все возможные форсунки", lambda: self.open_window(), self.font1, 200, 200, 450)
+        self.excel_button = create_button(self, "Сохранить все расчёты в excel", lambda: save_all_properties(user), self.font1, 200, 450, 450)
         self.exit_button = create_button(self, "Выход", lambda: self.exit_window(),self.font1, 100, 750, 450)
     def back_window(self):
         self.destroy()
@@ -1363,7 +1450,7 @@ class Window_9(ctk.CTk):
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
         self.title("Все возможные форсунки")  # Название программы
         self.resizable(False, False)  # Запрет изменения размера окна
-        self.geometry(f"{1305}x{734}+{100}+{100}")  # Установка размеров окна
+        self.geometry(f"{1305}x{734}+{10}+{10}")  # Установка размеров окна
         ctk.set_default_color_theme("data/dark-red.json")  # Загрузка пользовательской темы
         self.fg_color = 'white'
         ctk.set_widget_scaling(1.5)  # Увеличение размера виджетов
