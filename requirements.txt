@@ -6,3 +6,4 @@ pandas==2.2.3
 openpyxl==3.1.5
 scipy==1.14.1
 cantera==3.0.1
+xlsxwriter==3.2.2

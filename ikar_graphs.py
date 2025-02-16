@@ -1029,6 +1029,7 @@ def three_d_graph(data_1,frame,D):
     canvas = FigureCanvasTkAgg(fig, master=frame)
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=2, y=2)
+    return x, y, z,x_1, z_1,x_2, y_2
 def three_d_graph_T(data_1,frame,D):
     array=multiply_graph(data_1)
     x = array[:, 0]  # Координаты X
@@ -1143,7 +1144,7 @@ def three_d_graph_T(data_1,frame,D):
     canvas = FigureCanvasTkAgg(fig, master=frame)
     canvas_widget = canvas.get_tk_widget()
     canvas_widget.place(x=2, y=2)
-
+    return x, y, z, x_1, z_1, x_2, y_2
 def print_nozzle_1(H,d_f,l,d_c,h_og,h_sr,h_ras,frame):
     fig = Figure(figsize=(7, 7), dpi=100)
     ax = fig.add_subplot(111)
