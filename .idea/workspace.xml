@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="renamed from Ikar1.0.py" />
+    <list default="true" id="ad4380fc-a87a-4904-baca-3d971ddd04b1" name="Changes" comment="add Ikar2.0.exe">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ikar_fors_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/ikar_fors_window.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,12 +21,16 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="#test-branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -36,28 +43,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Ikar1.0.executor": "Run",
-    "Python.example.executor": "Run",
-    "Python.ikar_fors_window.executor": "Run",
-    "Python.ikar_graphs.executor": "Run",
-    "Python.ikar_save_images.executor": "Run",
-    "Python.program2.executor": "Run",
-    "Python.scroll_graph.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/ikar2.0/ikar/Ikar1.0.py",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Ikar1.0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Ikar2.0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ikar_fors_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ikar_graphs.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ikar_save_images.executor&quot;: &quot;Run&quot;,
+    &quot;Python.program2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scroll_graph.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/ikar2.0/ikar/Ikar1.0.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\ikar2.0\ikar" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Ikar2.0">
+  <component name="RunManager" selected="Python.ikar_fors_window">
     <configuration name="Ikar2.0" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ikar" />
       <option name="ENV_FILES" value="" />
@@ -170,9 +178,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ikar_fors_window" />
         <item itemvalue="Python.Ikar2.0" />
         <item itemvalue="Python.ikar_save_images" />
-        <item itemvalue="Python.ikar_fors_window" />
         <item itemvalue="Python.ikar_graphs" />
         <item itemvalue="Python.example" />
       </list>
@@ -193,14 +201,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725614237278</updated>
-    </task>
-    <task id="LOCAL-00004" summary="add changes">
-      <option name="closed" value="true" />
-      <created>1725615810514</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1725615810514</updated>
     </task>
     <task id="LOCAL-00005" summary="fix conflicts">
       <option name="closed" value="true" />
@@ -586,11 +586,18 @@
       <option name="project" value="LOCAL" />
       <updated>1739724291552</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="add Ikar2.0.exe">
+      <option name="closed" value="true" />
+      <created>1739727362145</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1739727362145</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add 3d graphs, graph near line and graphs near arc." />
     <MESSAGE value="add &quot;cantera&quot;, add 3d graph (Temperature)" />
     <MESSAGE value="add window (nozzle №1)" />
     <MESSAGE value="add window (nozzle_type)" />
@@ -615,7 +622,8 @@
     <MESSAGE value="added a button to save the results" />
     <MESSAGE value="added a button to save the images" />
     <MESSAGE value="renamed from Ikar1.0.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed from Ikar1.0.py" />
+    <MESSAGE value="add Ikar2.0.exe" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Ikar2.0.exe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

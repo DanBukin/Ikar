@@ -45,10 +45,10 @@ def find_costs(i,a,b,c,d,f,g):
         x_5=a*(d - b + b*f - d*f)/(d*(1 + b))
         x_7=a*b*(1 - f)/(d*(1 + b))
         x_8=a*b*(1 - f)/(1 + b)
-        # print(f'm_сум = {a} = {x_1 + x_5 + x_7+x_8}')
-        # print(f'k_m = {b} = {(x_8) / (x_5+x_7)}')
-        # print(f'k_m_огг= {d} = {x_8 / x_7}')
-        # print(f'n%= {f} = {(x_1) / (x_1 + x_5 + x_7+x_8)}')
+        print(f'm_сум = {a} = {x_1 + x_5 + x_7+x_8}')
+        print(f'k_m = {b} = {(x_8) / (x_5+x_7)}')
+        print(f'k_m_огг= {d} = {x_8 / x_7}')
+        print(f'n%= {f} = {(x_1) / (x_1 + x_5 + x_7+x_8)}')
     elif i==7:
         x_1=a*f
         x_5=a*(1 - f)/(1 + b)

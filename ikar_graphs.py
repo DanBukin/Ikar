@@ -30,7 +30,7 @@ def grad_to_rad(grad):
   return grad*math.pi/180
 def rad_to_grag(rad):
   return rad*180/math.pi
-def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
+def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer,delete_center=0):
 
     number_0=number
     color_g='#D44B46'
@@ -86,6 +86,7 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
         circle = plt.Circle((x, y), d_wall / 2, edgecolor=color_pr, facecolor=color_f, linestyle='--')
         circle_1 = plt.Circle((x, y), d_wall / 2 - delta / 2, edgecolor=color_pr, facecolor=color_pr_1)
         circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_pr, facecolor=color_pr)
+
         ax.add_patch(circle)
         ax.add_patch(circle_1)
         ax.add_patch(circle_2)
@@ -132,21 +133,50 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
     n_ok_0=0
     for (x, y) in centers:
         if (int((x / H) + (y / H)) % 2) == 0:
-            n_ok_0+=1
-            color = color_y_1 # Цвет окислительных форсунок, если они однокомпонентные (white)
-            color_1=color_y_1_1
-            centers_ok.append((x, y))
+            if delete_center == 1:
+                if x==0 and y==0:
+                    aab=1
+                else:
+                    n_ok_0+=1
+                    color = color_y_1 # Цвет окислительных форсунок, если они однокомпонентные (white)
+                    color_1=color_y_1_1
+                    centers_ok.append((x, y))
+            else:
+                n_ok_0 += 1
+                color = color_y_1  # Цвет окислительных форсунок, если они однокомпонентные (white)
+                color_1 = color_y_1_1
+                centers_ok.append((x, y))
         else:
-            n_gor_0 +=1
-            color = color_y_2
-            color_1=color_y_2_1
-            centers_gor.append((x, y))
-        small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color)
-        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color, facecolor=color_1)
-        dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color, facecolor=color_1)
-        ax.add_artist(small_circle)
-        ax.add_artist(small_circle_0)
-        ax.add_artist(dot_0)
+            if delete_center == 1:
+                if x==0 and y==0:
+                    aab=1
+                else:
+                    n_gor_0 +=1
+                    color = color_y_2
+                    color_1=color_y_2_1
+                    centers_gor.append((x, y))
+            else:
+                n_gor_0 += 1
+                color = color_y_2
+                color_1 = color_y_2_1
+                centers_gor.append((x, y))
+        if delete_center==1:
+            if x == 0 and y == 0:
+                aab=1
+            else:
+                small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color)
+                small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color, facecolor=color_1)
+                dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color, facecolor=color_1)
+                ax.add_artist(small_circle)
+                ax.add_artist(small_circle_0)
+                ax.add_artist(dot_0)
+        else:
+            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color)
+            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color, facecolor=color_1)
+            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color, facecolor=color_1)
+            ax.add_artist(small_circle)
+            ax.add_artist(small_circle_0)
+            ax.add_artist(dot_0)
 
     ax.tick_params(axis='x', colors='white', labelsize=14)
     ax.tick_params(axis='y', colors='white', labelsize=14)
@@ -173,7 +203,7 @@ def chess_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,fram
     canvas_widget.place(x=650, y=70)
 
     return r_0*2,d_wall-delta
-def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
+def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer,delete_center=0):
     number_0=number
     color_g='#D44B46'
     color_o='white'
@@ -260,26 +290,59 @@ def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,f
                 y = j * H * np.sin(np.radians(60))
             if np.sqrt(x ** 2 + y ** 2) + H / 2 <= d_itog / 2:
                 if (abs(i)) % 3 == 0 and j % 2 == 0:
-                    circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
-                    ax.add_patch(circle)
-                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
-                    ax.add_patch(circle_1)
-                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
-                    ax.add_patch(circle_2)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab=1
+                        else:
+                            circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                            ax.add_patch(circle)
+                            circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                            ax.add_patch(circle_1)
+                            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                            ax.add_patch(circle_2)
+                    else:
+                        circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                        ax.add_patch(circle)
+                        circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                        ax.add_patch(circle_1)
+                        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                        ax.add_patch(circle_2)
                 elif ((i)) % 3 == 1 and j % 2 == 1:
-                    circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
-                    ax.add_patch(circle)
-                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
-                    ax.add_patch(circle_1)
-                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
-                    ax.add_patch(circle_2)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab=1
+                        else:
+                            circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                            ax.add_patch(circle)
+                            circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                            ax.add_patch(circle_1)
+                            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                            ax.add_patch(circle_2)
+                    else:
+                        circle = plt.Circle((x, y), H / 2, edgecolor=color_g, facecolor=color_f, linestyle='--')
+                        ax.add_patch(circle)
+                        circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_g, facecolor=color_y_1)
+                        ax.add_patch(circle_1)
+                        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_g, facecolor=color_y_1)
+                        ax.add_patch(circle_2)
                 else:
-                    circle = plt.Circle((x, y), H / 2, edgecolor=color_y_2, facecolor=color_f, linestyle='--')
-                    ax.add_patch(circle)
-                    circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_y_2, facecolor=color_f)
-                    ax.add_patch(circle_1)
-                    circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_y_2, facecolor=color_f)
-                    ax.add_patch(circle_2)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab=1
+                        else:
+                            circle = plt.Circle((x, y), H / 2, edgecolor=color_y_2, facecolor=color_f, linestyle='--')
+                            ax.add_patch(circle)
+                            circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_y_2, facecolor=color_f)
+                            ax.add_patch(circle_1)
+                            circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_y_2, facecolor=color_f)
+                            ax.add_patch(circle_2)
+                    else:
+                        circle = plt.Circle((x, y), H / 2, edgecolor=color_y_2, facecolor=color_f, linestyle='--')
+                        ax.add_patch(circle)
+                        circle_1 = plt.Circle((x, y), H / 2 - delta / 2, edgecolor=color_y_2, facecolor=color_f)
+                        ax.add_patch(circle_1)
+                        circle_2 = plt.Circle((x, y), 0.5, edgecolor=color_y_2, facecolor=color_f)
+                        ax.add_patch(circle_2)
 
     ax.tick_params(axis='x', colors='white', labelsize=14)
     ax.tick_params(axis='y', colors='white', labelsize=14)
@@ -305,7 +368,7 @@ def cellular_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,f
     canvas_widget.place(x=650, y=70)
 
     return (H-delta),d_wall-delta
-def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer):
+def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr,frame,number,second_layer,delete_center=0):
     number_0=number
     color_g='#D44B46'
     color_o='white'
@@ -364,14 +427,15 @@ def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr
     edge_radius=d_wall/2
     # Границы сетки, чтобы покрыть всю большую окружность
     max_index = int((R_k - 2 * edge_radius - delta_wall - delta_y_pr) // H) + 1
-    x = 0
-    y = 0
-    small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
-    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-    dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-    ax.add_artist(small_circle)
-    ax.add_artist(small_circle_0)
-    ax.add_artist(dot_0)
+    if delete_center != 1:
+        x = 0
+        y = 0
+        small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        ax.add_artist(small_circle)
+        ax.add_artist(small_circle_0)
+        ax.add_artist(dot_0)
 
     if dop_sloy == 2:
         alpha_2 = 360 / (edge_count - 6)
@@ -440,7 +504,7 @@ def concentric_scheme_with_a_wall(D_k, H, edge_count,delta_wall,delta,delta_y_pr
     canvas_widget.place(x=650, y=70)
 
     return r_0*2, d_wall-delta
-def chess_scheme(D_k, H,delta_wall,delta,frame,number):
+def chess_scheme(D_k, H,delta_wall,delta,frame,number,delete_center=0):
     number_0=number
     color_g='#D44B46'
     color_o='white'
@@ -475,8 +539,13 @@ def chess_scheme(D_k, H,delta_wall,delta,frame,number):
             y = j * H
             # Проверяем, что окружность не выходит за границы
             if np.sqrt(x ** 2 + y ** 2) + r <= (R_k-delta_wall):
-                centers.append((x, y))
-
+                if delete_center == 1:
+                    if x == 0 and y == 0:
+                        aab = 1
+                    else:
+                        centers.append((x, y))
+                else:
+                    centers.append((x, y))
     # Рисуем большую окружность
     big_circle = plt.Circle((0, 0), R_k, fill=False, color=color_g)
     ax.add_artist(big_circle)
@@ -520,7 +589,7 @@ def chess_scheme(D_k, H,delta_wall,delta,frame,number):
     canvas_widget.place(x=650, y=70)
 
     return r_0*2
-def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
+def cellular_scheme(D_k, H,delta_wall,delta,frame,number,delete_center=0):
     number_0=number
     color_g='#D44B46'
     color_o='white'
@@ -559,26 +628,59 @@ def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
                 y = j * H * sin_60
             if np.sqrt(x ** 2 + y ** 2) + r <= R_k-delta_wall:
                 if (abs(i)) % 3 == 0 and j % 2 == 0:
-                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
-                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
-                    ax.add_patch(small_circle)
-                    ax.add_patch(small_circle_0)
-                    ax.add_patch(dot_0)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab = 1
+                        else:
+                            small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                            dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                            ax.add_patch(small_circle)
+                            ax.add_patch(small_circle_0)
+                            ax.add_patch(dot_0)
+                    else:
+                        small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                        dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                        ax.add_patch(small_circle)
+                        ax.add_patch(small_circle_0)
+                        ax.add_patch(dot_0)
                 elif ((i)) % 3 == 1 and j % 2 == 1:
-                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
-                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
-                    ax.add_patch(small_circle)
-                    ax.add_patch(small_circle_0)
-                    ax.add_patch(dot_0)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab = 1
+                        else:
+                            small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                            dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                            ax.add_patch(small_circle)
+                            ax.add_patch(small_circle_0)
+                            ax.add_patch(dot_0)
+                    else:
+                        small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_1, linestyle="--")
+                        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                        dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_1)
+                        ax.add_patch(small_circle)
+                        ax.add_patch(small_circle_0)
+                        ax.add_patch(dot_0)
                 else:
-                    small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_2, linestyle="--")
-                    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
-                    dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_2)
-                    ax.add_patch(small_circle)
-                    ax.add_patch(small_circle_0)
-                    ax.add_patch(dot_0)
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab = 1
+                        else:
+                            small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_2, linestyle="--")
+                            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+                            dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_2)
+                            ax.add_patch(small_circle)
+                            ax.add_patch(small_circle_0)
+                            ax.add_patch(dot_0)
+                    else:
+                        small_circle = plt.Circle((x, y), H / 2, fill=False, edgecolor=color_y_2, linestyle="--")
+                        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+                        dot_0 = plt.Circle((x, y), 0.5, fill=True, color=color_y_2)
+                        ax.add_patch(small_circle)
+                        ax.add_patch(small_circle_0)
+                        ax.add_patch(dot_0)
 
     ax.tick_params(axis='x', colors='white', labelsize=14)
     ax.tick_params(axis='y', colors='white', labelsize=14)
@@ -604,7 +706,7 @@ def cellular_scheme(D_k, H,delta_wall,delta,frame,number):
     canvas_widget.place(x=650, y=70)
 
     return r_0*2
-def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
+def concentric_scheme(D_k, H,delta_wall,delta,frame,number,delete_center=0):
     number_0=number
     color_g='#D44B46'
     color_o='white'
@@ -634,14 +736,15 @@ def concentric_scheme(D_k, H,delta_wall,delta,frame,number):
 
     # Границы сетки, чтобы покрыть всю большую окружность
     max_index = int((R_k  - delta_wall ) // H) + 1
-    x = 0
-    y = 0
-    small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
-    small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-    dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-    ax.add_artist(small_circle)
-    ax.add_artist(small_circle_0)
-    ax.add_artist(dot_0)
+    if delete_center != 1:
+        x = 0
+        y = 0
+        small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+        small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        ax.add_artist(small_circle)
+        ax.add_artist(small_circle_0)
+        ax.add_artist(dot_0)
     for k in range(0, max_index + 1):
         theta = np.linspace(0, 2 * np.pi, 6 * k, endpoint=False)
         for angle in theta:

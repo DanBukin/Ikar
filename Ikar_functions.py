@@ -412,8 +412,12 @@ def save_txt_fors(text):
     if file_path:  # Если путь был выбран
         with open(file_path, 'w') as f:
             f.write(f'{text}')
-def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_layer):
+def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_layer,delete_center_on):
     """Поиск координат центров окружностей в ядре смесительной головки"""
+    if delete_center_on=='on':
+        delete_center=1
+    else:
+        delete_center=0
     if choice == 1 or choice == 4 or choice == 5 or choice == 10 or choice == 13: # 1,4,5,10,13 - шахматная
 
         centers=[]
@@ -446,17 +450,40 @@ def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_
 
         for (x, y) in centers:
             if choice==4 or choice==5 or choice==13:
-                coord_y_g_x.append(x)
-                coord_y_g_y.append(y)
-                coord_y_ok_x.append(x)
-                coord_y_ok_y.append(y)
-            else:
-                if (int((x / H) + (y / H)) % 2) == 0:
+                if delete_center == 1:
+                    if x == 0 and y == 0:
+                        aab = 1
+                    else:
+                        coord_y_g_x.append(x)
+                        coord_y_g_y.append(y)
+                        coord_y_ok_x.append(x)
+                        coord_y_ok_y.append(y)
+                else:
                     coord_y_g_x.append(x)
                     coord_y_g_y.append(y)
-                else:
                     coord_y_ok_x.append(x)
                     coord_y_ok_y.append(y)
+            else:
+                if (int((x / H) + (y / H)) % 2) == 0:
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab = 1
+                        else:
+                            coord_y_g_x.append(x)
+                            coord_y_g_y.append(y)
+                    else:
+                        coord_y_g_x.append(x)
+                        coord_y_g_y.append(y)
+                else:
+                    if delete_center == 1:
+                        if x == 0 and y == 0:
+                            aab = 1
+                        else:
+                            coord_y_ok_x.append(x)
+                            coord_y_ok_y.append(y)
+                    else:
+                        coord_y_ok_x.append(x)
+                        coord_y_ok_y.append(y)
         return coord_y_g_x,coord_y_g_y,coord_y_ok_x,coord_y_ok_y
 #____________________________________________________________________________________________________________________
     elif choice == 2 or choice == 6 or choice == 7 or choice == 11 or choice == 14: # 2,6,7,11,14 - сотовая
@@ -491,19 +518,49 @@ def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_
                 if np.sqrt(x ** 2 + y ** 2) + H / 2 <= d_itog / 2:
                     if choice==2 or choice==11:
                         if (abs(i)) % 3 == 0 and j % 2 == 0: #Горючее
-                            coord_y_g_x.append(x)
-                            coord_y_g_y.append(y)
+                            if delete_center == 1:
+                                if x == 0 and y == 0:
+                                    aab = 1
+                                else:
+                                    coord_y_g_x.append(x)
+                                    coord_y_g_y.append(y)
+                            else:
+                                coord_y_g_x.append(x)
+                                coord_y_g_y.append(y)
                         elif ((i)) % 3 == 1 and j % 2 == 1: #Горючее
+                            if delete_center == 1:
+                                if x == 0 and y == 0:
+                                    aab = 1
+                                else:
+                                    coord_y_g_x.append(x)
+                                    coord_y_g_y.append(y)
+                            else:
+                                coord_y_g_x.append(x)
+                                coord_y_g_y.append(y)
+                        else: #Окислитель
+                            if delete_center == 1:
+                                if x == 0 and y == 0:
+                                    aab = 1
+                                else:
+                                    coord_y_ok_x.append(x)
+                                    coord_y_ok_y.append(y)
+                            else:
+                                coord_y_ok_x.append(x)
+                                coord_y_ok_y.append(y)
+                    else:
+                        if delete_center == 1:
+                            if x == 0 and y == 0:
+                                aab = 1
+                            else:
+                                coord_y_g_x.append(x)
+                                coord_y_g_y.append(y)
+                                coord_y_ok_x.append(x)
+                                coord_y_ok_y.append(y)
+                        else:
                             coord_y_g_x.append(x)
                             coord_y_g_y.append(y)
-                        else: #Окислитель
                             coord_y_ok_x.append(x)
                             coord_y_ok_y.append(y)
-                    else:
-                        coord_y_g_x.append(x)
-                        coord_y_g_y.append(y)
-                        coord_y_ok_x.append(x)
-                        coord_y_ok_y.append(y)
         return coord_y_g_x,coord_y_g_y,coord_y_ok_x,coord_y_ok_y
 # ____________________________________________________________________________________________________________________
     else: # 3,8,9,12,15 - концентрическая
@@ -556,13 +613,15 @@ def find_coord_core(choice,D_k,H,number_pr,delta_wall, delta, delta_y_pr,second_
                 coord_y_ok_x.append(x)
                 coord_y_ok_y.append(y)
         if choice == 3 or choice == 12:
-            coord_y_g_x.append(0)
-            coord_y_g_y.append(0)
+            if delete_center != 1:
+                coord_y_g_x.append(0)
+                coord_y_g_y.append(0)
         else:
-            coord_y_g_x.append(0)
-            coord_y_g_y.append(0)
-            coord_y_ok_x.append(0)
-            coord_y_ok_y.append(0)
+            if delete_center != 1:
+                coord_y_g_x.append(0)
+                coord_y_g_y.append(0)
+                coord_y_ok_x.append(0)
+                coord_y_ok_y.append(0)
         return coord_y_g_x, coord_y_g_y, coord_y_ok_x, coord_y_ok_y
 def function_2(array):
     choice_mapping = {

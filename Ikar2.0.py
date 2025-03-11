@@ -237,6 +237,7 @@ class Window_2(ctk.CTk):
         self.delta_wall=3
         self.delta=3
         self.delta_y_pr=3
+        self.delete_center_on='off'
         self.place_scrollbar()
         self.setup_frame()
         self.print_label()
@@ -245,6 +246,7 @@ class Window_2(ctk.CTk):
         self.print_slider()
         if self.choice<10:
             self.print_radio_button()
+        self.delete_center_button()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def on_closing(self):
@@ -257,7 +259,7 @@ class Window_2(ctk.CTk):
     def setup_frame(self):
         """--------------------Создание мини-окон--------------------"""
         self.frame1 = create_frame(self,370, 80,10,10,"#2b2b2b","transparent")
-        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=500, fg_color="#2b2b2b",bg_color="transparent")
+        self.frame2 = ctk.CTkFrame(master=self.scrollbar_frame_0, width=355, height=540, fg_color="#2b2b2b",bg_color="transparent")
         self.frame2.grid(row=0, column=0, sticky='w', padx=1, pady=1)
     def print_label(self):
         """Визуализация текста в окне"""
@@ -295,11 +297,43 @@ class Window_2(ctk.CTk):
         self.back_button = create_button(self.frame1, "Ввод", lambda: self.entry_Dk(), self.font1, 60, 90, 35)
         self.back_button = create_button(self, "Назад", lambda: self.back_window(), self.font1, 100, 10, 450)
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 120, 450)
+
     def print_radio_button(self):
-        """Появление кнопки для создания второго пристеночного слоя, если тот нужен"""
         self.check_var = ctk.StringVar(value="off")
-        self.checkbox = ctk.CTkCheckBox(self.frame2, text="2-ой пристеночный слой",command=lambda: self.on_button_change(), variable=self.check_var, onvalue="on", offvalue="off")
+        self.checkbox = ctk.CTkCheckBox(self.frame2, text="2-ой пристеночный слой",
+                                        command=lambda: self.on_button_change(), variable=self.check_var, onvalue="on",
+                                        offvalue="off")
         self.checkbox.place(x=30, y=420)
+    def delete_center_button(self):
+        self.check_var_2 = ctk.StringVar(value="off")
+        self.checkbox_2 = ctk.CTkCheckBox(self.frame2, text="Удалить центральную форсунку",
+                                        command=lambda: self.on_button_change_2(), variable=self.check_var_2, onvalue="on",
+                                        offvalue="off")
+        if self.choice < 10:
+            self.checkbox_2.place(x=30, y=510)
+        else:
+            self.checkbox_2.place(x=30, y=270)
+    def on_button_change_2(self):
+        self.delete_center_on=self.checkbox_2.get()
+        if self.checkbox_2.get()=='on':
+            self.delete_center=1
+        else:
+            self.delete_center = 0
+        if self.choice == 1 or self.choice == 4 or self.choice == 5:
+            self.D_y,self.D_prist=chess_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,
+                                     self, self.choice, self.checkbox.get(),self.delete_center)
+        elif self.choice == 2 or self.choice == 6 or self.choice == 7:
+            self.D_y,self.D_prist=cellular_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,
+                                        self, self.choice, self.checkbox.get(),self.delete_center)
+        elif self.choice == 3 or self.choice == 8 or self.choice == 9:
+            self.D_y,self.D_prist=concentric_scheme_with_a_wall(self.D_k, self.H, self.number_pr, self.delta_wall, self.delta,
+                                          self.delta_y_pr, self, self.choice, self.checkbox.get(),self.delete_center)
+        elif self.choice == 10 or self.choice == 13 :
+            self.D_y=chess_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice,self.delete_center)
+        elif self.choice == 11 or self.choice == 14 :
+            self.D_y=cellular_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice,self.delete_center)
+        else:
+            self.D_y=concentric_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice,self.delete_center)
     def back_window(self):
         self.destroy()
         app = Window_1()
@@ -473,10 +507,10 @@ class Window_2(ctk.CTk):
         user.second_layer =self.second_layer
         user.D_y=self.D_y
         user.D_prist=self.D_prist
-        window_3 = Window_3(self.choice,self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer)
+        window_3 = Window_3(self.choice,self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer,self.delete_center_on)
         window_3.mainloop()
 class Window_3(ctk.CTk):
-    def __init__(self, choice,D_k,H, number_pr, delta_wall, delta, delta_y_pr,second_layer):
+    def __init__(self, choice,D_k,H, number_pr, delta_wall, delta, delta_y_pr,second_layer,delete_center_on):
         super().__init__()
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
@@ -490,6 +524,7 @@ class Window_3(ctk.CTk):
         self.choice = choice
         self.D_k=D_k
         self.H=H
+        self.delete_center_on=delete_center_on
         self.number_pr=number_pr
         self.delta_wall=delta_wall
         self.delta=delta
@@ -508,7 +543,7 @@ class Window_3(ctk.CTk):
                 self.choice, self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer)
             self.print_label_pr()
             self.print_button_pr()
-        self.coord_y_g_x,self.coord_y_g_y,self.coord_y_ok_x,self.coord_y_ok_y=find_coord_core(self.choice,self.D_k,self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer)
+        self.coord_y_g_x,self.coord_y_g_y,self.coord_y_ok_x,self.coord_y_ok_y=find_coord_core(self.choice,self.D_k,self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer,self.delete_center_on)
 
         self.print_label_core()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
