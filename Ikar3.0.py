@@ -106,6 +106,7 @@ class user:
         self.x_3_T = None
         self.y_3_T = None
         self.delete_center= None
+        self.emb = None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -180,7 +181,6 @@ class Window_1(ctk.CTk):
         self.radio_option9 = ctk.CTkRadioButton(self, text="Пристенок двухкомпонентный", variable=self.radio_var_4,
                                                 command=lambda: self.choice_1(), value=2)
         self.radio_option9.place(x=10, y=435)
-
     def choice_1(self):
         """При некоторых выборах необходимо убрать определённые кнопки. Например, что при однокомпонентном ядре нет смылса реализовывать двухкомпонентный пристенок"""
         if self.radio_var_1.get() == 2:
@@ -210,12 +210,19 @@ class Window_1(ctk.CTk):
 
     def print_button(self):
         self.close_button=create_button(self, "Выбрать", lambda: self.close_window(), self.font1,100,760,450)
+        self.fors_button = create_button(self, "Форсунки", lambda: self.open_fors_window(), self.font1, 100, 650, 450)
         self.button_1 = create_button(self, "Общая информация", lambda: show_frame_1(self), self.font1, 220, 400, 5)
         self.button_1 = create_button(self, "Схемы расположения", lambda: show_frame_2(self), self.font1, 100, 640, 5)
         self.button_1 = create_button(self, "?", lambda: show_frame_3(self), self.font1, 50, 810, 5)
+    def open_fors_window(self):
+        user.emb=1
+        self.destroy()
+        window_9 = Window_9(user.emb)
+        window_9.mainloop()
     def close_window(self):
         try:
             self.destroy()
+            user.emb = 0
             window_2 = Window_2(self.number)
             window_2.mainloop()
         except Exception as e:
@@ -1432,7 +1439,7 @@ class Window_8(ctk.CTk):
         window_7.mainloop()
     def open_window(self):
         self.destroy()
-        window_9 = Window_9()
+        window_9 = Window_9(user.emb)
         window_9.mainloop()
     def exit_window(self):
         self.destroy()
@@ -1538,9 +1545,10 @@ class Window_8(ctk.CTk):
         return y
 
     def on_button_click(self,num):
+        self.destroy()
         open_window_fors(num)
 class Window_9(ctk.CTk):
-    def __init__(self):
+    def __init__(self,emb):
         super().__init__()
         self.font1 = ("Futura PT Book", 16)  # Настройка пользовательского шрифта 1
         self.font2 = ("Futura PT Book", 14)  # Настройка пользовательского шрифта 2
@@ -1554,7 +1562,7 @@ class Window_9(ctk.CTk):
         #ctk.deactivate_automatic_dpi_awareness()
         self.after(201, lambda: self.iconbitmap('data/sunset.ico'))  # Установка иконки окна
         self.configure(bg_color="black")  # Установка цвета фона окна
-
+        self.emb=emb
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.place_scrollbar()
         self.setup_frame()
@@ -1652,14 +1660,19 @@ class Window_9(ctk.CTk):
                                      command=lambda: self.on_button_click(10))
         image_button.place(x=2, y=310 * 3)
     def on_button_click(self,num):
+        self.destroy()
         open_window_fors(num)
     def print_button(self):
-        self.back_button = create_button(self.frame2, "Назад", lambda: self.back_window(), self.font1, 100, 740, 310 * 4-30-35)
-        self.excel_button = create_button(self.frame2, "Сохранить всё в excel", lambda: save_all_properties(user), self.font1,
-                                          200, 320, 310 * 4-30)
-        self.image_button = create_button(self.frame2, "Сохранить изображения", lambda: save_all_images(user), self.font1, 200,
-                                          530, 310 * 4-30)
-        self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(), self.font1, 100, 740, 310 * 4-30)
+        if self.emb==0:
+            self.back_button = create_button(self.frame2, "Назад", lambda: self.back_window(), self.font1, 100, 740, 310 * 4-30-35)
+            self.excel_button = create_button(self.frame2, "Сохранить всё в excel", lambda: save_all_properties(user), self.font1,
+                                              200, 320, 310 * 4-30)
+            self.image_button = create_button(self.frame2, "Сохранить изображения", lambda: save_all_images(user), self.font1, 200,
+                                              530, 310 * 4-30)
+            self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(), self.font1, 100, 740, 310 * 4-30)
+        else:
+            self.exit_button = create_button(self.frame2, "Выход", lambda: self.exit_window(), self.font1, 100, 740,
+                                             310 * 4 - 30)
     def back_window(self):
         self.destroy()
         window_8 = Window_8()
