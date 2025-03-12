@@ -1,5 +1,4 @@
 import math
-
 from Ikar_functions import *
 from Ikar_Kompas_3D import *
 from ikar_graphs import *
@@ -13,6 +12,7 @@ import os
 from ctypes import windll
 import warnings
 import sys
+from tkinter import messagebox
 
 warnings.filterwarnings("ignore", category=UserWarning)
 ctk.deactivate_automatic_dpi_awareness()
@@ -105,6 +105,7 @@ class user:
         self.y_2_T = None
         self.x_3_T = None
         self.y_3_T = None
+        self.delete_center= None
 class Window_1(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -213,10 +214,13 @@ class Window_1(ctk.CTk):
         self.button_1 = create_button(self, "Схемы расположения", lambda: show_frame_2(self), self.font1, 100, 640, 5)
         self.button_1 = create_button(self, "?", lambda: show_frame_3(self), self.font1, 50, 810, 5)
     def close_window(self):
-
-        self.destroy()
-        window_2 = Window_2(self.number)
-        window_2.mainloop()
+        try:
+            self.destroy()
+            window_2 = Window_2(self.number)
+            window_2.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\n{str(e)}")
 class Window_2(ctk.CTk):
     def __init__(self, choice):
         super().__init__()
@@ -489,26 +493,35 @@ class Window_2(ctk.CTk):
         self.label13.configure(text=f"Диаметр форсунок в ядре равен: {self.D_y:.2f} мм")
         self.label14.configure(text=f"Диаметр форсунок в пристенке равен: {self.D_prist:.2f} мм")
     def close_window(self):
-        self.destroy()
-        if self.choice<10:
-            if self.checkbox.get()=="off":
-                self.second_layer=1
+        try:
+            self.destroy()
+            if self.choice < 10:
+                if self.checkbox.get() == "off":
+                    self.second_layer = 1
+                else:
+                    self.second_layer = 2
             else:
-                self.second_layer=2
-        else:
-            self.second_layer = 0
-        user.choice=self.choice
-        user.D_k =self.D_k
-        user.H =self.H
-        user.number_pr =self.number_pr
-        user.delta_wall =self.delta_wall
-        user.delta =self.delta
-        user.delta_y_pr =self.delta_y_pr
-        user.second_layer =self.second_layer
-        user.D_y=self.D_y
-        user.D_prist=self.D_prist
-        window_3 = Window_3(self.choice,self.D_k, self.H, self.number_pr, self.delta_wall, self.delta, self.delta_y_pr,self.second_layer,self.delete_center_on)
-        window_3.mainloop()
+                self.second_layer = 0
+            user.choice = self.choice
+            user.D_k = self.D_k
+            user.H = self.H
+            user.number_pr = self.number_pr
+            user.delta_wall = self.delta_wall
+            user.delta = self.delta
+            user.delta_y_pr = self.delta_y_pr
+            user.second_layer = self.second_layer
+            user.D_y = self.D_y
+            user.D_prist = self.D_prist
+            if self.checkbox_2.get() == 'on':
+                user.delete_center = 1
+            else:
+                user.delete_center = 0
+            window_3 = Window_3(self.choice, self.D_k, self.H, self.number_pr, self.delta_wall, self.delta,
+                                self.delta_y_pr, self.second_layer, self.delete_center_on)
+            window_3.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеобходимо ввести диаметр камеры сгорания!")
 class Window_3(ctk.CTk):
     def __init__(self, choice,D_k,H, number_pr, delta_wall, delta, delta_y_pr,second_layer,delete_center_on):
         super().__init__()
@@ -661,19 +674,23 @@ class Window_3(ctk.CTk):
         app.mainloop()
 
     def close_window(self):
-        user.n_g_y = self.n_g_y
-        user.n_o_y = self.n_o_y
-        user.n_g_pr = self.n_g_pr
-        user.n_o_pr = self.n_o_pr
-        user.coord_pr_g_x=self.coord_pr_g_x
-        user.coord_pr_g_y=self.coord_pr_g_y
-        user.coord_y_g_x=self.coord_y_g_x
-        user.coord_y_g_y=self.coord_y_g_y
-        user.coord_y_ok_x=self.coord_y_ok_x
-        user.coord_y_ok_y=self.coord_y_ok_y
-        self.destroy()
-        window_4 = Window_4(self.choice)
-        window_4.mainloop()
+        try:
+            user.n_g_y = self.n_g_y
+            user.n_o_y = self.n_o_y
+            user.n_g_pr = self.n_g_pr
+            user.n_o_pr = self.n_o_pr
+            user.coord_pr_g_x = self.coord_pr_g_x
+            user.coord_pr_g_y = self.coord_pr_g_y
+            user.coord_y_g_x = self.coord_y_g_x
+            user.coord_y_g_y = self.coord_y_g_y
+            user.coord_y_ok_x = self.coord_y_ok_x
+            user.coord_y_ok_y = self.coord_y_ok_y
+            self.destroy()
+            window_4 = Window_4(self.choice)
+            window_4.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеобходимо ввести диаметр камеры сгорания!")
 class Window_4(ctk.CTk):
     def __init__(self, choice):
         super().__init__()
@@ -840,68 +857,79 @@ class Window_4(ctk.CTk):
         self.close_button = create_button(self, "Далее", lambda: self.close_window(), self.font1, 100, 760, 450)
         self.button_1 = create_button(self, "?", lambda: show_frame_5(self), self.font1, 50, 580, 450)
     def print_options(self):
-        if self.choice<10:
-            if self.choice==5 or self.choice==7 or self.choice==9:
-                self.current_choice = (
-                    self.radio_var_4.get(),
-                    self.radio_var_5.get(),
-                    self.radio_var_1.get(),
-                    self.radio_var_2.get()
-                )
+        try:
+            if self.choice < 10:
+                if self.choice == 5 or self.choice == 7 or self.choice == 9:
+                    self.current_choice = (
+                        self.radio_var_4.get(),
+                        self.radio_var_5.get(),
+                        self.radio_var_1.get(),
+                        self.radio_var_2.get()
+                    )
+                else:
+                    self.current_choice = (
+                        0,
+                        self.radio_var_3.get(),
+                        self.radio_var_1.get(),
+                        self.radio_var_2.get()
+                    )
             else:
                 self.current_choice = (
                     0,
-                    self.radio_var_3.get(),
+                    1,
                     self.radio_var_1.get(),
                     self.radio_var_2.get()
                 )
-        else:
-            self.current_choice = (
-                0,
-                1,
-                self.radio_var_1.get(),
-                self.radio_var_2.get()
-            )
-        self.number = function_2(self.current_choice)
-        print(f'Выбрана система: {self.number}')
-        user.number=self.number
-        self.a = float(self.entry1_value.get())
-        self.b=float(self.entry2_value.get())
-        if self.Entry5:
-            self.c=float(self.entry5_value.get())
-        if self.Entry7:
-            self.c=float(self.entry7_value.get())
-        if self.Entry8:
-            self.c=float(self.entry8_value.get())
-        if self.Entry6:
-            self.d=float(self.entry6_value.get())
-        if self.Entry9:
-            self.d=float(self.entry9_value.get())
-        if self.choice < 10:
-            self.f=float(self.entry3_value.get())
-            if self.choice == 5 or self.choice == 7 or self.choice == 9:
-                self.g=float(self.entry4_value.get())
-        self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8 = find_costs(self.number, self.a, self.b,self.c, self.d, self.f/100, self.g)
-        user.a=self.a
-        user.b=self.b
-        user.c=self.c
-        user.d=self.d
-        user.f=self.f
-        user.g=self.g
-        user.x_1 =self.x_1
-        user.x_2 =self.x_2
-        user.x_3 =self.x_3
-        user.x_4 =self.x_4
-        user.x_5 =self.x_5
-        user.x_6 =self.x_6
-        user.x_7 =self.x_7
-        user.x_8 =self.x_8
-        self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1, text=f'm_сумм={self.a:.3f} кг/с\nk_m={self.b:.3f}\nk_m_вгг={self.c:.3f}\nk_m_огг={self.d:.3f}\nn={self.f:.3f}\nk_m_пр ={self.g:.3f}', font=self.font1, justify='left')
-        self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
-        self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_2,
-                                   text=f'm_пр_г_вгг={self.x_1:.3f}\nm_пр_ок_вгг={self.x_2:.3f} кг/с\nm_пр_г_огг={self.x_3:.3f} кг/с\nm_пр_ок_огг={self.x_4:.3f} кг/с\nm_я_г_вгг={self.x_5:.3f} кг/с\nm_я_ок_вгг={self.x_6:.3f} кг/с\nm_я_г_огг={self.x_7:.3f} кг/с\nm_я_ок_огг={self.x_8:.3f} кг/с',
-                                   font=self.font1, justify='left')
-        self.label2.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+            self.number = function_2(self.current_choice)
+            print(f'Выбрана система: {self.number}')
+            user.number = self.number
+            self.a = float(self.entry1_value.get())
+            self.b = float(self.entry2_value.get())
+            if self.Entry5:
+                self.c = float(self.entry5_value.get())
+            if self.Entry7:
+                self.c = float(self.entry7_value.get())
+            if self.Entry8:
+                self.c = float(self.entry8_value.get())
+            if self.Entry6:
+                self.d = float(self.entry6_value.get())
+            if self.Entry9:
+                self.d = float(self.entry9_value.get())
+            if self.choice < 10:
+                self.f = float(self.entry3_value.get())
+                if self.choice == 5 or self.choice == 7 or self.choice == 9:
+                    self.g = float(self.entry4_value.get())
+            self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8 = find_costs(self.number,
+                                                                                                        self.a, self.b,
+                                                                                                        self.c, self.d,
+                                                                                                        self.f / 100,
+                                                                                                        self.g)
+            user.a = self.a
+            user.b = self.b
+            user.c = self.c
+            user.d = self.d
+            user.f = self.f
+            user.g = self.g
+            user.x_1 = self.x_1
+            user.x_2 = self.x_2
+            user.x_3 = self.x_3
+            user.x_4 = self.x_4
+            user.x_5 = self.x_5
+            user.x_6 = self.x_6
+            user.x_7 = self.x_7
+            user.x_8 = self.x_8
+            self.label1 = ctk.CTkLabel(master=self.scrollbar_frame_1,
+                                       text=f'm_сумм={self.a:.3f} кг/с\nk_m={self.b:.3f}\nk_m_вгг={self.c:.3f}\nk_m_огг={self.d:.3f}\nn={self.f:.3f}\nk_m_пр ={self.g:.3f}',
+                                       font=self.font1, justify='left')
+            self.label1.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+            self.label2 = ctk.CTkLabel(master=self.scrollbar_frame_2,
+                                       text=f'm_пр_г_вгг={self.x_1:.3f}\nm_пр_ок_вгг={self.x_2:.3f} кг/с\nm_пр_г_огг={self.x_3:.3f} кг/с\nm_пр_ок_огг={self.x_4:.3f} кг/с\nm_я_г_вгг={self.x_5:.3f} кг/с\nm_я_ок_вгг={self.x_6:.3f} кг/с\nm_я_г_огг={self.x_7:.3f} кг/с\nm_я_ок_огг={self.x_8:.3f} кг/с',
+                                       font=self.font1, justify='left')
+            self.label2.grid(row=0, column=0, sticky='w', padx=0, pady=0)
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
+
     def place_scrollbar(self):
         self.scrollbar_frame_1 = ctk.CTkScrollableFrame(self, width=190, height=50,fg_color='#2b2b2b')  # 171717
         self.scrollbar_frame_1.place(x=390, y=220)
@@ -927,9 +955,16 @@ class Window_4(ctk.CTk):
         window_3 = Window_3(user.choice, user.D_k, user.H, user.number_pr, user.delta_wall, user.delta, user.delta_y_pr,user.second_layer)
         window_3.mainloop()
     def close_window(self):
-        self.destroy()
-        window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y,user.choice,self.x_1, self.x_2, self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8,user.coord_pr_g_x,user.coord_pr_g_y,user.coord_y_g_x,user.coord_y_g_y,user.coord_y_ok_x,user.coord_y_ok_y)
-        window_5.mainloop()
+        try:
+            self.destroy()
+            window_5 = Window_5(user.n_g_pr, user.n_o_pr, user.n_g_y, user.n_o_y, user.choice, self.x_1, self.x_2,
+                                self.x_3, self.x_4, self.x_5, self.x_6, self.x_7, self.x_8, user.coord_pr_g_x,
+                                user.coord_pr_g_y, user.coord_y_g_x, user.coord_y_g_y, user.coord_y_ok_x,
+                                user.coord_y_ok_y)
+            window_5.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
 class Window_5(ctk.CTk):
     def __init__(self, n_g_pr, n_o_pr, n_g_y, n_o_y,choice,x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8,coord_pr_g_x,coord_pr_g_y,coord_y_g_x,coord_y_g_y,coord_y_ok_x,coord_y_ok_y):
         super().__init__()
@@ -1067,20 +1102,25 @@ class Window_5(ctk.CTk):
         window_4.mainloop()
 
     def close_window(self):
-        self.destroy()
-        user.m_f_g_y=self.m_f_g_y
-        user.m_f_o_y = self.m_f_o_y
-        user.m_f_g_pr = self.m_f_g_pr
-        user.m_f_o_pr = self.m_f_o_pr
-        user.n_pl=self.n_pl
-        user.centers_square = self.centers_square
-        user.coord_graph = self.coord_graph
-        user.angles_square = self.angles_square
-        user.coord_gor = self.coord_gor
-        user.coord_ok = self.coord_ok
-        user.n=self.n
-        window_6 = Window_6(self.n_pl,self.centers_square,self.coord_graph,self.angles_square,self.coord_gor,self.coord_ok)
-        window_6.mainloop()
+        try:
+            self.destroy()
+            user.m_f_g_y = self.m_f_g_y
+            user.m_f_o_y = self.m_f_o_y
+            user.m_f_g_pr = self.m_f_g_pr
+            user.m_f_o_pr = self.m_f_o_pr
+            user.n_pl = self.n_pl
+            user.centers_square = self.centers_square
+            user.coord_graph = self.coord_graph
+            user.angles_square = self.angles_square
+            user.coord_gor = self.coord_gor
+            user.coord_ok = self.coord_ok
+            user.n = self.n
+            window_6 = Window_6(self.n_pl, self.centers_square, self.coord_graph, self.angles_square, self.coord_gor,
+                                self.coord_ok)
+            window_6.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
 class Window_6(ctk.CTk):
     def __init__(self,n_pl,centers_square,coord_graph,angles_square,coord_gor,coord_ok):
         super().__init__()
@@ -1181,10 +1221,14 @@ class Window_6(ctk.CTk):
         window_5.mainloop()
 
     def close_window(self):
-        self.destroy()
-        user.km_graph=self.km_graph
-        window_7 = Window_7(self.km_graph)
-        window_7.mainloop()
+        try:
+            self.destroy()
+            user.km_graph = self.km_graph
+            window_7 = Window_7(self.km_graph)
+            window_7.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
 class Window_7(ctk.CTk):
     def __init__(self,km_graph):
         super().__init__()
@@ -1299,26 +1343,34 @@ class Window_7(ctk.CTk):
         self.button_5 = create_button(self, 'Вернуться к расчёту расходов (Окно №4)', lambda: self.open_window_5(), self.font1, 400, 215 + 110, 450)
         self.button_6 = create_button(self, 'Далее', lambda: self.close_window(), self.font1, 110, 420 + 310, 450)
     def create_graph(self):
-        hide_images(self)
-        self.p_k = float(self.entry1_value.get())
-        self.km0 = float(substances_data_2.get(self.fuel, {}).get(self.oxigen, None))
+        try:
+            hide_images(self)
+            self.p_k = float(self.entry1_value.get())
+            self.km0 = float(substances_data_2.get(self.fuel, {}).get(self.oxigen, None))
 
-        self.results = {}
-        self.T_graph = []
-        for x, y, value in self.km_graph:
-            self.rounded_value = round(value, 3)
-            if self.rounded_value not in self.results:
-                self.results[self.rounded_value] = find_temperature(self.p_k,self.rounded_value/self.km0,self.formula_gor,self.formula_ox,self.H_gor,self.H_ok,self.km0)
-            self.T_graph.append([x, y, self.results[self.rounded_value]])
-        self.x_1_T,self.y_1_T,self.z_1_T,self.x_2_T,self.y_2_T,self.x_3_T,self.y_3_T=three_d_graph_T(self.T_graph,self.frame_4,user.D_k)
-        user.T_graph=self.T_graph
-        user.x_1_T=self.x_1_T
-        user.y_1_T=self.y_1_T
-        user.z_1_T=self.z_1_T
-        user.x_2_T=self.x_2_T
-        user.y_2_T=self.y_2_T
-        user.x_3_T=self.x_3_T
-        user.y_3_T=self.y_3_T
+            self.results = {}
+            self.T_graph = []
+            for x, y, value in self.km_graph:
+                self.rounded_value = round(value, 3)
+                if self.rounded_value not in self.results:
+                    self.results[self.rounded_value] = find_temperature(self.p_k, self.rounded_value / self.km0,
+                                                                        self.formula_gor, self.formula_ox, self.H_gor,
+                                                                        self.H_ok, self.km0)
+                self.T_graph.append([x, y, self.results[self.rounded_value]])
+            self.x_1_T, self.y_1_T, self.z_1_T, self.x_2_T, self.y_2_T, self.x_3_T, self.y_3_T = three_d_graph_T(
+                self.T_graph, self.frame_4, user.D_k)
+            user.T_graph = self.T_graph
+            user.x_1_T = self.x_1_T
+            user.y_1_T = self.y_1_T
+            user.z_1_T = self.z_1_T
+            user.x_2_T = self.x_2_T
+            user.y_2_T = self.y_2_T
+            user.x_3_T = self.x_3_T
+            user.y_3_T = self.y_3_T
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
+
     def back_window(self):
         self.destroy()
         user.T_graph = None
@@ -1337,12 +1389,16 @@ class Window_7(ctk.CTk):
         window_4 = Window_4(user.choice)
         window_4.mainloop()
     def close_window(self):
-        self.destroy()
-        user.formula_ox=self.formula_ox
-        user.formula_gor=self.formula_gor
-        user.p_k=self.p_k
-        window_8 = Window_8()
-        window_8.mainloop()
+        try:
+            self.destroy()
+            user.formula_ox = self.formula_ox
+            user.formula_gor = self.formula_gor
+            user.p_k = self.p_k
+            window_8 = Window_8()
+            window_8.mainloop()
+        except Exception as e:
+            # Если произошла ошибка, показываем сообщение
+            messagebox.showerror("Ошибка", f"Произошла ошибка:\nНеправильный ввод данных!")
 class Window_8(ctk.CTk):
     def __init__(self):
         super().__init__()

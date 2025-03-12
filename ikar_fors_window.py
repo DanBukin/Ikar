@@ -3157,5 +3157,6 @@ class Window_10(ctk.CTk):
         self.label_12.configure(text=f"Выберите толщину среднего днища: {self.h_sr:.1f} мм")
         print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
 if __name__ == "__main__":
-    app = Window_6()
+    app = Window_2()
     app.mainloop()
+
