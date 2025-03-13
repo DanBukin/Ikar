@@ -1869,7 +1869,7 @@ class Window_6(ctk.CTk):
         self.mu_gg=(math.sqrt((1.23**2)+(232*(self.l_c_v/(self.Re_gg*self.d_c_v))))-1.23)/(116*self.l_c_v/(self.Re_gg*self.d_c_v))
         self.p_vh_gg=self.p_k+self.delta_p_gg
         self.F_f_v_1=self.m_f_gg/(self.mu_gg*self.rho_gg*((self.p_k/self.p_vh_gg)**(1/self.k_gg))*math.sqrt(2*(self.k_gg/(self.k_gg-1))*self.R_gg*self.T_0_gg*(1-(((self.p_k/self.p_vh_gg))**((self.k_gg-1)/self.k_gg)))))
-        self.d_c_v_1=math.sqrt(0.25*self.F_f_v_1/math.pi)
+        self.d_c_v_1=math.sqrt(4*self.F_f_v_1/math.pi)
         self.pogresh_1=abs((self.d_c_v-(self.d_c_v_1*1000))/self.d_c_v)*100
         self.label_20.configure(text=f"Площадь сопла форсунки на выходе:\n•F_ф.в = {self.F_f_v*1000000:.3f} мм2")
         self.label_21.configure(text=f"Число Рейнольдса:\n•Re ={self.Re_gg:.3f}")
@@ -2229,7 +2229,7 @@ class Window_7(ctk.CTk):
         self.mu_gg=(math.sqrt((1.23**2)+(232*(self.l_c_v/(self.Re_gg*self.d_c_v))))-1.23)/(116*self.l_c_v/(self.Re_gg*self.d_c_v))
         self.p_vh_gg=self.p_k+self.delta_p_gg
         self.F_f_v_1=self.m_f_gg/(self.mu_gg*self.rho_gg*((self.p_k/self.p_vh_gg)**(1/self.k_gg))*math.sqrt(2*(self.k_gg/(self.k_gg-1))*self.R_gg*self.T_0_gg*(1-(((self.p_k/self.p_vh_gg))**((self.k_gg-1)/self.k_gg)))))
-        self.d_c_v_1=math.sqrt(0.25*self.F_f_v_1/math.pi)
+        self.d_c_v_1=math.sqrt(4*self.F_f_v_1/math.pi)
         self.pogresh_1=abs((self.d_c_v-(self.d_c_v_1*1000))/self.d_c_v)*100
         self.label_20.configure(text=f"Площадь сопла форсунки на выходе:\n•F_ф.в = {self.F_f_v*1000000:.3f} мм2")
         self.label_21.configure(text=f"Число Рейнольдса:\n•Re ={self.Re_gg:.3f}")
@@ -3157,6 +3157,6 @@ class Window_10(ctk.CTk):
         self.label_12.configure(text=f"Выберите толщину среднего днища: {self.h_sr:.1f} мм")
         print_nozzle_9(self.frame2_1,self.H,self.delta_st_n,self.delta_st_v,self.d_c_v,self.l_c_n,self.l_c_v,self.h_og,self.h_sr,self.phi,self.d_vh,self.h_ot)
 if __name__ == "__main__":
-    app = Window_2()
+    app = Window_7()
     app.mainloop()
 
