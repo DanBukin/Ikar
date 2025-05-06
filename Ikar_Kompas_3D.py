@@ -92,17 +92,17 @@ iDocument2D.ksCircle(x_center, y_center, radius, 1)
                 for x, y in zip(pr_x, pr_y):
                     file.write(print_circle(k, x, y, d_wall / 2, d_wall / 2 - delta / 2, 6, 1))
                     k += 1
-            if choice==1 or choice==2 or choice==3 or choice==10 or choice==11 or choice==12:
-                k = 1
-                for x, y in zip(core_g_x, core_g_y):
-                    file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 1))
-                    k += 1
-                k = 1
-                for x, y in zip(core_ok_x, core_ok_y):
-                    file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 2))
-                    k += 1
-            else:
-                k = 1
-                for x, y in zip(core_g_x, core_g_y):
-                    file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 7))
-                    k += 1
+        if choice==1 or choice==2 or choice==3 or choice==10 or choice==11 or choice==12:
+            k = 1
+            for x, y in zip(core_g_x, core_g_y):
+                file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 1))
+                k += 1
+            k = 1
+            for x, y in zip(core_ok_x, core_ok_y):
+                file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 2))
+                k += 1
+        else:
+            k = 1
+            for x, y in zip(core_g_x, core_g_y):
+                file.write(print_circle(k, x, y, H / 2, H / 2 - delta / 2, 6, 7))
+                k += 1

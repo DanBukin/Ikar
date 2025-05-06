@@ -277,7 +277,7 @@ class Window_2(ctk.CTk):
         self.label1 = create_label(self.frame1, "Введите диаметр камеры сгорания (мм) :", 20, 5)
         self.label3=create_label(self.frame1, "Рекомендуемый шаг: ", 160, 35)
         self.label2 = create_label(self.frame2, "Выберите шаг между форсунками (мм) :", 0, 0)
-        self.label_3_1 = create_label(self.frame2, "10", 30, 20)
+        self.label_3_1 = create_label(self.frame2, "2", 30, 20)
         self.label_3_2 = create_label(self.frame2, "30", 300, 20)
         self.label4 = create_label(self.frame2, "Выбранный шаг равен: 17 мм", 10, 40)
         self.label5 = create_label(self.frame2, "Выберите расстояние между форсунками (мм):", 10, 85)
@@ -345,6 +345,7 @@ class Window_2(ctk.CTk):
             self.D_y=cellular_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice,self.delete_center)
         else:
             self.D_y=concentric_scheme(self.D_k, self.H, self.delta_wall, self.delta, self, self.choice,self.delete_center)
+            print(self.choice)
     def back_window(self):
         self.destroy()
         app = Window_1()
@@ -355,7 +356,7 @@ class Window_2(ctk.CTk):
         self.label3.configure(text=f"Рекомендуемый шаг: {self.H_id} мм")
         self.on_slider_change_0()
     def print_slider(self):
-        self.slider1 = ctk.CTkSlider(self.frame2, from_=10, to=30, command=self.on_slider_change, number_of_steps=20,
+        self.slider1 = ctk.CTkSlider(self.frame2, from_=2, to=30, command=self.on_slider_change, number_of_steps=28,
                                     border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                     progress_color=("#D44B46"))
         self.slider1.place(x=50, y=30)
@@ -376,7 +377,7 @@ class Window_2(ctk.CTk):
                                         progress_color=("#D44B46"))
             self.slider4.place(x=50, y=285)
             self.slider4.set(3)
-            self.slider5 = ctk.CTkSlider(self.frame2, from_=30, to=190, command=self.on_slider_change_4, number_of_steps=80,
+            self.slider5 = ctk.CTkSlider(self.frame2, from_=24, to=190, command=self.on_slider_change_4, number_of_steps=83,
                                         border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                         progress_color=("#D44B46"))
             self.slider5.place(x=50, y=370)

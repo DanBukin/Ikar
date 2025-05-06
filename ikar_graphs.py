@@ -753,14 +753,26 @@ def concentric_scheme(D_k, H,delta_wall,delta,frame,number,delete_center=0):
             if np.sqrt(x ** 2 + y ** 2) + r <= (R_k  - delta_wall):
                 centers.append((x, y,k))
     for (x, y,k) in centers:
-        if k % 2 == 0:
-            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
-            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
-            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+        if number_0 == 15:
+            if k % 2 == 0:
+                small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+                small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+
+            else:
+                small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+                small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
         else:
-            small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_2)
-            small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
-            dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_2, facecolor=color_y_2)
+            if k % 2 == 0:
+                small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_1)
+                small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+                dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_1, facecolor=color_y_1_0)
+
+            else:
+                small_circle = plt.Circle((x, y), r, fill=False, linestyle="--", color=color_y_2)
+                small_circle_0 = plt.Circle((x, y), r_0, fill=True, edgecolor=color_y_2, facecolor=color_f)
+                dot_0 = plt.Circle((x, y), 0.5, fill=True, edgecolor=color_y_2, facecolor=color_y_2)
         ax.add_artist(small_circle)
         ax.add_artist(small_circle_0)
         ax.add_artist(dot_0)
@@ -2212,8 +2224,8 @@ def print_nozzle_6(frame,H,d_f,delta_st_n,d_c_n,phi_n,l_c_n,l_k_z,d_c_v,delta_st
 def print_nozzle_7(frame,H,delta_st,l_c_n,l_c_v,d_c_v,delta_og,delta_sr,d_vh,i_vh):
     d_f=H*0.75
     d_c_n=d_f-(2*delta_st)
-
-
+    a=i_vh
+    i_vh=a//2
     fig = Figure(figsize=(6.5, 14), dpi=100)
     ax_2 = fig.add_subplot(212)
     ax = fig.add_subplot(211)
@@ -2296,6 +2308,12 @@ def print_nozzle_7(frame,H,delta_st,l_c_n,l_c_v,d_c_v,delta_og,delta_sr,d_vh,i_v
     ax.add_patch(circle)
     ax.plot([x_circ, x_circ], [y_circ-(0.55*d_vh), y_circ+(0.55*d_vh)], color="#D44B46", linestyle='-.')
     ax.plot([x_circ-(0.55*d_vh), x_circ+(0.55*d_vh)], [y_circ, y_circ], color="#D44B46", linestyle='-.')
+    if a > 6:
+        y_circ=y_circ-1.2 * d_vh
+        circle = plt.Circle((x_circ, y_circ), 0.5 * d_vh, color='#D44B46', fill=None)
+        ax.add_patch(circle)
+        ax.plot([x_circ, x_circ], [y_circ - (0.55 * d_vh), y_circ + (0.55 * d_vh)], color="#D44B46", linestyle='-.')
+        ax.plot([x_circ - (0.55 * d_vh), x_circ + (0.55 * d_vh)], [y_circ, y_circ], color="#D44B46", linestyle='-.')
 
     ax.set_xlim(-1.1 * H / 2, 1.1 * H / 2)
     ax.set_ylim(-0.5, 1.1*(l_c_v+l_c_n))
@@ -2323,34 +2341,65 @@ def print_nozzle_7(frame,H,delta_st,l_c_n,l_c_v,d_c_v,delta_og,delta_sr,d_vh,i_v
     l_3, beta_3 = find_l_arc((0.5 * d_c_n) - 0.5 * d_vh, 0.5 * d_f)
     l_4, beta_4 = find_l_arc((0.5 * d_c_n) - d_vh, 0.5 * d_c_n)
     l_5, beta_5 = find_l_arc((0.5 * d_c_n) - d_vh, 0.5 * d_f)
-    i_vh_n=i_vh
+    i_vh_n=a
     d_kz_n=d_c_n
-    for i in range(i_vh_n):
-        angle = i * 2 * math.pi / i_vh_n
+    if a<=6:
+        for i in range(i_vh_n):
+            angle = i * 2 * math.pi / i_vh_n
 
-        x_1_0 = (d_kz_n / 2) * math.cos(angle + beta_2)
-        y_1_0 = (d_kz_n / 2) * math.sin(angle + beta_2)
+            x_1_0 = (d_kz_n / 2) * math.cos(angle + beta_2)
+            y_1_0 = (d_kz_n / 2) * math.sin(angle + beta_2)
 
-        x_2_0 = (d_f / 2) * math.cos(angle + beta_3)
-        y_2_0 = (d_f / 2) * math.sin(angle + beta_3)
+            x_2_0 = (d_f / 2) * math.cos(angle + beta_3)
+            y_2_0 = (d_f / 2) * math.sin(angle + beta_3)
 
-        x_1 = (d_kz_n / 2) * math.cos(angle)
-        y_1 = (d_kz_n / 2) * math.sin(angle)
+            x_1 = (d_kz_n / 2) * math.cos(angle)
+            y_1 = (d_kz_n / 2) * math.sin(angle)
 
-        x_2 = (d_f / 2) * math.cos(angle + beta_1)
-        y_2 = (d_f / 2) * math.sin(angle + beta_1)
+            x_2 = (d_f / 2) * math.cos(angle + beta_1)
+            y_2 = (d_f / 2) * math.sin(angle + beta_1)
 
-        x_1_1 = (d_kz_n / 2) * math.cos(angle + beta_4)
-        y_1_1 = (d_kz_n / 2) * math.sin(angle + beta_4)
+            x_1_1 = (d_kz_n / 2) * math.cos(angle + beta_4)
+            y_1_1 = (d_kz_n / 2) * math.sin(angle + beta_4)
 
-        x_2_1 = (d_f / 2) * math.cos(angle + beta_5)
-        y_2_1 = (d_f / 2) * math.sin(angle + beta_5)
-        square = patches.Polygon([[x_1,y_1 ], [x_2,y_2],[x_2_1,y_2_1],[x_1_1,y_1_1 ]],
-                                 color='#131212', fill='#131212')
-        ax_2.add_patch(square)
-        ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
-        ax_2.plot([x_1_1, x_2_1], [y_1_1, y_2_1], color="#D44B46")
-        ax_2.plot([x_1_0, x_2_0], [y_1_0, y_2_0], color="#D44B46", linestyle='-.')
+            x_2_1 = (d_f / 2) * math.cos(angle + beta_5)
+            y_2_1 = (d_f / 2) * math.sin(angle + beta_5)
+            square = patches.Polygon([[x_1,y_1 ], [x_2,y_2],[x_2_1,y_2_1],[x_1_1,y_1_1 ]],
+                                     color='#131212', fill='#131212')
+            ax_2.add_patch(square)
+            ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+            ax_2.plot([x_1_1, x_2_1], [y_1_1, y_2_1], color="#D44B46")
+            ax_2.plot([x_1_0, x_2_0], [y_1_0, y_2_0], color="#D44B46", linestyle='-.')
+    else:
+        a=i_vh_n//2
+        i_vh_n=a
+        for i in range(a):
+            angle = i * 2 * math.pi / i_vh_n
+
+            x_1_0 = (d_kz_n / 2) * math.cos(angle + beta_2)
+            y_1_0 = (d_kz_n / 2) * math.sin(angle + beta_2)
+
+            x_2_0 = (d_f / 2) * math.cos(angle + beta_3)
+            y_2_0 = (d_f / 2) * math.sin(angle + beta_3)
+
+            x_1 = (d_kz_n / 2) * math.cos(angle)
+            y_1 = (d_kz_n / 2) * math.sin(angle)
+
+            x_2 = (d_f / 2) * math.cos(angle + beta_1)
+            y_2 = (d_f / 2) * math.sin(angle + beta_1)
+
+            x_1_1 = (d_kz_n / 2) * math.cos(angle + beta_4)
+            y_1_1 = (d_kz_n / 2) * math.sin(angle + beta_4)
+
+            x_2_1 = (d_f / 2) * math.cos(angle + beta_5)
+            y_2_1 = (d_f / 2) * math.sin(angle + beta_5)
+            square = patches.Polygon([[x_1,y_1 ], [x_2,y_2],[x_2_1,y_2_1],[x_1_1,y_1_1 ]],
+                                     color='#131212', fill='#131212')
+            ax_2.add_patch(square)
+            ax_2.plot([x_1, x_2], [y_1, y_2], color="#D44B46")
+            ax_2.plot([x_1_1, x_2_1], [y_1_1, y_2_1], color="#D44B46")
+            ax_2.plot([x_1_0, x_2_0], [y_1_0, y_2_0], color="#D44B46", linestyle='-.')
+
     circle = plt.Circle((0, 0), 0.5 * d_f, color='#D44B46', fill=None)
     ax_2.add_patch(circle)
     circle = plt.Circle((0, 0), 0.5 * d_c_n, color='#D44B46', fill=None)

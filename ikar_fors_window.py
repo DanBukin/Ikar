@@ -2320,14 +2320,14 @@ class Window_7(ctk.CTk):
     def create_labels(self):
         self.label_1 = create_label(self.frame2, "Выбери диаметр форсунки: 10.00 мм", 2, 2)
         self.label_1_0 = create_label(self.frame2, "8", 25, 26)
-        self.label_1_1 = create_label(self.frame2, "20", 300, 26)
+        self.label_1_1 = create_label(self.frame2, "21", 300, 26)
         self.label_2 = create_label(self.frame2, "Условный шаг форсунки равен: 13.33 мм", 2, 60)
         self.label_3 = create_label(self.frame2, "Выберите толщину стенок: 1.00 мм", 2, 85)
         self.label_3_0 = create_label(self.frame2, "0.5", 25, 112)
         self.label_3_1 = create_label(self.frame2, "3.0", 300, 112)
         self.label_4 = create_label(self.frame2, "Выберите число наружних отверстий: 6", 2, 140)
         self.label_4_0 = create_label(self.frame2, "2", 25, 167)
-        self.label_4_1 = create_label(self.frame2, f"6", 305, 167)
+        self.label_4_1 = create_label(self.frame2, f"12", 305, 167)
         self.label_5 = create_label(self.frame2, "Выберите диаметр наружних отверстий: 1.0 мм", 2, 140 + 55)
         self.label_5_0 = create_label(self.frame2, "0.5", 25, 167 + 55)
         self.label_5_1 = create_label(self.frame2, f"2.5", 300, 167 + 55)
@@ -2400,7 +2400,7 @@ class Window_7(ctk.CTk):
         self.label_55 = create_label_left(self.frame2, "Критерий Лапласа:\n• L_p = ", 5, 1740 + 16 * 45)
         self.label_56 = create_label_left(self.frame2, "Медианный диаметр капель:\n• d_м = ", 5, 1740 + 17 * 45)
     def create_sliders(self):
-        self.slider1 = ctk.CTkSlider(self.frame2, from_=8, to=20, command=self.on_slider_change_1, number_of_steps=12*2,
+        self.slider1 = ctk.CTkSlider(self.frame2, from_=8, to=21, command=self.on_slider_change_1, number_of_steps=13*2,
                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                      progress_color=("#D44B46"))
         self.slider1.place(x=50, y=35)
@@ -2410,7 +2410,7 @@ class Window_7(ctk.CTk):
                                      progress_color=("#D44B46"))
         self.slider2.place(x=50, y=120)
         self.slider2.set(1.0)
-        self.slider3 = ctk.CTkSlider(self.frame2, from_=2, to=6, command=self.on_slider_change_3, number_of_steps=4,
+        self.slider3 = ctk.CTkSlider(self.frame2, from_=2, to=12, command=self.on_slider_change_3, number_of_steps=10,
                                      border_width=4, width=250, height=15, fg_color=("#5A211F"),
                                      progress_color=("#D44B46"))
         self.slider3.place(x=50, y=120 + 55)
